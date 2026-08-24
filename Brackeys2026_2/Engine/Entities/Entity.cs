@@ -4,7 +4,7 @@ public class Entity : EntityBase
 {
     protected EntityBase Parent { get; set; }
     
-    public Entity(EntityBase? parent) : base()
+    public Entity(float x, float y, EntityBase? parent) : base(x, y)
     {
         if (parent is null) Parent = Root;
         else Parent = parent;

@@ -21,7 +21,7 @@ public sealed unsafe class Window : SystemComponent
         Handle = null;
     }
 
-    private void Show()
+    private static void Show()
     {
         SDL.ShowWindow(Handle);
         SDL.RaiseWindow(Handle);

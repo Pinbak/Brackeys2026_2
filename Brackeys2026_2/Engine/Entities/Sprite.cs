@@ -1,12 +1,14 @@
-﻿namespace Brackeys2026_2.Engine.Entities;
+﻿using Brackeys2026_2.Engine.System;
+
+namespace Brackeys2026_2.Engine.Entities;
 
 public class Sprite : Entity
 {
     private Texture _texture; 
     
-    public Sprite(string texturePath, float x = 0f, float y = 0f, EntityBase? parent = null) : base(parent)
+    public Sprite(Texture texture, float x = 0f, float y = 0f, EntityBase? parent = null) : base(x, y, parent)
     {
-        _texture = new Texture(texturePath, x, y);
+        _texture = texture;
     }
 
     public override void OnInitialise()
@@ -21,7 +23,8 @@ public class Sprite : Entity
 
     public override void OnDraw()
     {
-        _texture.Draw();
+        Renderer.RenderTexture(_texture, Transform);
         base.OnDraw();
     }
+
 }

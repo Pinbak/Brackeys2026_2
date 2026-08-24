@@ -13,9 +13,14 @@ public abstract class EntityBase
 
     public Transform Transform { get; set; }
 
-    protected EntityBase()
+    protected EntityBase(float x, float y)
     {
         Entities.Add(this);
+        Transform = new Transform
+        {
+            X = x,
+            Y = y
+        };
     }
 
     public virtual void OnInitialise()

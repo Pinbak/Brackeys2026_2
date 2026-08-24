@@ -5,10 +5,10 @@ namespace Brackeys2026_2.Engine.Entities;
 
 public sealed unsafe class Texture
 {
-    private SDL.Texture* _texture;
-    private readonly SDL.Rect _dimensions;
+    internal SDL.Texture* Handle { get; private set; }
+    internal SDL.Rect Dimensions { get; }
     
-    public Texture(string texturePath, float x, float y)
+    public Texture(string texturePath)
     {
         GCHandle gcHandle = default;
         SDL.IOStream* stream = null;
@@ -18,7 +18,7 @@ public sealed unsafe class Texture
         {
             stream = Resources.CreateStream(texturePath, out gcHandle);
 
-            surface = SDL.LoadIO(stream, false);
+            surface = IMG.LoadIO(stream, false);
 
             if (surface == null)
             {
@@ -26,21 +26,17 @@ public sealed unsafe class Texture
                     $"Failed to load texture '{texturePath}': {SDL.GetError()}");
             }
 
-            _texture = SDL.CreateTextureFromSurface(
+            Handle = SDL.CreateTextureFromSurface(
                 Renderer.Handle,
                 surface);
 
-            if (_texture == null)
+            if (Handle == null)
             {
                 throw new Exception(
                     $"Failed to create texture '{texturePath}': {SDL.GetError()}");
             }
 
-            _dimensions = new SDL.Rect(
-                x,
-                y,
-                surface->width,
-                surface->height);
+            Dimensions = new SDL.Rect(0, 0, surface->width, surface->height);
         }
         finally
         {
@@ -57,16 +53,12 @@ public sealed unsafe class Texture
 
     ~Texture()
     {
-        if (_texture != null)
+        if (Handle != null)
         {
-            SDL.DestroyTexture(_texture);
+            SDL.DestroyTexture(Handle);
         }
 
-        _texture = null;
+        Handle = null;
     }
-
-    public void Draw()
-    {
-        SDL.RenderTexture(Renderer.Handle, _texture, null, _dimensions);
-    }
+    
 }

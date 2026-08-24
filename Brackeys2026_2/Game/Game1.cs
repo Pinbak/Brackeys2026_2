@@ -7,6 +7,9 @@ public class Game1 : Core
 {
     protected override void Setup()
     {
-        var sprite = new Sprite("Game/Assets/test.png", 100, 100);
+        var texture = new Texture("Game/Assets/test.png");
+        var sprite = new Sprite(texture, 100, 100);
+        var sprite2 = new Sprite(texture, 200, 100);
+        
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using Brackeys2026_2.Engine.Entities;
+
 namespace Brackeys2026_2.Engine.System;
 
 public sealed unsafe class Renderer : SystemComponent
@@ -29,5 +31,17 @@ public sealed unsafe class Renderer : SystemComponent
         }
         SDL.DestroyRenderer(Handle);
         Handle = null;
+    }
+
+    public static  void RenderTexture(Texture texture)
+    {
+        var textureHandle = texture.Handle;
+        SDL.RenderTexture(Handle, textureHandle, null, texture.Dimensions);
+    }
+
+    public static void RenderTexture(Texture texture, Transform transform)
+    {
+        var newDimensions = new SDL.Rect(transform.X, transform.Y,  texture.Dimensions.w * transform.ScaleX,  texture.Dimensions.h * transform.ScaleY);
+        SDL.RenderTexture(Handle, texture.Handle, null, newDimensions);
     }
 }
