@@ -15,7 +15,6 @@ internal static class Launcher
         {
             SDL.RunApp(0, [], SdlEntry, (IntPtr)505);
         }
-        
     }
     
     private static int SdlEntry(int argc, string[]? argv)

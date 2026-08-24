@@ -1,17 +1,12 @@
 ﻿namespace Brackeys2026_2.Engine.Entities;
 
-public abstract class Entity
+public class Entity : EntityBase
 {
-    public static List<Entity> Entities { get; private set; } = [];
+    protected EntityBase Parent { get; set; }
     
-    public Transform Transform { get; set; }
-
-    protected Entity()
+    public Entity(EntityBase? parent) : base()
     {
-        Entities.Add(this);
+        if (parent is null) Parent = Root;
+        else Parent = parent;
     }
-    
-    public virtual void OnInitialise(){}
-    public virtual void OnUpdate(){}
-    public virtual void OnDraw(){}
 }

@@ -4,30 +4,26 @@ namespace Brackeys2026_2.Engine.System;
 
 public sealed class Window : SystemComponent
 {
-    private IntPtr _this;
+    public static IntPtr Handle { get; private set; }
 
     internal override void OnInitialise()
     {
-        _this = SDL.CreateWindow("", 800, 600, SDL.WindowFlags.Hidden);
+        Handle = SDL.CreateWindow("", 800, 600, SDL.WindowFlags.Hidden);
         Show();
     }
 
     internal override void OnRemove()
     {
-        if (_this == IntPtr.Zero)
+        if (Handle == IntPtr.Zero)
         {
             throw new Exception("Cannot destroy a window that doesn't exist.");
         }
-        SDL.DestroyWindow(_this);
+        SDL.DestroyWindow(Handle);
     }
 
-    internal override void OnEvent(SDL.Event @event)
+    private void Show()
     {
-    }
-    
-    internal void Show()
-    {
-        SDL.ShowWindow(_this);
-        SDL.RaiseWindow(_this);
+        SDL.ShowWindow(Handle);
+        SDL.RaiseWindow(Handle);
     }
 }

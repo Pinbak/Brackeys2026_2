@@ -14,6 +14,8 @@ public abstract class SystemComponent
     internal virtual void OnInitialise() {}
     internal virtual void OnUpdate() {}
     internal virtual void OnDraw() {}
+    internal virtual void OnDrawEnd() {}
+    internal virtual void OnDrawBegin() {}
     internal virtual void OnRemove() {}
     internal virtual void OnEvent(SDL.Event @event) {}
 }

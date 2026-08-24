@@ -7,10 +7,10 @@ namespace Brackeys2026_2.Engine;
 public abstract partial class Core
 {
     protected virtual void Setup(){}
-
     private bool IsInitialised { get; set; }
     internal bool IsRunning { get; private set; }
     internal Window? Window { get; set; }
+    internal Renderer? Renderer { get; set; }
     
     public void Run()
     {
@@ -22,15 +22,17 @@ public abstract partial class Core
 
     internal void MainInitialise()
     {
+        EntityBase.Root = new Root();
         Window = new Window();
-        Setup();
+        Renderer = new Renderer();
         InitialiseAll();
+        Setup();
     }
 
     internal void MainLoop(Queue<SDL.Event> events)
     {
         if (!IsRunning) return;
-
+        DrawBegin();
         while (events.Count > 0)
         {
             var @event = events.Dequeue(); // get the next event
@@ -44,6 +46,7 @@ public abstract partial class Core
 
         UpdateAll();
         DrawAll();
+        DrawEnd();
     }
 
     public void Quit()
@@ -79,9 +82,26 @@ public abstract partial class Core
             module.OnDraw();
         }
         
-        foreach (var entity in Entity.Entities)
+        foreach (var entity in EntityBase.Entities)
         {
+            if (!entity.IsEnabled) continue;
             entity.OnDraw();
+        }
+    }
+    
+    private void DrawBegin()
+    {
+        foreach (var module in SystemComponent.AllSystemComponents)
+        {
+            module.OnDrawBegin();
+        }
+    }
+
+    private void DrawEnd()
+    {
+        foreach (var module in SystemComponent.AllSystemComponents)
+        {
+            module.OnDrawEnd();
         }
     }
 
@@ -92,8 +112,9 @@ public abstract partial class Core
             module.OnUpdate();
         }
 
-        foreach (var entity in Entity.Entities)
+        foreach (var entity in EntityBase.Entities)
         {
+            if (!entity.IsEnabled) continue;
             entity.OnUpdate();
         }
     }
@@ -105,7 +126,7 @@ public abstract partial class Core
             module.OnInitialise();
         }
         
-        foreach (var entity in Entity.Entities)
+        foreach (var entity in EntityBase.Entities)
         {
             entity.OnInitialise();
         }
