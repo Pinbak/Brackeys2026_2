@@ -3,4 +3,5 @@
 public class UpdatableBehaviour : Behaviour
 {
     public virtual void OnUpdate(){}
+    public virtual void OnDraw(){}
 }

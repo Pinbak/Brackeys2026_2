@@ -33,15 +33,20 @@ public sealed unsafe class Renderer : SystemComponent
         Handle = null;
     }
 
-    public static  void RenderTexture(Texture texture)
+    public static void RenderTexture(RawTexture rawTexture)
     {
-        var textureHandle = texture.Handle;
-        SDL.RenderTexture(Handle, textureHandle, null, texture.Dimensions);
+        var textureHandle = rawTexture.Handle;
+        SDL.RenderTexture(Handle, textureHandle, null, rawTexture.Dimensions);
     }
 
-    public static void RenderTexture(Texture texture, Transform transform)
+    public static void RenderTexture(SpriteTexture spriteTexture)
     {
-        var newDimensions = new SDL.Rect(transform.X, transform.Y,  texture.Dimensions.w * transform.ScaleX,  texture.Dimensions.h * transform.ScaleY);
-        SDL.RenderTexture(Handle, texture.Handle, null, newDimensions);
+        var transform = spriteTexture.Transform;
+        var frame = spriteTexture.Frame;
+        
+        var newDimensions = new SDL.Rect(transform.X, transform.Y, spriteTexture.TextureWidth * transform.ScaleX * transform.Scale,
+            spriteTexture.TextureHeight * transform.ScaleY * transform.Scale);
+        SDL.RenderTexture(Handle, spriteTexture.RawTexture.Handle, frame, newDimensions);
+        
     }
 }

@@ -22,12 +22,13 @@ public abstract partial class Core
 
     internal void MainInitialise()
     {
-        EntityBase.Root = new Root();
+        GameObjectBase.Root = new Root();
         Window = new Window();
         Renderer = new Renderer();
         Resources = new Resources();
-        InitialiseAll();
+        InitialiseSystems();
         Setup();
+        InitialiseEntities();
     }
 
     internal void MainLoop(Queue<SDL.Event> events)
@@ -83,7 +84,7 @@ public abstract partial class Core
             module.OnDraw();
         }
         
-        foreach (var entity in EntityBase.Entities)
+        foreach (var entity in GameObjectBase.Entities)
         {
             if (!entity.IsEnabled) continue;
             entity.OnDraw();
@@ -113,21 +114,24 @@ public abstract partial class Core
             module.OnUpdate();
         }
 
-        foreach (var entity in EntityBase.Entities)
+        foreach (var entity in GameObjectBase.Entities)
         {
             if (!entity.IsEnabled) continue;
             entity.OnUpdate();
         }
     }
     
-    private static void InitialiseAll()
+    private static void InitialiseSystems()
     {
         foreach (var module in SystemComponent.AllSystemComponents)
         {
             module.OnInitialise();
         }
-        
-        foreach (var entity in EntityBase.Entities)
+    }
+
+    private static void InitialiseEntities()
+    {
+        foreach (var entity in GameObjectBase.Entities)
         {
             entity.OnInitialise();
         }

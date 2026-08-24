@@ -3,12 +3,12 @@ using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Entities;
 
-public sealed unsafe class Texture
+public sealed unsafe class RawTexture
 {
     internal SDL.Texture* Handle { get; private set; }
     internal SDL.Rect Dimensions { get; }
     
-    public Texture(string texturePath)
+    public RawTexture(string texturePath)
     {
         GCHandle gcHandle = default;
         SDL.IOStream* stream = null;
@@ -51,7 +51,7 @@ public sealed unsafe class Texture
         }
     }
 
-    ~Texture()
+    ~RawTexture()
     {
         if (Handle != null)
         {
