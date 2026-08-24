@@ -1,10 +1,9 @@
-﻿using SDL3;
-
+﻿
 namespace Brackeys2026_2.Engine.System;
 
-public sealed class Window : SystemComponent
+public sealed unsafe class Window : SystemComponent
 {
-    public static IntPtr Handle { get; private set; }
+    public static SDL.Window* Handle { get; private set; }
 
     internal override void OnInitialise()
     {
@@ -14,11 +13,12 @@ public sealed class Window : SystemComponent
 
     internal override void OnRemove()
     {
-        if (Handle == IntPtr.Zero)
+        if (Handle == null)
         {
             throw new Exception("Cannot destroy a window that doesn't exist.");
         }
         SDL.DestroyWindow(Handle);
+        Handle = null;
     }
 
     private void Show()

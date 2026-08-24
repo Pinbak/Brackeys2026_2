@@ -7,6 +7,6 @@ public class Game1 : Core
 {
     protected override void Setup()
     {
-        var sprite = new Sprite(Path.Combine(AppContext.BaseDirectory, "Game", "Assets", "test.png"), 100, 100);
+        var sprite = new Sprite("Game/Assets/test.png", 100, 100);
     }
 }

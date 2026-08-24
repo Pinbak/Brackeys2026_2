@@ -1,10 +1,9 @@
-﻿using SDL3;
-
+﻿
 namespace Brackeys2026_2.Engine.System;
 
-public sealed class Renderer : SystemComponent
+public sealed unsafe class Renderer : SystemComponent
 {
-    public static IntPtr Handle { get; private set; }
+    public static SDL.Renderer* Handle { get; private set; }
 
     internal override void OnInitialise()
     {
@@ -24,10 +23,11 @@ public sealed class Renderer : SystemComponent
 
     internal override void OnRemove()
     {
-        if (Handle == IntPtr.Zero)
+        if (Handle == null)
         {
             throw new Exception("Cannot destroy a window that doesn't exist.");
         }
         SDL.DestroyRenderer(Handle);
+        Handle = null;
     }
 }

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackeys2026_2", "Brackeys2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackeys2026_2.Windows", "Brackeys2026_2.Windows\Brackeys2026_2.Windows.csproj", "{0D73FE92-4F93-4B7C-82AE-7F592CD70D7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackeys2026_2.Web", "Brackeys2026_2.Web\Brackeys2026_2.Web.csproj", "{9897B67E-0A5F-4018-8316-F8BBB299ED08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0D73FE92-4F93-4B7C-82AE-7F592CD70D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D73FE92-4F93-4B7C-82AE-7F592CD70D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D73FE92-4F93-4B7C-82AE-7F592CD70D7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

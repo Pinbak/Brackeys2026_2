@@ -8,17 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SDL3-CS" Version="3.4.14.1" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Game\Assets\" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Game\Assets\test.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <EmbeddedResource Include="Game\Assets\**\*"/>
     </ItemGroup>
 
 </Project>

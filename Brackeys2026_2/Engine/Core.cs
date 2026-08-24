@@ -1,6 +1,5 @@
 ﻿using Brackeys2026_2.Engine.Entities;
 using Brackeys2026_2.Engine.System;
-using SDL3;
 
 namespace Brackeys2026_2.Engine;
 
@@ -11,6 +10,7 @@ public abstract partial class Core
     internal bool IsRunning { get; private set; }
     internal Window? Window { get; set; }
     internal Renderer? Renderer { get; set; }
+    internal Resources? Resources { get; set; }
     
     public void Run()
     {
@@ -25,6 +25,7 @@ public abstract partial class Core
         EntityBase.Root = new Root();
         Window = new Window();
         Renderer = new Renderer();
+        Resources = new Resources();
         InitialiseAll();
         Setup();
     }
@@ -36,7 +37,7 @@ public abstract partial class Core
         while (events.Count > 0)
         {
             var @event = events.Dequeue(); // get the next event
-            if ((SDL.EventType)@event.Type == SDL.EventType.Quit)
+            if (@event.type == SDL.EventType.Quit)
             {
                 Quit();
                 return;

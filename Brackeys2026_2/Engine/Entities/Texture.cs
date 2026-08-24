@@ -1,50 +1,72 @@
-﻿using Brackeys2026_2.Engine.System;
-using SDL3;
+﻿using System.Runtime.InteropServices;
+using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Entities;
 
-public sealed class Texture
+public sealed unsafe class Texture
 {
-    private readonly IntPtr _surface;
-    private readonly IntPtr _texture;
-    private readonly SDL.FRect _dimensions;
+    private SDL.Texture* _texture;
+    private readonly SDL.Rect _dimensions;
     
     public Texture(string texturePath, float x, float y)
     {
-        _surface = SDL.LoadPNG(texturePath);
-        if (_surface == IntPtr.Zero)
-        {
-            SDL.Log($"Failed to load image {SDL.GetError()}.");
-            throw new Exception($"Failed to load texture from {texturePath}.");
-        }
+        GCHandle gcHandle = default;
+        SDL.IOStream* stream = null;
+        SDL.Surface* surface = null;
 
-        _texture = SDL.CreateTextureFromSurface(Renderer.Handle, _surface);
-        if (_texture == IntPtr.Zero)
+        try
         {
-            SDL.Log($"Failed to load image {SDL.GetError()}.");
-            throw new Exception($"Failed to load texture from {texturePath}.");
-        }
+            stream = Resources.CreateStream(texturePath, out gcHandle);
 
-        _dimensions = TextureHelpers.GetTextureRect(_texture, x, y);
+            surface = SDL.LoadIO(stream, false);
+
+            if (surface == null)
+            {
+                throw new Exception(
+                    $"Failed to load texture '{texturePath}': {SDL.GetError()}");
+            }
+
+            _texture = SDL.CreateTextureFromSurface(
+                Renderer.Handle,
+                surface);
+
+            if (_texture == null)
+            {
+                throw new Exception(
+                    $"Failed to create texture '{texturePath}': {SDL.GetError()}");
+            }
+
+            _dimensions = new SDL.Rect(
+                x,
+                y,
+                surface->width,
+                surface->height);
+        }
+        finally
+        {
+            if (surface != null)
+                SDL.DestroySurface(surface);
+
+            if (stream != null)
+                SDL.CloseIO(stream);
+
+            if (gcHandle.IsAllocated)
+                gcHandle.Free();
+        }
     }
 
     ~Texture()
     {
-        if (_surface != IntPtr.Zero)
-        {
-            SDL.DestroySurface(_surface);
-        }
-
-        if (_texture != IntPtr.Zero)
+        if (_texture != null)
         {
             SDL.DestroyTexture(_texture);
         }
+
+        _texture = null;
     }
 
     public void Draw()
     {
-        SDL.RenderTexture(Renderer.Handle, _texture, IntPtr.Zero, _dimensions);
+        SDL.RenderTexture(Renderer.Handle, _texture, null, _dimensions);
     }
-    
-    
 }
