@@ -7,26 +7,26 @@ public class Test : UpdatableBehaviour
 {
     private Text _text;
     private string _fontPath;
+    private Sprite _sprite;
 
-    public Test(string fontPath)
+    public Test(Sprite sprite)
     {
-        _fontPath = fontPath;
+        _sprite = sprite;
     }
    
     public override void OnInitialise()
     {
         // GameObject.IsEnabled = false;
-        var font = new FontData(_fontPath);
-        _text = new Text(font, "Hello World");
+        
     }
 
     public override void OnUpdate()
     {
-        GameObject.Transform.Angle += 0.1f;
+        GameObject.Transform.X += 100f * Time.DeltaTime;
+        // Console.WriteLine(Time.Fps);
     }
 
     public override void OnDraw()
     {
-        Renderer.RenderText(_text);
     }
 }

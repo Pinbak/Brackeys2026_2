@@ -6,7 +6,7 @@ public class GameObject : GameObjectBase
     
     public GameObject(float x, float y, GameObjectBase? parent) : base(x, y)
     {
-        if (parent is null) Parent = Root;
+        if (parent is null) Parent = RootGameObject;
         else Parent = parent;
     }
 }

@@ -3,7 +3,7 @@
 public static unsafe class Window
 {
     private const string Title = "Hello world";
-    public static SDL.Window* Handle { get; private set; }
+    internal static SDL.Window* Handle { get; private set; }
 
     internal static void CreateWindow()
     {
@@ -13,11 +13,11 @@ public static unsafe class Window
 
     internal static void SetPresentationLetterbox()
     {
-        if (Renderer.Handle is null)
+        if (Graphics.Handle is null)
         {
             throw new Exception("Renderer cannot be null when calling SetPresentation.");
         }
-        SDL.SetRenderLogicalPresentation(Renderer.Handle, 1280, 720, SDL.Presentation.Letterbox);
+        SDL.SetRenderLogicalPresentation(Graphics.Handle, 1280, 720, SDL.Presentation.Letterbox);
         // SDL.SetWindowResizable(Handle, true);
     }
 

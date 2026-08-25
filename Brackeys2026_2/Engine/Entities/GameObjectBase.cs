@@ -7,7 +7,7 @@ namespace Brackeys2026_2.Engine.Entities;
 public abstract class GameObjectBase
 {
     public bool IsEnabled { get; set; } = true;
-    public static Root Root { get; set; } = null!;
+    public static RootGameObject RootGameObject { get; set; } = null!;
     public static List<GameObjectBase> GameObjects { get; private set; } = [];
     private List<UpdatableBehaviour> Components { get; set; } = [];
 

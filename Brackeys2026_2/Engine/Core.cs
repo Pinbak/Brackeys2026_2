@@ -3,7 +3,7 @@ using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine;
 
-public abstract partial class Core
+public abstract class Core
 {
     protected virtual void Setup(){}
     private bool IsInitialised { get; set; }
@@ -19,11 +19,13 @@ public abstract partial class Core
 
     internal void MainInitialise()
     {
-        GameObjectBase.Root = new Root();
+        Time.Setup();
+        GameObjectBase.RootGameObject = new RootGameObject();
         Window.CreateWindow();
-        Renderer.CreateGraphics();
+        Graphics.CreateGraphics();
         Resources.GatherResources();
         Window.SetPresentationLetterbox();
+        
         Setup();
         InitGameObjects();
     }
@@ -31,6 +33,7 @@ public abstract partial class Core
     internal void MainLoop(Queue<SDL.Event> events)
     {
         if (!IsRunning) return;
+        Time.Update();
         DrawBegin();
         while (events.Count > 0)
         {
@@ -54,7 +57,7 @@ public abstract partial class Core
         {
             IsRunning = false;
             Window.CleanUpResources();
-            Renderer.CleanUpResources();
+            Graphics.CleanUpResources();
             SDL.Quit();
             TTF.Quit();
         }
@@ -62,12 +65,12 @@ public abstract partial class Core
     
     private static void DrawBegin()
     {
-        Renderer.DrawBegin();
+        Graphics.DrawBegin();
     }
 
     private static void DrawEnd()
     {
-        Renderer.DrawEnd();
+        Graphics.DrawEnd();
     }
 
     private static void UpdateGameObjects()
