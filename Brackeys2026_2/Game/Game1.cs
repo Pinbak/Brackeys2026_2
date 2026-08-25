@@ -10,13 +10,16 @@ public class Game1 : Core
     protected override void Setup()
     {
         var texture = Graphics.NewTexture("Game/Assets/test.png");
-        var gO = new GameObject(100, 0, null);
+        var obj = new GameObject(100, 0, null);
         var sprite = new Sprite(texture);
-        gO.AddBehaviour(sprite);
+        obj.AddBehaviour(sprite);
         var test = new Test(sprite);
-        gO.AddBehaviour(test);
-        using var font = Font.New("Game/Assets/baijamjuree.ttf");
-        gO.AddBehaviour(new Text(font, new SDL.Color(0, 0, 0, 255), "Hello world", 150));
+        obj.AddBehaviour(test);
+        var child = new GameObject(150, 0, obj);
+        child.AddBehaviour(new Sprite(texture));
+
+        // using var font = Font.New("Game/Assets/baijamjuree.ttf");
+        // obj.AddBehaviour(new Text(font, new SDL.Color(0, 0, 0, 255), "Hello world", 150));
 
     }
 }

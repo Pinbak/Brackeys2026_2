@@ -73,30 +73,19 @@ public abstract class Core
         Graphics.DrawEnd();
     }
 
-    private static void UpdateGameObjects()
-    {
-        foreach (var entity in GameObjectBase.GameObjects)
-        {
-            if (!entity.IsEnabled) continue;
-            entity.OnUpdate();
-        }
-    }
-
     private static void InitGameObjects()
     {
-        foreach (var entity in GameObjectBase.GameObjects)
-        {
-            entity.OnInitialise();
-        }
+        GameObjectBase.RootGameObject.OnInitialise();
     }
-    
+
+    private static void UpdateGameObjects()
+    {
+        GameObjectBase.RootGameObject.OnUpdate();
+    }
+
     private static void DrawGameObjects()
     {
-        foreach (var entity in GameObjectBase.GameObjects)
-        {
-            if (!entity.IsEnabled) continue;
-            entity.OnDraw();
-        }
+        GameObjectBase.RootGameObject.OnDraw();
     }
 
 }

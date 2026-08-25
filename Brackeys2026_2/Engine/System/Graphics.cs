@@ -88,12 +88,12 @@ public static unsafe class Graphics
     
     public static void Draw(TextureData textureData, Transform transform)
     {
-        Draw(textureData, transform.X, transform.Y, transform.Angle, transform.Scale, null);
+        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, null);
     }
     
     public static void Draw(TextureData textureData, Transform transform, SDL.Rect frame)
     {
-        Draw(textureData, transform.X, transform.Y, transform.Angle, transform.Scale, frame);
+        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, frame);
     }
 
     private static void Draw(TextureData textureData, float x, float y, float angle, float scale, SDL.Rect? frame)
@@ -106,8 +106,8 @@ public static unsafe class Graphics
     public static void Draw(TextData text, Transform transform)
     {
         SDL.RenderTextureRotated(Handle, text.Texture, null,
-            new SDL.Rect(transform.X, transform.Y, text.Dimensions.w * transform.Scale,
-                text.Dimensions.h * transform.Scale), transform.Angle, null,
+            new SDL.Rect(transform.ActualX, transform.ActualY, text.Dimensions.w * transform.ActualScale,
+                text.Dimensions.h * transform.ActualScale), transform.ActualAngle, null,
             SDL.FlipMode.None);
     }
 }
