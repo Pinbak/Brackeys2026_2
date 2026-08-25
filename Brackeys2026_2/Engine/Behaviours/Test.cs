@@ -23,7 +23,6 @@ public class Test : UpdatableBehaviour
     public override void OnUpdate()
     {
         GameObject.Transform.ActualX += 100f * Time.DeltaTime;
-        Console.WriteLine(Time.Fps);
     }
 
     public override void OnDraw()

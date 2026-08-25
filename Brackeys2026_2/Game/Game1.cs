@@ -15,8 +15,11 @@ public class Game1 : Core
         obj.AddBehaviour(sprite);
         var test = new Test(sprite);
         obj.AddBehaviour(test);
-        var child = new GameObject(150, 0, obj);
+        var child = new GameObject(50, 0, obj);
         child.AddBehaviour(new Sprite(texture));
+        
+        var child2 = new GameObject(50, 50, obj);
+        child2.AddBehaviour(new Sprite(texture));
 
         // using var font = Font.New("Game/Assets/baijamjuree.ttf");
         // obj.AddBehaviour(new Text(font, new SDL.Color(0, 0, 0, 255), "Hello world", 150));

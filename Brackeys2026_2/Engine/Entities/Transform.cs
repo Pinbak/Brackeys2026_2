@@ -23,29 +23,71 @@ public class Transform
         }
     }
 
-    public float Angle { get; set; }
-    // public float ScaleX { get; set; } = 1.0f;
-    // public float ScaleY { get; set; } = 1.0f;
-    public float Scale { get; set; } = 1.0f;
-
-    // actual real world positions
-    internal float ActualX
+    public float Angle
     {
-        get => _actualX;
+        get;
         set
         {
-             _actualX = value;
+            field = value;
+            UpdateDescendantsTransforms();
+        }
+    }
+
+    // public float ScaleX { get; set; } = 1.0f;
+    // public float ScaleY { get; set; } = 1.0f;
+    public float Scale
+    {
+        get;
+        set
+        {
+            field = value;
+            UpdateDescendantsTransforms();
+        }
+    } = 1.0f;
+
+    // actual real world positions
+    public float ActualX
+    {
+        get;
+        set
+        {
+            field = value;
              UpdateDescendantsTransforms();
         }
     }
 
-    internal float ActualY { get; private set; }
-    internal float ActualAngle { get; private set; }
-    internal float ActualScale { get; private set; } = 1.0f;
-    
+    public float ActualY
+    {
+        get;
+        set
+        {
+            field = value;
+            UpdateDescendantsTransforms();
+        }
+    }
+
+    public float ActualAngle
+    {
+        get;
+        set
+        {
+            field = value;
+            UpdateDescendantsTransforms();
+        }
+    }
+
+    public float ActualScale
+    {
+        get;
+        set
+        {
+            field = value;
+            UpdateDescendantsTransforms();
+        }
+    } = 1.0f;
+
     private float _x;
     private float _y;
-    private float _actualX;
     private GameObject GameObject { get; set; } // that this belongs to
 
     internal Transform(GameObject gameObject, float relativeX, float relativeY)
@@ -53,7 +95,7 @@ public class Transform
         GameObject = gameObject;
         _x = relativeX;
         _y = relativeY;
-        _actualX = _x;
+        ActualX = _x;
         ActualY = _y;
     }
 
@@ -69,11 +111,8 @@ public class Transform
     {
         foreach (var child in GameObject.Children)
         {
-            if (child.Parent is GameObject parentAsGameObject)
-            {
-                child.Transform.UpdateTransformRelatives(parentAsGameObject.Transform);
-            }
-            child.Transform.UpdateDescendantsTransforms();
+            child.Transform.UpdateTransformRelatives(GameObject.Transform);
         }
+        
     }
 }
