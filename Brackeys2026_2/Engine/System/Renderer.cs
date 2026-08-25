@@ -3,27 +3,16 @@ using Brackeys2026_2.Engine.Entities;
 
 namespace Brackeys2026_2.Engine.System;
 
-public sealed unsafe class Renderer : SystemComponent
+public static unsafe class Renderer
 {
     public static SDL.Renderer* Handle { get; private set; }
 
-    internal override void OnInitialise()
+    internal static void CreateGraphics()
     {
         Handle = SDL.CreateRenderer(Window.Handle, null);
     }
 
-    internal override void OnDrawBegin()
-    {
-        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
-        SDL.RenderClear(Handle);
-    }
-
-    internal override void OnDrawEnd()
-    {
-        SDL.RenderPresent(Handle);
-    }
-
-    internal override void OnRemove()
+    internal static void CleanUpResources()
     {
         if (Handle == null)
         {
@@ -31,6 +20,22 @@ public sealed unsafe class Renderer : SystemComponent
         }
         SDL.DestroyRenderer(Handle);
         Handle = null;
+    }
+
+    private static void SetDrawColour(byte red = 255, byte green = 255, byte blue = 255, byte alpha = 255)
+    {
+        SDL.SetRenderDrawColor(Handle, red, green, blue, alpha);
+    }
+
+    internal static void DrawBegin(byte red = 255, byte green = 255, byte blue = 255, byte alpha = 255)
+    {
+        SetDrawColour(red, green, blue, alpha);
+        SDL.RenderClear(Handle);
+    }
+
+    internal static void DrawEnd()
+    {
+        SDL.RenderPresent(Handle);
     }
 
     public static void RenderTexture(RawTexture rawTexture)

@@ -16,7 +16,7 @@ public class Test : UpdatableBehaviour
     public override void OnInitialise()
     {
         // GameObject.IsEnabled = false;
-        var font = new Font(_fontPath);
+        var font = new FontData(_fontPath);
         _text = new Text(font, "Hello World");
     }
 

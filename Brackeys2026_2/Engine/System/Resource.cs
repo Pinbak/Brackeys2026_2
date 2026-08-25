@@ -4,12 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace Brackeys2026_2.Engine.System;
 
-internal sealed unsafe class Resources : SystemComponent
+internal static unsafe class Resources
 {
     private static readonly Dictionary<string, (Assembly assembly, string fullpath)> EmbeddedResources = new(StringComparer.OrdinalIgnoreCase);
-        
 
-    internal override void OnInitialise()
+    internal static void GatherResources()
     {
         // DebugLog();
         

@@ -8,9 +8,6 @@ public abstract partial class Core
     protected virtual void Setup(){}
     private bool IsInitialised { get; set; }
     internal bool IsRunning { get; private set; }
-    internal Window? Window { get; set; }
-    internal Renderer? Renderer { get; set; }
-    internal Resources? Resources { get; set; }
     
     public void Run()
     {
@@ -23,12 +20,12 @@ public abstract partial class Core
     internal void MainInitialise()
     {
         GameObjectBase.Root = new Root();
-        Window = new Window();
-        Renderer = new Renderer();
-        Resources = new Resources();
-        InitialiseSystems();
+        Window.CreateWindow();
+        Renderer.CreateGraphics();
+        Resources.GatherResources();
+        Window.SetPresentationLetterbox();
         Setup();
-        InitialiseEntities();
+        InitGameObjects();
     }
 
     internal void MainLoop(Queue<SDL.Event> events)
@@ -43,11 +40,11 @@ public abstract partial class Core
                 Quit();
                 return;
             }
-            TriggerSystemComponents(@event);
+            // TriggerSystemComponents(@event);
         }
 
-        UpdateAll();
-        DrawAll();
+        UpdateGameObjects();
+        DrawGameObjects();
         DrawEnd();
     }
 
@@ -56,89 +53,46 @@ public abstract partial class Core
         if (IsRunning)
         {
             IsRunning = false;
-            RemoveSystemComponents();
+            Window.CleanUpResources();
+            Renderer.CleanUpResources();
             SDL.Quit();
             TTF.Quit();
         }
     }
-
-    private static void RemoveSystemComponents()
-    {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnRemove();
-        }
-    }
-
-    private static void TriggerSystemComponents(SDL.Event @event)
-    {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnEvent(@event);
-        }
-    }
     
-    private static void DrawAll()
+    private static void DrawBegin()
     {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnDraw();
-        }
-        
-        foreach (var entity in GameObjectBase.GameObjects)
-        {
-            if (!entity.IsEnabled) continue;
-            entity.OnDraw();
-        }
-    }
-    
-    private void DrawBegin()
-    {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnDrawBegin();
-        }
+        Renderer.DrawBegin();
     }
 
-    private void DrawEnd()
+    private static void DrawEnd()
     {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnDrawEnd();
-        }
+        Renderer.DrawEnd();
     }
 
-    private static void UpdateAll()
+    private static void UpdateGameObjects()
     {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnUpdate();
-        }
-
         foreach (var entity in GameObjectBase.GameObjects)
         {
             if (!entity.IsEnabled) continue;
             entity.OnUpdate();
         }
     }
-    
-    private static void InitialiseSystems()
-    {
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnInitialise();
-        }
-        foreach (var module in SystemComponent.AllSystemComponents)
-        {
-            module.OnLateInitialise();
-        }
-    }
 
-    private static void InitialiseEntities()
+    private static void InitGameObjects()
     {
         foreach (var entity in GameObjectBase.GameObjects)
         {
             entity.OnInitialise();
+        }
+    }
+    
+    private static void DrawGameObjects()
+    {
+        foreach (var entity in GameObjectBase.GameObjects)
+        {
+            if (!entity.IsEnabled) continue;
+            entity.OnDraw();
         }
     }
 

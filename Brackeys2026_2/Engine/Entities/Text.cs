@@ -4,7 +4,7 @@ namespace Brackeys2026_2.Engine.Entities;
 
 public unsafe class Text
 {
-    public Font Font { get; private set; }
+    public FontData FontData { get; private set; }
 
     public string Content
     {
@@ -33,10 +33,10 @@ public unsafe class Text
 
     public Transform Transform { get; set; } = new Transform();
 
-    public Text(Font font, string content)
+    public Text(FontData fontData, string content)
     {
         Colour = new SDL.Color32(0, 0, 0, 255);
-        Font = font;
+        FontData = fontData;
         Content = content;
     }
 
@@ -44,7 +44,7 @@ public unsafe class Text
     {
         if (Texture != null)
             SDL.DestroyTexture(Texture);
-        var surface = TTF.RenderTextSolidWrapped(Font.Handle, Content, Colour, Width);
+        var surface = TTF.RenderTextSolidWrapped(FontData.Handle, Content, Colour, Width);
         Texture = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
         SDL.DestroySurface(surface);
     }
