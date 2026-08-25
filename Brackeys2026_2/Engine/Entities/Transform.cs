@@ -9,7 +9,7 @@ public class Transform
         set
         {
             _x = value;
-            UpdateDescendantsTransforms();
+            UpdateTransform();
         }
     }
 
@@ -19,7 +19,7 @@ public class Transform
         set
         {
             _y = value;
-            UpdateDescendantsTransforms();
+            UpdateTransform();
         }
     }
 
@@ -29,7 +29,7 @@ public class Transform
         set
         {
             field = value;
-            UpdateDescendantsTransforms();
+            UpdateTransform();
         }
     }
 
@@ -41,7 +41,7 @@ public class Transform
         set
         {
             field = value;
-            UpdateDescendantsTransforms();
+            UpdateTransform();
         }
     } = 1.0f;
 
@@ -52,7 +52,6 @@ public class Transform
         set
         {
             field = value;
-             UpdateDescendantsTransforms();
         }
     }
 
@@ -62,7 +61,6 @@ public class Transform
         set
         {
             field = value;
-            UpdateDescendantsTransforms();
         }
     }
 
@@ -72,7 +70,6 @@ public class Transform
         set
         {
             field = value;
-            UpdateDescendantsTransforms();
         }
     }
 
@@ -82,21 +79,22 @@ public class Transform
         set
         {
             field = value;
-            UpdateDescendantsTransforms();
         }
     } = 1.0f;
 
     private float _x;
     private float _y;
-    private GameObject GameObject { get; set; } // that this belongs to
+    private GameObjectBase GameObjectBase { get; set; } // that this belongs to
+    private bool _isRoot;
 
-    internal Transform(GameObject gameObject, float relativeX, float relativeY)
+    internal Transform(GameObjectBase gameObjectBase, float relativeX, float relativeY, Transform? parentTransform)
     {
-        GameObject = gameObject;
+        GameObjectBase = gameObjectBase;
+        _isRoot = gameObjectBase is RootGameObject;
         _x = relativeX;
         _y = relativeY;
-        ActualX = _x;
-        ActualY = _y;
+        if (parentTransform is null) return;
+        UpdateTransformRelatives(parentTransform);
     }
 
     private void UpdateTransformRelatives(Transform parent)
@@ -107,11 +105,20 @@ public class Transform
         ActualScale = parent.ActualScale * Scale;
     }
 
-    private void UpdateDescendantsTransforms()
+    private void UpdateTransform()
     {
-        foreach (var child in GameObject.Children)
+        if (_isRoot) return;
+        var gameObject = GameObjectBase as GameObject;
+        UpdateTransformRelatives(gameObject!.Parent.Transform);
+        UpdateDescendantsTransforms(gameObject);
+    }
+
+    private void UpdateDescendantsTransforms(GameObjectBase currentGameObject)
+    {
+        foreach (var child in GameObjectBase.Children)
         {
-            child.Transform.UpdateTransformRelatives(GameObject.Transform);
+            child.Transform.UpdateDescendantsTransforms(child);
+            child.Transform.UpdateTransformRelatives(currentGameObject.Transform);
         }
         
     }

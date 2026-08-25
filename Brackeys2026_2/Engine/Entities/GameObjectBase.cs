@@ -5,6 +5,8 @@ public abstract class GameObjectBase
     public bool IsEnabled { get; set; } = true;
     internal static RootGameObject RootGameObject { get; set; } = null!;
     public List<GameObject> Children { get; private set; } = [];
+    
+    public Transform Transform { get; internal init; }
 
     public virtual void OnInitialise()
     {

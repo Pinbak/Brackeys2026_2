@@ -13,16 +13,17 @@ public class Game1 : Core
         var obj = new GameObject(100, 0, null);
         var sprite = new Sprite(texture);
         obj.AddBehaviour(sprite);
-        var test = new Test(sprite);
-        obj.AddBehaviour(test);
-        var child = new GameObject(50, 0, obj);
+        using var font = Font.New("Game/Assets/baijamjuree.ttf");
+        var text = new Text(font, new SDL.Color(0, 0, 0, 255), "Hello world", 150);
+        var textNode = new GameObject(0, 0, obj);
+        textNode.AddBehaviour(text);
+        var child = new GameObject(100, 0, obj);
         child.AddBehaviour(new Sprite(texture));
-        
-        var child2 = new GameObject(50, 50, obj);
+        obj.AddBehaviour(new Test());
+        var child2 = new GameObject(0, 100, child);
         child2.AddBehaviour(new Sprite(texture));
-
-        // using var font = Font.New("Game/Assets/baijamjuree.ttf");
-        // obj.AddBehaviour(new Text(font, new SDL.Color(0, 0, 0, 255), "Hello world", 150));
+        child2.AddBehaviour(new Test2());
+        // child.IsEnabled = false;
 
     }
 }

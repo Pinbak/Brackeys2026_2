@@ -16,6 +16,11 @@ public unsafe class Text : UpdatableBehaviour
         _textData = Graphics.NewText(fontData, colour, content, width);
     }
 
+    public void Set(string content)
+    {
+        _textData.UpdateText(content);
+    }
+
     public override void OnDraw()
     {
         Graphics.Draw(_textData, GameObject.Transform);

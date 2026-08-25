@@ -22,7 +22,7 @@ public static unsafe class Time
         _deltaTime = (float)(now - _last) / _frequency;
         _last = now;
         var instantFps = _deltaTime > .0f ? 1.0f / _deltaTime : .0f;
-        const float smoothing = .01f;
+        const float smoothing = 1f;
         _fps += (instantFps - _fps) * smoothing;
     }
 }

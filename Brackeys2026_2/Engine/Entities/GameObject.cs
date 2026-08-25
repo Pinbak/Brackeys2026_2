@@ -5,12 +5,11 @@ namespace Brackeys2026_2.Engine.Entities;
 public sealed class GameObject : GameObjectBase
 {
     public GameObjectBase Parent { get; set; }
-    public Transform Transform { get; set; }
     private List<UpdatableBehaviour> Components { get; set; } = [];
     
-    public GameObject(float x, float y, GameObjectBase? parent)
+    public GameObject(float relativeX, float relativeY, GameObjectBase? parent)
     {
-        Transform = new Transform(this, x, y);
+        Transform = new Transform(this, relativeX, relativeY, parent?.Transform);
         if (parent is null) Parent = RootGameObject;
         else Parent = parent;
         Parent.Children.Add(this);
@@ -36,32 +35,35 @@ public sealed class GameObject : GameObjectBase
     // intentionally recursive
     public override void OnInitialise()
     {
-        base.OnInitialise();
         foreach (var updatableBehaviour in Components)
         {
             if (!updatableBehaviour.IsEnabled) continue;
             updatableBehaviour.OnInitialise();
         }
+
+        base.OnInitialise();
     }
 
     public override void OnUpdate()
     {
-        base.OnUpdate();
         foreach (var updatableBehaviour in Components)
         {
             if (!updatableBehaviour.IsEnabled) continue;
             updatableBehaviour.OnUpdate();
         }
+
+        base.OnUpdate();
     }
 
     public override void OnDraw()
     {
-        base.OnDraw();
         foreach (var drawableBehaviour in Components)
         {
             if (!drawableBehaviour.IsEnabled) continue;
             drawableBehaviour.OnDraw();
         }
+
+        base.OnDraw();
     }
 
     ~GameObject()
