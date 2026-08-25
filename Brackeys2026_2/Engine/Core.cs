@@ -1,5 +1,6 @@
 ﻿using Brackeys2026_2.Engine.Entities;
 using Brackeys2026_2.Engine.System;
+using Brackeys2026_2.Engine.System.Inputs;
 
 namespace Brackeys2026_2.Engine;
 
@@ -43,7 +44,7 @@ public abstract class Core
                 Quit();
                 return;
             }
-            // TriggerSystemComponents(@event);
+            Input.Listen(@event);
         }
 
         UpdateGameObjects();

@@ -1,5 +1,6 @@
 ﻿using Brackeys2026_2.Engine;
 using Brackeys2026_2.Engine.Behaviours;
+using Brackeys2026_2.Engine.Behaviours.ExperimentBehaviours;
 using Brackeys2026_2.Engine.Entities;
 using Brackeys2026_2.Engine.System;
 
@@ -19,10 +20,9 @@ public class Game1 : Core
         textNode.AddBehaviour(text);
         var child = new GameObject(100, 0, obj);
         child.AddBehaviour(new Sprite(texture));
-        obj.AddBehaviour(new Test());
         var child2 = new GameObject(0, 100, child);
         child2.AddBehaviour(new Sprite(texture));
-        child2.AddBehaviour(new Test2());
+        child2.AddBehaviour(new SineTweener());
         // child.IsEnabled = false;
 
     }
