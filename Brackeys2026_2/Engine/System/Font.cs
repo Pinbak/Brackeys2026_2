@@ -7,7 +7,7 @@ public sealed unsafe class Font
     internal TTF.Font* Handle { get; private set; }
     internal SDL.IOStream* Stream { get; set; }
     
-    public Font(string fontPath, float size = 50)
+    public Font(string fontPath, float size = 24)
     {
         GCHandle gcHandle = default;
         try

@@ -22,7 +22,7 @@ public class Test : UpdatableBehaviour
 
     public override void OnUpdate()
     {
-        
+        GameObject.Transform.Angle += 0.1f;
     }
 
     public override void OnDraw()

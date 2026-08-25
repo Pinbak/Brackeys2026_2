@@ -42,12 +42,11 @@ public unsafe class Text
 
     private void UpdateTexture()
     {
-        if (Surface != null)
-            SDL.DestroySurface(Surface);
         if (Texture != null)
             SDL.DestroyTexture(Texture);
-        Surface = TTF.RenderTextShadedWrapped(Font.Handle, Content, Colour, new SDL.Color32(0, 0, 0, 0), Width);
-        Texture = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
+        var surface = TTF.RenderTextSolidWrapped(Font.Handle, Content, Colour, Width);
+        Texture = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
+        SDL.DestroySurface(surface);
     }
 
     ~Text()

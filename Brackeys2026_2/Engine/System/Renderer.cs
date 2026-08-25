@@ -46,7 +46,7 @@ public sealed unsafe class Renderer : SystemComponent
         
         var newDimensions = new SDL.Rect(transform.X, transform.Y, spriteTexture.TextureWidth * transform.ScaleX * transform.Scale,
             spriteTexture.TextureHeight * transform.ScaleY * transform.Scale);
-        SDL.RenderTexture(Handle, spriteTexture.RawTexture.Handle, frame, newDimensions);
+        SDL.RenderTextureRotated(Handle, spriteTexture.RawTexture.Handle, frame, newDimensions, transform.Angle, null, SDL.FlipMode.None);
     }
 
     public static void RenderText(Text text)
@@ -54,7 +54,7 @@ public sealed unsafe class Renderer : SystemComponent
         var newDimensions = new SDL.Rect(text.Transform.X, text.Transform.Y,
             text.Texture->width * text.Transform.ScaleX * text.Transform.Scale,
             text.Texture->height * text.Transform.ScaleY * text.Transform.Scale);
-        if (!SDL.RenderTexture(Handle, text.Texture, null, newDimensions))
+        if (!SDL.RenderTextureRotated(Handle, text.Texture, null, newDimensions, text.Transform.Angle, null, SDL.FlipMode.None))
         {
             throw new Exception(SDL.GetError());
         }

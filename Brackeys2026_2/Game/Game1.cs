@@ -8,11 +8,12 @@ public class Game1 : Core
 {
     protected override void Setup()
     {
+        
         var texture = new RawTexture("Game/Assets/test.png");
         var sprite = new Sprite(texture, new SDL.Rect(0, 0, 50, 60), 100, 100);
         sprite.Transform.Scale *= .5f;
-        sprite.AddBehaviour(new Test("Game/Assets/baijamjuree.ttf"));
+        var test = new Test("Game/Assets/baijamjuree.ttf");
+        sprite.AddBehaviour(test);
         var sprite2 = new Sprite(texture, null, 200, 100);
-        
     }
 }

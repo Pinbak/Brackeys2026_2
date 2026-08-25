@@ -128,6 +128,10 @@ public abstract partial class Core
         {
             module.OnInitialise();
         }
+        foreach (var module in SystemComponent.AllSystemComponents)
+        {
+            module.OnLateInitialise();
+        }
     }
 
     private static void InitialiseEntities()
