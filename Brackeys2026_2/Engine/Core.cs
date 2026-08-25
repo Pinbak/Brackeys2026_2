@@ -58,6 +58,7 @@ public abstract partial class Core
             IsRunning = false;
             RemoveSystemComponents();
             SDL.Quit();
+            TTF.Quit();
         }
     }
 
@@ -84,7 +85,7 @@ public abstract partial class Core
             module.OnDraw();
         }
         
-        foreach (var entity in GameObjectBase.Entities)
+        foreach (var entity in GameObjectBase.GameObjects)
         {
             if (!entity.IsEnabled) continue;
             entity.OnDraw();
@@ -114,7 +115,7 @@ public abstract partial class Core
             module.OnUpdate();
         }
 
-        foreach (var entity in GameObjectBase.Entities)
+        foreach (var entity in GameObjectBase.GameObjects)
         {
             if (!entity.IsEnabled) continue;
             entity.OnUpdate();
@@ -131,7 +132,7 @@ public abstract partial class Core
 
     private static void InitialiseEntities()
     {
-        foreach (var entity in GameObjectBase.Entities)
+        foreach (var entity in GameObjectBase.GameObjects)
         {
             entity.OnInitialise();
         }

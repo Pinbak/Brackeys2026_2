@@ -76,5 +76,10 @@ internal static unsafe class Launcher
         {
             throw new Exception(SDL.GetError());
         }
+
+        if (!TTF.Init())
+        {
+            throw new Exception(SDL.GetError());
+        }
     }
 }

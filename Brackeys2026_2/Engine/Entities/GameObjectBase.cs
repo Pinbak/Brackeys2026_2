@@ -8,14 +8,14 @@ public abstract class GameObjectBase
 {
     public bool IsEnabled { get; set; } = true;
     public static Root Root { get; set; } = null!;
-    public static List<GameObjectBase> Entities { get; private set; } = [];
+    public static List<GameObjectBase> GameObjects { get; private set; } = [];
     private List<UpdatableBehaviour> Components { get; set; } = [];
 
     public Transform Transform { get; set; }
 
     protected GameObjectBase(float x, float y)
     {
-        Entities.Add(this);
+        GameObjects.Add(this);
         Transform = new Transform
         {
             X = x,

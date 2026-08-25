@@ -7,18 +7,18 @@ public sealed unsafe class RawTexture
 {
     internal SDL.Texture* Handle { get; private set; }
     internal SDL.Rect Dimensions { get; }
+    internal SDL.IOStream* Stream { get; }
     
     public RawTexture(string texturePath)
     {
         GCHandle gcHandle = default;
-        SDL.IOStream* stream = null;
         SDL.Surface* surface = null;
 
         try
         {
-            stream = Resources.CreateStream(texturePath, out gcHandle);
+            Stream = Resources.CreateStream(texturePath, out gcHandle);
 
-            surface = IMG.LoadIO(stream, false);
+            surface = IMG.LoadIO(Stream, false);
 
             if (surface == null)
             {
@@ -43,9 +43,6 @@ public sealed unsafe class RawTexture
             if (surface != null)
                 SDL.DestroySurface(surface);
 
-            if (stream != null)
-                SDL.CloseIO(stream);
-
             if (gcHandle.IsAllocated)
                 gcHandle.Free();
         }
@@ -59,6 +56,8 @@ public sealed unsafe class RawTexture
         }
 
         Handle = null;
+        if (Stream != null)
+            SDL.CloseIO(Stream);
     }
     
 }
