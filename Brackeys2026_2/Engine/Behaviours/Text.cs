@@ -7,9 +7,9 @@ public unsafe class Text : UpdatableBehaviour
 {
     private TextData _textData;
     private string _content;
-    private SDL.Color _colour;
+    private Colour _colour;
 
-    public Text(FontData fontData, SDL.Color colour, string content, int width)
+    public Text(FontData fontData, Colour colour, string content, int width)
     {
         _content = content;
         _colour = colour;

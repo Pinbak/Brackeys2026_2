@@ -12,14 +12,14 @@ public static unsafe class Font
         try
         {
             var stream = Resources.CreateStream(fontPath, out gcHandle);
-            font = TTF.OpenFontIO(stream, true, size);
+            font = TTF.OpenFontIo(stream, true, size);
             if (font == null)
             {
                 throw new Exception($"Failed to load font '{fontPath}': {SDL.GetError()}");
             }
                 
             // Apply SDF for scaling
-            TTF.SetFontSDF(font, true);
+            TTF.SetFontSdf(font, true);
         }
         finally
         {

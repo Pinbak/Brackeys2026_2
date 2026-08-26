@@ -1,9 +1,41 @@
-﻿
-using System.Runtime.InteropServices;
-using Brackeys2026_2.Engine.Behaviours;
+﻿using System.Runtime.InteropServices;
 using Brackeys2026_2.Engine.Entities;
 
 namespace Brackeys2026_2.Engine.System;
+
+[StructLayout(LayoutKind.Sequential)]
+public struct Rectangle(float x, float y, float width, float height)
+{
+    public float X = x;
+    public float Y = y;
+    public float Width = width;
+    public float Height = height;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct RectangleInt(int x, int y, int width, int height)
+{
+    public int X = x;
+    public int Y = y;
+    public int Width = width;
+    public int Height = height;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct Colour(byte red, byte green, byte blue, byte alpha)
+{
+    public byte Red = red;
+    public byte Green = green;
+    public byte Blue = blue;
+    public byte Alpha = alpha;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct Point(float x, float y)
+{
+    public float X = x;
+    public float Y = y;
+}
 
 public static unsafe class Graphics
 {
@@ -12,6 +44,10 @@ public static unsafe class Graphics
     internal static void CreateGraphics()
     {
         Handle = SDL.CreateRenderer(Window.Handle, null);
+        if (Handle == null)
+        {
+            throw new Exception(SDL.GetError());
+        }
     }
 
     internal static void CleanUpResources()
@@ -40,9 +76,9 @@ public static unsafe class Graphics
         SDL.RenderPresent(Handle);
     }
 
-    public static TextData NewText(FontData fontData, SDL.Color colour, string content, int width)
+    public static TextData NewText(FontData fontData, Colour colour, string content, int width)
     {
-        var colour32 = new SDL.Color32(colour.r, colour.g, colour.b, colour.a);
+        var colour32 = new Colour(colour.Red, colour.Green, colour.Blue, colour.Alpha);
         return new TextData(fontData, colour32, content, width);
     }
 
@@ -54,7 +90,7 @@ public static unsafe class Graphics
         try
         {
             var stream = Resources.CreateStream(texturePath, out gcHandle);
-            var surface = IMG.LoadIO(stream, true);
+            var surface = IMG.LoadIo(stream, true);
             if (surface == null)
             {
                 throw new Exception($"Failed to load texture '{texturePath}': {SDL.GetError()}");
@@ -91,18 +127,18 @@ public static unsafe class Graphics
         Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, null, transform.Pivot);
     }
     
-    public static void Draw(TextureData textureData, Transform transform, SDL.Rect frame)
+    public static void Draw(TextureData textureData, Transform transform, Rectangle frame)
     {
         Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, frame, transform.Pivot);
     }
 
-    private static void Draw(TextureData textureData, float x, float y, float angle, float scale, SDL.Rect? frame, (float x, float y) pivot, bool drawDebug = false)
+    private static void Draw(TextureData textureData, float x, float y, float angle, float scale, Rectangle? frame, (float x, float y) pivot, bool drawDebug = false)
     {
-        var width = textureData.Dimensions.w;
-        var height = textureData.Dimensions.h;
+        var width = textureData.Dimensions.Width;
+        var height = textureData.Dimensions.Height;
         var pivotX = width * pivot.x * scale;
         var pivotY = height * pivot.y * scale;
-        var destination = new SDL.Rect(x - pivotX, y - pivotY, width * scale, height * scale);
+        var destination = new Rectangle(x - pivotX, y - pivotY, width * scale, height * scale);
         
         if (drawDebug)
         {
@@ -116,11 +152,11 @@ public static unsafe class Graphics
 
     public static void Draw(TextData text, Transform transform, bool drawDebug = false)
     {
-        var width = text.Dimensions.w;
-        var height = text.Dimensions.h;
+        var width = text.Dimensions.Width;
+        var height = text.Dimensions.Height;
         var pivotX = width * transform.Pivot.x * transform.Scale;
         var pivotY = height * transform.Pivot.y * transform.Scale;
-        var destination = new SDL.Rect(transform.ActualX - pivotX, transform.ActualY - pivotY, width * transform.ActualScale, height * transform.ActualScale);
+        var destination = new Rectangle(transform.ActualX - pivotX, transform.ActualY - pivotY, width * transform.ActualScale, height * transform.ActualScale);
 
         if (drawDebug)
         {

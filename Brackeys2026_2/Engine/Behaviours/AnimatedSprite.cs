@@ -6,9 +6,9 @@ namespace Brackeys2026_2.Engine.Behaviours;
 public class AnimatedSprite : UpdatableBehaviour
 {
     private readonly TextureData _spriteTexture;
-    private readonly SDL.Rect _frame;
+    private readonly Rectangle _frame;
     
-    public AnimatedSprite(TextureData textureData, SDL.Rect frame)
+    public AnimatedSprite(TextureData textureData, Rectangle frame)
     {
         _frame = frame;
         _spriteTexture = textureData;

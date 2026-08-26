@@ -1,9 +1,7 @@
-﻿using Brackeys2026_2.Engine.Entities;
-using Brackeys2026_2.Engine.System;
-using Brackeys2026_2.Engine.System.Inputs;
+﻿using Brackeys2026_2.Engine.System.Inputs;
 using Brackeys2026_2.Engine.System.Tweening;
 
-namespace Brackeys2026_2.Engine.Behaviours.ExperimentBehaviours;
+namespace Brackeys2026_2.Engine.Behaviours.Experiments;
 
 public class InputTesting : UpdatableBehaviour
 {
@@ -11,7 +9,7 @@ public class InputTesting : UpdatableBehaviour
     {
         if (Mouse.IsPressed(Mouse.MouseButton.Left, out var x, out var y))
         {
-            // Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 0.5f, EaseFunctions.OutElastic);
+            Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 2f, EaseFunctions.OutElastic);
             // Tweener.ScaleTo(GameObject.Transform, 2f, 5f, EaseFunctions.OutElastic);
             
             Console.WriteLine($"Left button pressed x: {x}, y: {y}");
@@ -21,5 +19,7 @@ public class InputTesting : UpdatableBehaviour
         {
             Console.WriteLine("Left button released");
         }
+        
+        // Console.WriteLine(Time.Fps);
     }
 }

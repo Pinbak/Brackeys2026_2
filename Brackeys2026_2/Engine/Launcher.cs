@@ -72,12 +72,7 @@ internal static unsafe class Launcher
 
     private static void Initialise()
     {
-        if (!SDL.Init(SDL.InitFlags.Video))
-        {
-            throw new Exception(SDL.GetError());
-        }
-
-        if (!TTF.Init())
+        if (!SDL.InitSdl(SDL.InitFlags.Video) || !TTF.Init())
         {
             throw new Exception(SDL.GetError());
         }

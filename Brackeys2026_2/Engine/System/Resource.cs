@@ -44,7 +44,7 @@ internal static unsafe class Resources
         }
     }
         
-    internal static SDL.IOStream* CreateStream(string path, out GCHandle handle)
+    internal static SDL.IoStream* CreateStream(string path, out GCHandle handle)
     {
         // Find Resource
         if (!EmbeddedResources.TryGetValue(path.Replace('\\', '.').Replace('/', '.'), out var resource))
@@ -60,6 +60,6 @@ internal static unsafe class Resources
 
         // Create Stream
         handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-        return SDL.OpenIO((void*)handle.AddrOfPinnedObject(), (nuint)data.Length);
+        return SDL.OpenIo((void*)handle.AddrOfPinnedObject(), (nuint)data.Length);
     }
 }

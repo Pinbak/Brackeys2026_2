@@ -40,7 +40,7 @@ public abstract class Core
         while (events.Count > 0)
         {
             var @event = events.Dequeue(); // get the next event
-            if (@event.type == SDL.EventType.Quit)
+            if (@event.Type == SDL.EventType.Quit)
             {
                 Quit();
                 return;
@@ -60,7 +60,7 @@ public abstract class Core
             IsRunning = false;
             Window.CleanUpResources();
             Graphics.CleanUpResources();
-            SDL.Quit();
+            SDL.QuitSdl();
             TTF.Quit();
         }
     }

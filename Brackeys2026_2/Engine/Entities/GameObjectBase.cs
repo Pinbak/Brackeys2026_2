@@ -6,7 +6,7 @@ public abstract class GameObjectBase
     internal static RootGameObject RootGameObject { get; set; } = null!;
     public List<GameObject> Children { get; private set; } = [];
     
-    public Transform Transform { get; internal init; }
+    public Transform Transform { get; internal init; } = null!;
 
     public virtual void OnInitialise()
     {

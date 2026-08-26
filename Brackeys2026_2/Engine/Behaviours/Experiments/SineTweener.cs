@@ -1,6 +1,6 @@
 ﻿using Brackeys2026_2.Engine.System;
 
-namespace Brackeys2026_2.Engine.Behaviours.ExperimentBehaviours;
+namespace Brackeys2026_2.Engine.Behaviours.Experiments;
 
 public class SineTweener : UpdatableBehaviour
 {

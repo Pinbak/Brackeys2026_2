@@ -4,17 +4,17 @@ namespace Brackeys2026_2.Engine.Entities;
 
 public sealed unsafe class TextData : IDisposable
 {
-    private static readonly SDL.Color32 Transparent = new(0, 0, 0, 0);
+    private static readonly Colour Transparent = new(0, 0, 0, 0);
     public float Width { get; private set; }
     public float Height { get; private set; }
     internal SDL.Texture* Texture { get; private set; }
     private SDL.Surface* Surface { get; set; }
-    private SDL.Color32 Colour { get; set; }
-    internal SDL.Rect Dimensions { get; private set; }
+    private Colour Colour { get; set; }
+    internal Rectangle Dimensions { get; private set; }
     internal FontData FontData { get; }
     private readonly int _wrapWidth;
     
-    internal TextData(FontData fontData, SDL.Color32 colour, string content, int wrapWidth)
+    internal TextData(FontData fontData, Colour colour, string content, int wrapWidth)
     {
         _wrapWidth = wrapWidth;
         FontData = fontData;
@@ -23,7 +23,7 @@ public sealed unsafe class TextData : IDisposable
         Surface = TTF.RenderTextShadedWrapped(fontData.Handle, content, Colour, Transparent, wrapWidth);
         Texture = SDL.CreateTextureFromSurface(Graphics.Handle, Surface);
         TTF.GetStringSizeWrapped(fontData.Handle, content, wrapWidth, out var actualWidth, out var actualHeight);
-        Dimensions = new SDL.Rect(0, 0, actualWidth, actualHeight);
+        Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
     }
@@ -55,7 +55,7 @@ public sealed unsafe class TextData : IDisposable
         Texture = newTexture;
 
         TTF.GetStringSizeWrapped(FontData.Handle, content, _wrapWidth, out var actualWidth, out var actualHeight);
-        Dimensions = new SDL.Rect(0, 0, actualWidth, actualHeight);
+        Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
         return true;

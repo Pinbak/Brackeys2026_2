@@ -2,22 +2,44 @@
 
 public static unsafe class Mouse
 {
+    private const int ButtonLeft   = 1;
+    private const int ButtonMiddle = 2;
+    private const int ButtonRight  = 3;
+    private const int ButtonSide1  = 4;
+    private const int ButtonSide2  = 5;
+    
+    public enum MouseWheelDirection
+    {
+        Normal ,
+        Flipped,
+    }
+    
+    [Flags]
+    public enum MouseButtonFlags : uint
+    {
+        Left         = 1u << (ButtonLeft   - 1),
+        Middle       = 1u << (ButtonMiddle - 1),
+        Right        = 1u << (ButtonRight  - 1),
+        SideButton1  = 1u << (ButtonSide1  - 1),
+        SideButton2  = 1u << (ButtonSide2  - 1)
+    }
+    
     public enum MouseButton
     {
-        None = 0,
-        Left = 1,
-        Middle = 2,
-        Right = 3,
-        SideButton1 = 4,
-        SideButton2 = 5,
+        None,
+        Left,
+        Middle,
+        Right,
+        SideButton1,
+        SideButton2
     }
-
+    
     public static float X { get; private set; }
     public static float Y { get; private set; }
 
-    private static readonly HashSet<MouseButton> HeldButtons = new();
-    private static readonly HashSet<MouseButton> PressedButtons = new();
-    private static readonly HashSet<MouseButton> ReleasedButtons = new();
+    private static readonly HashSet<MouseButton> HeldButtons = [];
+    private static readonly HashSet<MouseButton> PressedButtons = [];
+    private static readonly HashSet<MouseButton> ReleasedButtons = [];
     private static bool _mouseMotion;
 
     internal static void Listen(SDL.Event @event)
@@ -25,9 +47,9 @@ public static unsafe class Mouse
         PressedButtons.Clear();
         ReleasedButtons.Clear();
 
-        var button = (MouseButton)@event.mouseButton.button;
+        var button = (MouseButton)@event.OnMouseButton.Button;
         
-        switch (@event.type)
+        switch (@event.Type)
         {
             case SDL.EventType.MouseButtonDown:
                 HeldButtons.Add(button);
@@ -41,8 +63,8 @@ public static unsafe class Mouse
             
             case SDL.EventType.MouseMotion:
                 _mouseMotion = true;
-                X = @event.mouseMotion.x;
-                Y = @event.mouseMotion.y;
+                X = @event.OnMouseMotion.AbsoluteX;
+                Y = @event.OnMouseMotion.AbsoluteY;
                 break;
         }
     }
