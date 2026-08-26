@@ -45,42 +45,16 @@ public class Transform
         }
     } = 1.0f;
 
+    public (float x, float y) Pivot { get; private set; } = (.5f, .5f);
+
     // actual real world positions
-    public float ActualX
-    {
-        get;
-        set
-        {
-            field = value;
-        }
-    }
+    internal float ActualX { get; private set; }
 
-    public float ActualY
-    {
-        get;
-        set
-        {
-            field = value;
-        }
-    }
+    internal float ActualY { get; private set; }
 
-    public float ActualAngle
-    {
-        get;
-        set
-        {
-            field = value;
-        }
-    }
+    internal float ActualAngle { get; private set; }
 
-    public float ActualScale
-    {
-        get;
-        set
-        {
-            field = value;
-        }
-    } = 1.0f;
+    internal float ActualScale { get; private set; } = 1.0f;
 
     private float _x;
     private float _y;
@@ -99,8 +73,18 @@ public class Transform
 
     private void UpdateTransformRelatives(Transform parent)
     {
-        ActualX = parent.ActualX + X;
-        ActualY = parent.ActualY + Y;
+        var radians = parent.ActualAngle * MathF.PI / 180f;
+
+        var cos = MathF.Cos(radians);
+        var sin = MathF.Sin(radians);
+
+        var scaledX = X * parent.ActualScale;
+        var scaledY = Y * parent.ActualScale;
+
+        ActualX = parent.ActualX + scaledX * cos - scaledY * sin;
+
+        ActualY = parent.ActualY + scaledX * sin + scaledY * cos;
+
         ActualAngle = parent.ActualAngle + Angle;
         ActualScale = parent.ActualScale * Scale;
     }
@@ -115,11 +99,10 @@ public class Transform
 
     private void UpdateDescendantsTransforms(GameObjectBase currentGameObject)
     {
-        foreach (var child in GameObjectBase.Children)
+        foreach (var child in currentGameObject.Children)
         {
-            child.Transform.UpdateDescendantsTransforms(child);
             child.Transform.UpdateTransformRelatives(currentGameObject.Transform);
+            child.Transform.UpdateDescendantsTransforms(child);
         }
-        
     }
 }

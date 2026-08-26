@@ -88,26 +88,39 @@ public static unsafe class Graphics
     
     public static void Draw(TextureData textureData, Transform transform)
     {
-        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, null);
+        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, null, transform.Pivot);
     }
     
     public static void Draw(TextureData textureData, Transform transform, SDL.Rect frame)
     {
-        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, frame);
+        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, frame, transform.Pivot);
     }
 
-    private static void Draw(TextureData textureData, float x, float y, float angle, float scale, SDL.Rect? frame)
+    private static void Draw(TextureData textureData, float x, float y, float angle, float scale, SDL.Rect? frame, (float x, float y) pivot)
     {
-        SDL.RenderTextureRotated(Handle, textureData.Handle, null,
-            new SDL.Rect(x, y, textureData.Dimensions.w * scale, textureData.Dimensions.h * scale), angle, null,
-            SDL.FlipMode.None);
+        var width = textureData.Dimensions.w;
+        var height = textureData.Dimensions.h;
+        var pivotX = width * pivot.x * scale;
+        var pivotY = height * pivot.y * scale;
+        var destination = new SDL.Rect(x - pivotX, y - pivotY, width * scale, height * scale);
+        
+        SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
+        SDL.RenderRect(Handle, destination);
+        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+        SDL.RenderTextureRotated(Handle, textureData.Handle, null,destination, angle, null, SDL.FlipMode.None);
     }
 
     public static void Draw(TextData text, Transform transform)
     {
-        SDL.RenderTextureRotated(Handle, text.Texture, null,
-            new SDL.Rect(transform.ActualX, transform.ActualY, text.Dimensions.w * transform.ActualScale,
-                text.Dimensions.h * transform.ActualScale), transform.ActualAngle, null,
-            SDL.FlipMode.None);
+        var width = text.Dimensions.w;
+        var height = text.Dimensions.h;
+        var pivotX = width * transform.Pivot.x * transform.Scale;
+        var pivotY = height * transform.Pivot.y * transform.Scale;
+        var destination = new SDL.Rect(transform.ActualX - pivotX, transform.ActualY - pivotY, width * transform.ActualScale, height * transform.ActualScale);
+        
+        SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
+        SDL.RenderRect(Handle, destination);
+        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+        SDL.RenderTextureRotated(Handle, text.Texture, null, destination, transform.ActualAngle, null, SDL.FlipMode.None);
     }
 }

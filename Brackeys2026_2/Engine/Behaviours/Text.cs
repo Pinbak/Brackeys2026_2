@@ -15,6 +15,10 @@ public unsafe class Text : UpdatableBehaviour
         _colour = colour;
         _textData = Graphics.NewText(fontData, colour, content, width);
     }
+    
+    public override void OnInitialise()
+    {
+    }
 
     public void Set(string content)
     {

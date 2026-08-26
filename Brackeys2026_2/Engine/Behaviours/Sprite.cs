@@ -12,6 +12,10 @@ public class Sprite : UpdatableBehaviour
         _spriteTexture = textureData;
     }
 
+    public override void OnInitialise()
+    {
+    }
+
     public override void OnDraw()
     {
         Graphics.Draw(_spriteTexture, GameObject.Transform);

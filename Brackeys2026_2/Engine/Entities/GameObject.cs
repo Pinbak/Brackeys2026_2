@@ -9,9 +9,9 @@ public sealed class GameObject : GameObjectBase
     
     public GameObject(float relativeX, float relativeY, GameObjectBase? parent)
     {
-        Transform = new Transform(this, relativeX, relativeY, parent?.Transform);
         if (parent is null) Parent = RootGameObject;
         else Parent = parent;
+        Transform = new Transform(this, relativeX, relativeY, Parent.Transform);
         Parent.Children.Add(this);
     }
     
