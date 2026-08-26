@@ -130,4 +130,5 @@ public static unsafe class Graphics
         }
         SDL.RenderTextureRotated(Handle, text.Texture, null, destination, transform.ActualAngle, null, SDL.FlipMode.None);
     }
+    
 }

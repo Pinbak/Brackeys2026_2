@@ -1,6 +1,7 @@
 ﻿using Brackeys2026_2.Engine.Entities;
 using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Engine.System.Inputs;
+using Brackeys2026_2.Engine.System.Tweening;
 
 namespace Brackeys2026_2.Engine;
 
@@ -44,9 +45,9 @@ public abstract class Core
                 Quit();
                 return;
             }
-            Input.Listen(@event);
+            Mouse.Listen(@event);
         }
-
+        Tweener.Process();
         UpdateGameObjects();
         DrawGameObjects();
         DrawEnd();

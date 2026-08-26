@@ -1,6 +1,6 @@
 ﻿namespace Brackeys2026_2.Engine.System.Inputs;
 
-public static unsafe class Input
+public static unsafe class Mouse
 {
     public enum MouseButton
     {
@@ -12,12 +12,14 @@ public static unsafe class Input
         SideButton2 = 5,
     }
 
+    public static float X { get; private set; }
+    public static float Y { get; private set; }
+
     private static readonly HashSet<MouseButton> HeldButtons = new();
     private static readonly HashSet<MouseButton> PressedButtons = new();
     private static readonly HashSet<MouseButton> ReleasedButtons = new();
-    private static float _lastX;
-    private static float _lastY;
-    
+    private static bool _mouseMotion;
+
     internal static void Listen(SDL.Event @event)
     {
         PressedButtons.Clear();
@@ -30,57 +32,64 @@ public static unsafe class Input
             case SDL.EventType.MouseButtonDown:
                 HeldButtons.Add(button);
                 PressedButtons.Add(button);
-                _lastX = @event.mouseButton.x;
-                _lastY = @event.mouseButton.y;
                 break;
             
             case SDL.EventType.MouseButtonUp:
                 HeldButtons.Remove(button);
                 ReleasedButtons.Add(button);
-                _lastX = @event.mouseButton.x;
-                _lastY = @event.mouseButton.y;
+                break;
+            
+            case SDL.EventType.MouseMotion:
+                _mouseMotion = true;
+                X = @event.mouseMotion.x;
+                Y = @event.mouseMotion.y;
                 break;
         }
     }
 
-    public static bool IsMousePressed(MouseButton mouseButton, out float lastX, out float lastY)
+    public static bool IsMoving()
     {
-        lastX = _lastX;
-        lastY = _lastY;
+        return _mouseMotion;
+    }
+
+    public static bool IsPressed(MouseButton mouseButton, out float lastX, out float lastY)
+    {
+        lastX = X;
+        lastY = Y;
         var isPressed = PressedButtons.Contains(mouseButton);
         PressedButtons.Remove(mouseButton);
         return isPressed;
     }
     
-    public static bool IsMousePressed(MouseButton mouseButton)
+    public static bool IsPressed(MouseButton mouseButton)
     {
         var isPressed = PressedButtons.Contains(mouseButton);
         PressedButtons.Remove(mouseButton);
         return isPressed;
     }
 
-    public static bool IsMouseDown(MouseButton mouseButton, out float lastX, out float lastY)
+    public static bool IsDown(MouseButton mouseButton, out float lastX, out float lastY)
     {
-        lastX = _lastX;
-        lastY = _lastY;
+        lastX = X;
+        lastY = Y;
         return HeldButtons.Contains(mouseButton);
     }
     
-    public static bool IsMouseDown(MouseButton mouseButton)
+    public static bool IsDown(MouseButton mouseButton)
     {
         return HeldButtons.Contains(mouseButton);
     }
 
-    public static bool IsMouseReleased(MouseButton mouseButton, out float lastX, out float lastY)
+    public static bool IsReleased(MouseButton mouseButton, out float lastX, out float lastY)
     {
-        lastX = _lastX;
-        lastY = _lastY;
+        lastX = X;
+        lastY = Y;
         var isPressed = ReleasedButtons.Contains(mouseButton);
         ReleasedButtons.Remove(mouseButton);
         return isPressed;
     }
     
-    public static bool IsMouseReleased(MouseButton mouseButton)
+    public static bool IsReleased(MouseButton mouseButton)
     {
         var isPressed = ReleasedButtons.Contains(mouseButton);
         ReleasedButtons.Remove(mouseButton);

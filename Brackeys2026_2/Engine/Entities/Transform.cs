@@ -9,7 +9,7 @@ public class Transform
         set
         {
             _x = value;
-            UpdateTransform();
+            _hasUpdated = true;
         }
     }
 
@@ -19,7 +19,8 @@ public class Transform
         set
         {
             _y = value;
-            UpdateTransform();
+            _hasUpdated = true;
+            
         }
     }
 
@@ -29,7 +30,7 @@ public class Transform
         set
         {
             field = value;
-            UpdateTransform();
+            _hasUpdated = true;
         }
     }
 
@@ -41,7 +42,7 @@ public class Transform
         set
         {
             field = value;
-            UpdateTransform();
+            _hasUpdated = true;
         }
     } = 1.0f;
 
@@ -60,6 +61,7 @@ public class Transform
     private float _y;
     private GameObjectBase GameObjectBase { get; set; } // that this belongs to
     private bool _isRoot;
+    private bool _hasUpdated;
 
     internal Transform(GameObjectBase gameObjectBase, float relativeX, float relativeY, Transform? parentTransform)
     {
@@ -69,6 +71,13 @@ public class Transform
         _y = relativeY;
         if (parentTransform is null) return;
         UpdateTransformRelatives(parentTransform);
+    }
+    
+    public void Update()
+    {
+        if (!_hasUpdated) return;
+        _hasUpdated = false;
+        UpdateTransform();
     }
 
     private void UpdateTransformRelatives(Transform parent)
@@ -101,6 +110,7 @@ public class Transform
     {
         foreach (var child in currentGameObject.Children)
         {
+            if (!child.IsEnabled) continue;
             child.Transform.UpdateTransformRelatives(currentGameObject.Transform);
             child.Transform.UpdateDescendantsTransforms(child);
         }

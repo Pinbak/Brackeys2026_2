@@ -22,6 +22,7 @@ public abstract class GameObjectBase
         foreach (var gameObjectBase in Children)
         {
             if (!gameObjectBase.IsEnabled) continue;
+            gameObjectBase.Transform.Update();
             gameObjectBase.OnUpdate();
         }
     }

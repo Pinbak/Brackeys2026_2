@@ -1,6 +1,6 @@
 ﻿namespace Brackeys2026_2.Engine.System;
 
-public static unsafe class Time
+public static class Time
 {
     public static float DeltaTime => _deltaTime;
     public static float Fps => _fps;
