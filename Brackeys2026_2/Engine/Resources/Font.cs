@@ -5,6 +5,7 @@ namespace Brackeys2026_2.Engine.Resources;
 public sealed unsafe class Font : Resource, IDisposable
 {
     internal TTF.Font* Handle { get; private set; }
+    private bool _isDisposed;
     
     public Font(string fontPath, float size = 24)
     {
@@ -30,11 +31,24 @@ public sealed unsafe class Font : Resource, IDisposable
 
         Handle = font;
     }
+
+    ~Font()
+    {
+        Release();
+    }
     
     public void Dispose()
     {
+        Release();
+        GC.SuppressFinalize(this);
+    }
+    
+    private void Release()
+    {
+        if (_isDisposed) return;
         if (Handle != null)
             TTF.CloseFont(Handle);
         Handle = null;
+        _isDisposed = true;
     }
 }

@@ -7,6 +7,7 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
 {
     private MIX.Audio* Handle { get; set; }
     private MIX.AudioTrack* _track;
+    private bool _isDisposed;
     
     public Audio(string audioPath)
     {
@@ -32,10 +33,21 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
 
         Handle = audio;
     }
-    
+
+    ~Audio()
+    {
+        Release();
+    }
     
     public void Dispose()
     {
+        Release();
+        GC.SuppressFinalize(this);
+    }
+
+    private void Release()
+    {
+        if (_isDisposed) return;
         if (Handle != null)
         {
             MIX.DestroyAudio(Handle);
@@ -47,7 +59,7 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
             MIX.DestroyTrack(_track);
             _track = null;
         }
-        
+        _isDisposed = true;
     }
 
     public void Play()

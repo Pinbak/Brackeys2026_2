@@ -10,8 +10,9 @@ public abstract class GameObjectBase
 
     public virtual void OnInitialise()
     {
-        foreach (var gameObjectBase in Children)
+        for (var i = Children.Count - 1; i >= 0; i--)
         {
+            var gameObjectBase = Children[i];
             if (!gameObjectBase.IsEnabled) continue;
             gameObjectBase.OnInitialise();
         }
@@ -19,8 +20,9 @@ public abstract class GameObjectBase
 
     public virtual void OnUpdate()
     {
-        foreach (var gameObjectBase in Children)
+        for (var i = Children.Count - 1; i >= 0; i--)
         {
+            var gameObjectBase = Children[i];
             if (!gameObjectBase.IsEnabled) continue;
             gameObjectBase.Transform.Update();
             gameObjectBase.OnUpdate();
@@ -29,11 +31,11 @@ public abstract class GameObjectBase
 
     public virtual void OnDraw()
     {
-        foreach (var gameObjectBase in Children)
+        for (var i = Children.Count - 1; i >= 0; i--)
         {
+            var gameObjectBase = Children[i];
             if (!gameObjectBase.IsEnabled) continue;
             gameObjectBase.OnDraw();
         }
-        
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Brackeys2026_2.Engine.System;
 
-namespace Brackeys2026_2.Engine.Behaviours.Experiments;
+namespace Brackeys2026_2.Engine.Components.Experiments;
 
-public class SineTweener : UpdatableBehaviour
+public class SineTweener : Component
 {
     private float _time;
 

@@ -1,10 +1,9 @@
-﻿using Brackeys2026_2.Engine.Behaviours.Experiments;
-using Brackeys2026_2.Engine.Resources;
+﻿using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System.Inputs;
 
-namespace Brackeys2026_2.Engine.Behaviours;
+namespace Brackeys2026_2.Engine.Components;
 
-public class AudioPlayer : UpdatableBehaviour
+public class AudioPlayer : Component
 {
     private readonly Audio _audio;
     

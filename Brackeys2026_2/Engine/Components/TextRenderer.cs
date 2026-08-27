@@ -1,9 +1,9 @@
 ﻿using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
 
-namespace Brackeys2026_2.Engine.Behaviours;
+namespace Brackeys2026_2.Engine.Components;
 
-public unsafe class TextRenderer : UpdatableBehaviour
+public unsafe class TextRenderer : Component
 {
     private Text _text;
     private string _content;
@@ -14,6 +14,7 @@ public unsafe class TextRenderer : UpdatableBehaviour
         _content = content;
         _colour = colour;
         _text = new Text(content, font, colour, width);
+        Own(_text);
     }
     
     protected override void OnInitialise()
@@ -24,6 +25,8 @@ public unsafe class TextRenderer : UpdatableBehaviour
     {
         _text.UpdateText(content);
     }
+
+    public bool IsPointInside(Point point) => _text.IsPointInside(point);
 
     protected override void OnDraw()
     {

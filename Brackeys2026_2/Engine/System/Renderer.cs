@@ -95,9 +95,9 @@ internal static unsafe class Renderer
 
         // if (drawDebug)
         // {
-        //     SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
-        //     SDL.RenderRect(Handle, destination);
-        //     SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+        SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
+        SDL.RenderRect(Handle, destination);
+        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
         // }
         SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
     }

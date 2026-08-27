@@ -1,6 +1,6 @@
 ﻿using Brackeys2026_2.Engine;
-using Brackeys2026_2.Engine.Behaviours;
-using Brackeys2026_2.Engine.Behaviours.Experiments;
+using Brackeys2026_2.Engine.Components;
+using Brackeys2026_2.Engine.Components.Experiments;
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
@@ -14,9 +14,9 @@ public class Game1 : Core
         var texture = new Texture("Game/Assets/test.png");
         var audio = new Audio("Game/Assets/BungalowBossa.ogg");
         var obj = new GameObject(500, 250, null, [
-            new SineTweener(),
+            // new SineTweener(),
             new SpriteRenderer(texture),
-            new AudioPlayer(audio),
+            // new AudioPlayer(audio),
         ]);
             var font = new Font("Game/Assets/Staatliches-Regular.ttf", 20);
             var child = new GameObject(100, 100, obj, [
@@ -24,16 +24,16 @@ public class Game1 : Core
             ]);
                 var child2 = new GameObject(100, 100, child, [
                     new SpriteRenderer(texture),
-                    new SineTweener()
+                    // new SineTweener()
                 ]);
                     var text = new TextRenderer(font, new Colour(0, 0, 0, 255), "Hello world this is longer", 150);
                     var texture2 = new Texture("Game/Assets/test2.png");
-                    _ = new GameObject(0, 0, child2,[
-                        new SpriteRenderer(texture2)
+                    var toRemove = new GameObject(0, 0, child2,[
+                        new TextRenderer(font, new Colour(0, 0, 0, 255), "This is to be destroyed", 150)
                     ]);
                     var text2 = new TextRenderer(font, new Colour(0, 0, 0, 255), "Hello world", 150);
                     _ = new GameObject(150, 50, child2, [
-                        new InputTesting(),
+                        new InputTesting(toRemove),
                         text2
                     ]);
         

@@ -1,9 +1,8 @@
 ﻿using Brackeys2026_2.Engine.Resources;
-using Brackeys2026_2.Engine.System;
 
-namespace Brackeys2026_2.Engine.Behaviours;
+namespace Brackeys2026_2.Engine.Components;
 
-public class SpriteRenderer : UpdatableBehaviour
+public class SpriteRenderer : Component
 {
     private readonly Texture _spriteTexture;
     

@@ -11,6 +11,7 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
     private Colour Colour { get; set; }
     private Font Font { get; }
     private readonly int _wrapWidth;
+    private bool _isDisposed;
     
     public Text(string content, Font font, int wrapWidth)
     {
@@ -40,6 +41,25 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
+    }
+    
+    ~Text()
+    {
+        Release();
+    }
+    
+    public void Dispose()
+    {
+        Release();
+        GC.SuppressFinalize(this);
+    }
+    
+    private void Release()
+    {
+        if (_isDisposed) return;
+        SDL.DestroyTexture(Handle);
+        SDL.DestroySurface(Surface);
+        _isDisposed = true;
     }
     
     public bool UpdateText(string content)
@@ -73,12 +93,6 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
         Width = actualWidth;
         Height = actualHeight;
         return true;
-    }
-    
-    public void Dispose()
-    {
-        SDL.DestroyTexture(Handle);
-        SDL.DestroySurface(Surface);
     }
     
     public void Draw(Transform position, Rectangle? frame = null)
