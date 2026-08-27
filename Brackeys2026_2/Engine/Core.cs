@@ -17,7 +17,7 @@ public abstract class Core
         if (IsInitialised) return;
         IsInitialised = true;
         IsRunning = true;
-        Launcher.Setup(this);
+        Setup.Run(this);
     }
 
     internal void MainInitialise()
@@ -25,19 +25,20 @@ public abstract class Core
         Time.Setup();
         GameObjectBase.RootGameObject = new RootGameObject();
         WindowManager.CreateWindow();
-        Renderer.CreateGraphics();
-        Resource.Setup();
+        Renderer.Setup();
+        Mixer.Setup();
+        Resource.ImportAllEmbedded();
         WindowManager.SetPresentationLetterbox();
         
-        Layout();
-        InitGameObjects();
+        Layout(); // run the game code
+        GameObjectBase.RootGameObject.OnInitialise(); // inits all game objects as is recursive
     }
 
     internal void MainLoop(Queue<SDL.Event> events)
     {
         if (!IsRunning) return;
         Time.Update();
-        DrawBegin();
+        Renderer.DrawBegin();
         while (events.Count > 0)
         {
             var @event = events.Dequeue(); // get the next event
@@ -49,9 +50,9 @@ public abstract class Core
             Mouse.Listen(@event);
         }
         Tweener.Process();
-        UpdateGameObjects();
-        DrawGameObjects();
-        DrawEnd();
+        GameObjectBase.RootGameObject.OnUpdate(); // updates all game objects as is recursive
+        GameObjectBase.RootGameObject.OnDraw(); // draw all game objects as is recursive
+        Renderer.DrawEnd();
     }
 
     public void Quit()
@@ -61,34 +62,10 @@ public abstract class Core
             IsRunning = false;
             WindowManager.CleanUpResources();
             Renderer.CleanUpResources();
+            Mixer.CleanupResources();
             SDL.QuitSdl();
-            TTF.Quit();
+            TTF.QuitTtf();
         }
-    }
-    
-    private static void DrawBegin()
-    {
-        Renderer.DrawBegin();
-    }
-
-    private static void DrawEnd()
-    {
-        Renderer.DrawEnd();
-    }
-
-    private static void InitGameObjects()
-    {
-        GameObjectBase.RootGameObject.OnInitialise();
-    }
-
-    private static void UpdateGameObjects()
-    {
-        GameObjectBase.RootGameObject.OnUpdate();
-    }
-
-    private static void DrawGameObjects()
-    {
-        GameObjectBase.RootGameObject.OnDraw();
     }
 
 }

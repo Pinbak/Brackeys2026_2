@@ -3,13 +3,12 @@ using System.Runtime.InteropServices;
 
 namespace Brackeys2026_2.Engine;
 
-internal static unsafe class Launcher
+internal static unsafe class Setup
 {
     private static Core? _engine;
-    private static Queue<SDL.Event> _pendingEvents = new();
-    private static Queue<SDL.Event> _currentEvents = new();
+    private static Queue<SDL.Event> _newEvents = new();
     
-    internal static void Setup(Core core)
+    internal static void Run(Core core)
     {
         _engine = core;
         Initialise();
@@ -33,10 +32,9 @@ internal static unsafe class Launcher
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
     private static SDL.AppResult SdlIterate(IntPtr appState)
     {
-        var events = _pendingEvents;
-        _pendingEvents = new Queue<SDL.Event>();
+        var events = _newEvents;
+        _newEvents = new Queue<SDL.Event>();
         _engine?.MainLoop(events);
-        _currentEvents.Clear();
         
         if (_engine is null) return StopEngineMessage();
         return !_engine.IsRunning ? StopEngineMessage() : SDL.AppResult.Continue;
@@ -51,7 +49,7 @@ internal static unsafe class Launcher
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
     private static SDL.AppResult SdlEvent(IntPtr appState, SDL.Event* @event)
     {
-        _pendingEvents.Enqueue(*@event);
+        _newEvents.Enqueue(*@event);
         {
             return SDL.AppResult.Continue;
         }
@@ -72,7 +70,7 @@ internal static unsafe class Launcher
 
     private static void Initialise()
     {
-        if (!SDL.InitSdl(SDL.InitFlags.Video) || !TTF.Init())
+        if (!SDL.InitSdl(SDL.InitFlags.Video) || !TTF.Init() || !MIX.Init())
         {
             throw new Exception(SDL.GetError());
         }

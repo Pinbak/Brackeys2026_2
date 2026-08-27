@@ -12,9 +12,11 @@ public class Game1 : Core
     protected override void Layout()
     {
         var texture = new Texture("Game/Assets/test.png");
+        var audio = new Audio("Game/Assets/BungalowBossa.ogg");
         var obj = new GameObject(500, 250, null, [
             new SineTweener(),
-            new SpriteRenderer(texture)
+            new SpriteRenderer(texture),
+            new AudioPlayer(audio),
         ]);
             var font = new Font("Game/Assets/Staatliches-Regular.ttf", 20);
             var child = new GameObject(100, 100, obj, [

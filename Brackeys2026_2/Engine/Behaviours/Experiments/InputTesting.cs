@@ -9,7 +9,7 @@ public class InputTesting : UpdatableBehaviour
     {
         if (Mouse.IsPressed(Mouse.MouseButton.Left, out var x, out var y))
         {
-            Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 2f, EaseFunctions.OutElastic);
+            // Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 2f, EaseFunctions.OutElastic);
             // Tweener.ScaleTo(GameObject.Transform, 2f, 5f, EaseFunctions.OutElastic);
             
             Console.WriteLine($"Left button pressed x: {x}, y: {y}");

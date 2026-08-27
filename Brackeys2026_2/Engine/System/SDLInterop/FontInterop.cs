@@ -19,7 +19,7 @@ public static unsafe partial class TTF
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     private static partial void TTF_Quit();
 
-    internal static void Quit() => TTF_Quit();
+    internal static void QuitTtf() => TTF_Quit();
 
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]

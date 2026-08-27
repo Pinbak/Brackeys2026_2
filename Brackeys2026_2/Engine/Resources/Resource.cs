@@ -33,7 +33,10 @@ public abstract unsafe class Resource
 {
     private static readonly Dictionary<string, (Assembly assembly, string fullpath)> EmbeddedResources = new(StringComparer.OrdinalIgnoreCase);
 
-    internal static void Setup()
+    /// <summary>
+    ///     Imports all embedded resources in the project and adds them to <see cref="EmbeddedResources"/>.
+    /// </summary>
+    internal static void ImportAllEmbedded()
     {
         // DebugLog();
         
@@ -69,6 +72,13 @@ public abstract unsafe class Resource
         }
     }
     
+    /// <summary>
+    ///     Given a path of an embedded resource, gets a stream for it.
+    /// </summary>
+    /// <param name="path">This needs to be a path to an embedded resource</param>
+    /// <param name="handle">Ignored</param>
+    /// <returns>An <see cref="SDL.IoStream"/> that can be read from with SDL functions.</returns>
+    /// <exception cref="Exception">If the resource is not found. Usually if the resource is not embedded, or doesn't exist</exception>
     internal SDL.IoStream* CreateStream(string path, out GCHandle handle)
     {
         // Find Resource

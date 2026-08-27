@@ -79,7 +79,7 @@ public static unsafe class Mouse
         lastX = X;
         lastY = Y;
         var isPressed = PressedButtons.Contains(mouseButton);
-        PressedButtons.Remove(mouseButton);
+        // PressedButtons.Remove(mouseButton);
         return isPressed;
     }
     

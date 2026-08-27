@@ -41,7 +41,7 @@ internal static unsafe class Renderer
 {
     internal static SDL.Renderer* Handle { get; private set; }
 
-    internal static void CreateGraphics()
+    internal static void Setup()
     {
         Handle = SDL.CreateRenderer(WindowManager.Handle, null);
         if (Handle == null)
