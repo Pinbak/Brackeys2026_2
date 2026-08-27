@@ -41,7 +41,7 @@ public sealed class GameObject : GameObjectBase
         foreach (var updatableBehaviour in Components)
         {
             if (!updatableBehaviour.IsEnabled) continue;
-            updatableBehaviour.OnInitialise();
+            updatableBehaviour.Initialise();
         }
 
         base.OnInitialise();
@@ -52,7 +52,7 @@ public sealed class GameObject : GameObjectBase
         foreach (var updatableBehaviour in Components)
         {
             if (!updatableBehaviour.IsEnabled) continue;
-            updatableBehaviour.OnUpdate();
+            updatableBehaviour.Update();
         }
 
         base.OnUpdate();
@@ -63,7 +63,7 @@ public sealed class GameObject : GameObjectBase
         foreach (var drawableBehaviour in Components)
         {
             if (!drawableBehaviour.IsEnabled) continue;
-            drawableBehaviour.OnDraw();
+            drawableBehaviour.Draw();
         }
 
         base.OnDraw();

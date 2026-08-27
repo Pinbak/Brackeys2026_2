@@ -2,6 +2,16 @@
 
 public class UpdatableBehaviour : Behaviour
 {
-    public virtual void OnUpdate(){}
-    public virtual void OnDraw(){}
+    protected virtual void OnUpdate(){}
+    protected virtual void OnDraw(){}
+
+    internal void Update()
+    {
+        OnUpdate();
+    }
+
+    internal void Draw()
+    {
+        OnDraw();
+    }
 }

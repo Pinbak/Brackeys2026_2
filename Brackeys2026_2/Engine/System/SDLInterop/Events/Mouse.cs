@@ -36,7 +36,7 @@ public static partial class SDL
         internal ulong TimeStamp;
         internal uint WindowID;
         internal uint MouseID;
-        internal Mouse.MouseButtonFlags State;
+        internal Mouse.ButtonFlags State;
         internal float AbsoluteX;
         internal float AbsoluteY;
         internal float RelativeX;
@@ -53,7 +53,7 @@ public static partial class SDL
         internal uint MouseID;
         internal float X;
         internal float Y;
-        internal Mouse.MouseWheelDirection Direction;
+        internal Mouse.WheelDirection Direction;
         internal float MouseX;
         internal float MouseY;
         internal int IntMouseX;

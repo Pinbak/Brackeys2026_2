@@ -16,7 +16,7 @@ public unsafe class TextRenderer : UpdatableBehaviour
         _text = new Text(content, font, colour, width);
     }
     
-    public override void OnInitialise()
+    protected override void OnInitialise()
     {
     }
 
@@ -25,7 +25,7 @@ public unsafe class TextRenderer : UpdatableBehaviour
         _text.UpdateText(content);
     }
 
-    public override void OnDraw()
+    protected override void OnDraw()
     {
         _text.Draw(GameObject.Transform);
     }

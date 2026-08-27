@@ -6,5 +6,9 @@ public abstract class Behaviour
 {
     public bool IsEnabled { get; set; } = true;
     public GameObject GameObject { get; set; } = null!;
-    public virtual void OnInitialise(){}
+    protected virtual void OnInitialise(){}
+    internal void Initialise()
+    {
+        OnInitialise();
+    }
 }

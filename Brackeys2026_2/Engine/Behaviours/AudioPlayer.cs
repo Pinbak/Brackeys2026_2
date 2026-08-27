@@ -13,11 +13,11 @@ public class AudioPlayer : UpdatableBehaviour
         _audio = audio;
     }
 
-    public override void OnUpdate()
+    protected override void OnUpdate()
     {
-        // if (Mouse.IsPressed(Mouse.MouseButton.Left))
-        // {
-        //     _audio.Play();
-        // }
+        if (Mouse.IsPressed(Mouse.Button.Left))
+        {
+            _audio.Play();
+        }
     }
 }

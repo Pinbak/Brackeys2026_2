@@ -12,11 +12,11 @@ public class SpriteRenderer : UpdatableBehaviour
         _spriteTexture = texture;
     }
 
-    public override void OnInitialise()
+    protected override void OnInitialise()
     {
     }
 
-    public override void OnDraw()
+    protected override void OnDraw()
     {
         _spriteTexture.Draw(GameObject.Transform);
     }

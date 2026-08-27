@@ -5,8 +5,8 @@ namespace Brackeys2026_2.Engine.Behaviours.Experiments;
 public class SineTweener : UpdatableBehaviour
 {
     private float _time;
-    
-    public override void OnUpdate()
+
+    protected override void OnUpdate()
     {
         _time += Time.DeltaTime;
         // GameObject.Transform.Y = float.Sin(_time * 2) * 100;

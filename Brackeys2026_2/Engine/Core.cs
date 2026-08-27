@@ -1,4 +1,5 @@
-﻿using Brackeys2026_2.Engine.GameObjects;
+﻿using Brackeys2026_2.Engine.Behaviours.Experiments;
+using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Engine.System.Inputs;
@@ -39,6 +40,7 @@ public abstract class Core
         if (!IsRunning) return;
         Time.Update();
         Renderer.DrawBegin();
+        Mouse.ClearEvents();
         while (events.Count > 0)
         {
             var @event = events.Dequeue(); // get the next event
@@ -47,7 +49,7 @@ public abstract class Core
                 Quit();
                 return;
             }
-            Mouse.Listen(@event);
+            Mouse.ProcessEvent(@event);
         }
         Tweener.Process();
         GameObjectBase.RootGameObject.OnUpdate(); // updates all game objects as is recursive

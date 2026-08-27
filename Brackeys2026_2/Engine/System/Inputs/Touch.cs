@@ -1,6 +1,6 @@
 ﻿namespace Brackeys2026_2.Engine.System.Inputs;
 
-public class Touch
+public static unsafe class Touch
 {
     internal enum TouchDeviceType
     {

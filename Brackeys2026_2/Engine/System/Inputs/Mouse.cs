@@ -8,14 +8,14 @@ public static unsafe class Mouse
     private const int ButtonSide1  = 4;
     private const int ButtonSide2  = 5;
     
-    public enum MouseWheelDirection
+    public enum WheelDirection
     {
         Normal ,
         Flipped,
     }
     
     [Flags]
-    public enum MouseButtonFlags : uint
+    public enum ButtonFlags : uint
     {
         Left         = 1u << (ButtonLeft   - 1),
         Middle       = 1u << (ButtonMiddle - 1),
@@ -24,7 +24,7 @@ public static unsafe class Mouse
         SideButton2  = 1u << (ButtonSide2  - 1)
     }
     
-    public enum MouseButton
+    public enum Button
     {
         None,
         Left,
@@ -37,17 +37,21 @@ public static unsafe class Mouse
     public static float X { get; private set; }
     public static float Y { get; private set; }
 
-    private static readonly HashSet<MouseButton> HeldButtons = [];
-    private static readonly HashSet<MouseButton> PressedButtons = [];
-    private static readonly HashSet<MouseButton> ReleasedButtons = [];
+    private static readonly HashSet<Button> HeldButtons = [];
+    private static readonly HashSet<Button> PressedButtons = [];
+    private static readonly HashSet<Button> ReleasedButtons = [];
     private static bool _mouseMotion;
 
-    internal static void Listen(SDL.Event @event)
+    internal static void ClearEvents()
     {
         PressedButtons.Clear();
         ReleasedButtons.Clear();
+        _mouseMotion = false;
+    }
 
-        var button = (MouseButton)@event.OnMouseButton.Button;
+    internal static void ProcessEvent(SDL.Event @event)
+    {
+        var button = (Button)@event.OnMouseButton.Button;
         
         switch (@event.Type)
         {
@@ -74,47 +78,18 @@ public static unsafe class Mouse
         return _mouseMotion;
     }
 
-    public static bool IsPressed(MouseButton mouseButton, out float lastX, out float lastY)
+    public static bool IsPressed(Button button)
     {
-        lastX = X;
-        lastY = Y;
-        var isPressed = PressedButtons.Contains(mouseButton);
-        // PressedButtons.Remove(mouseButton);
-        return isPressed;
+        return PressedButtons.Contains(button);
     }
     
-    public static bool IsPressed(MouseButton mouseButton)
+    public static bool IsDown(Button button)
     {
-        var isPressed = PressedButtons.Contains(mouseButton);
-        PressedButtons.Remove(mouseButton);
-        return isPressed;
+        return HeldButtons.Contains(button);
     }
 
-    public static bool IsDown(MouseButton mouseButton, out float lastX, out float lastY)
+    public static bool IsReleased(Button button)
     {
-        lastX = X;
-        lastY = Y;
-        return HeldButtons.Contains(mouseButton);
-    }
-    
-    public static bool IsDown(MouseButton mouseButton)
-    {
-        return HeldButtons.Contains(mouseButton);
-    }
-
-    public static bool IsReleased(MouseButton mouseButton, out float lastX, out float lastY)
-    {
-        lastX = X;
-        lastY = Y;
-        var isPressed = ReleasedButtons.Contains(mouseButton);
-        ReleasedButtons.Remove(mouseButton);
-        return isPressed;
-    }
-    
-    public static bool IsReleased(MouseButton mouseButton)
-    {
-        var isPressed = ReleasedButtons.Contains(mouseButton);
-        ReleasedButtons.Remove(mouseButton);
-        return isPressed;
+        return ReleasedButtons.Contains(button);
     }
 }

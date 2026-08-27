@@ -14,12 +14,12 @@ public class AnimatedSprite : UpdatableBehaviour
         _spriteTexture = texture;
     }
 
-    public override void OnUpdate()
+    protected override void OnUpdate()
     {
         // potential for animation
     }
 
-    public override void OnDraw()
+    protected override void OnDraw()
     {
         _spriteTexture.Draw(GameObject.Transform, _frame);
     }
