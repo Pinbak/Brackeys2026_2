@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Brackeys2026_2.Engine.Entities;
+namespace Brackeys2026_2.Engine.Resources;
 
 /*
 Adapted from code written by Lloyd J Howarth, under MIT license:

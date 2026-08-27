@@ -1,4 +1,4 @@
-﻿namespace Brackeys2026_2.Engine.Entities;
+﻿namespace Brackeys2026_2.Engine.GameObjects;
 
 internal class RootGameObject : GameObjectBase
 {

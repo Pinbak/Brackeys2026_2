@@ -1,8 +1,8 @@
-﻿
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.System;
 
-namespace Brackeys2026_2.Engine.Entities;
+namespace Brackeys2026_2.Engine.Resources;
 
 public sealed unsafe class Texture : Collidable2D, IDrawable, IDisposable
 {
@@ -22,7 +22,7 @@ public sealed unsafe class Texture : Collidable2D, IDrawable, IDisposable
                 throw new Exception($"Failed to load texture '{texturePath}': {SDL.GetError()}");
             }
 
-            texture = SDL.CreateTextureFromSurface(Graphics.Handle, surface);
+            texture = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
             if (texture == null)
             {
                 throw new Exception($"Failed to create texture '{texturePath}': {SDL.GetError()}");
@@ -56,6 +56,6 @@ public sealed unsafe class Texture : Collidable2D, IDrawable, IDisposable
 
     public void Draw(Transform position, Rectangle? frame = null)
     {
-        Graphics.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
+        Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Brackeys2026_2.Engine.Entities;
+﻿using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Behaviours;

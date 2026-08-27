@@ -1,4 +1,5 @@
-﻿using Brackeys2026_2.Engine.Entities;
+﻿using Brackeys2026_2.Engine.GameObjects;
+using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Engine.System.Inputs;
 using Brackeys2026_2.Engine.System.Tweening;
@@ -7,7 +8,7 @@ namespace Brackeys2026_2.Engine;
 
 public abstract class Core
 {
-    protected virtual void Setup(){}
+    protected virtual void Layout(){}
     private bool IsInitialised { get; set; }
     internal bool IsRunning { get; private set; }
     
@@ -23,12 +24,12 @@ public abstract class Core
     {
         Time.Setup();
         GameObjectBase.RootGameObject = new RootGameObject();
-        Window.CreateWindow();
-        Graphics.CreateGraphics();
+        WindowManager.CreateWindow();
+        Renderer.CreateGraphics();
         Resource.Setup();
-        Window.SetPresentationLetterbox();
+        WindowManager.SetPresentationLetterbox();
         
-        Setup();
+        Layout();
         InitGameObjects();
     }
 
@@ -58,8 +59,8 @@ public abstract class Core
         if (IsRunning)
         {
             IsRunning = false;
-            Window.CleanUpResources();
-            Graphics.CleanUpResources();
+            WindowManager.CleanUpResources();
+            Renderer.CleanUpResources();
             SDL.QuitSdl();
             TTF.Quit();
         }
@@ -67,12 +68,12 @@ public abstract class Core
     
     private static void DrawBegin()
     {
-        Graphics.DrawBegin();
+        Renderer.DrawBegin();
     }
 
     private static void DrawEnd()
     {
-        Graphics.DrawEnd();
+        Renderer.DrawEnd();
     }
 
     private static void InitGameObjects()

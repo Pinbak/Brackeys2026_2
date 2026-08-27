@@ -1,6 +1,6 @@
 ﻿using Brackeys2026_2.Engine.Behaviours;
 
-namespace Brackeys2026_2.Engine.Entities;
+namespace Brackeys2026_2.Engine.GameObjects;
 
 public sealed class GameObject : GameObjectBase
 {

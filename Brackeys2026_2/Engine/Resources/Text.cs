@@ -1,6 +1,7 @@
-﻿using Brackeys2026_2.Engine.System;
+﻿using Brackeys2026_2.Engine.GameObjects;
+using Brackeys2026_2.Engine.System;
 
-namespace Brackeys2026_2.Engine.Entities;
+namespace Brackeys2026_2.Engine.Resources;
 
 public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
 {
@@ -19,7 +20,7 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
         if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dipose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
         Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
-        Handle = SDL.CreateTextureFromSurface(Graphics.Handle, Surface);
+        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
         TTF.GetStringSizeWrapped(font.Handle, content, wrapWidth, out var actualWidth, out var actualHeight);
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
@@ -34,7 +35,7 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
         if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dipose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
         Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
-        Handle = SDL.CreateTextureFromSurface(Graphics.Handle, Surface);
+        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
         TTF.GetStringSizeWrapped(font.Handle, content, wrapWidth, out var actualWidth, out var actualHeight);
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
@@ -52,7 +53,7 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
         if (newSurface == null)
             return false;
 
-        var newTexture = SDL.CreateTextureFromSurface(Graphics.Handle, newSurface);
+        var newTexture = SDL.CreateTextureFromSurface(Renderer.Handle, newSurface);
         if (newTexture == null)
         {
             SDL.DestroySurface(newSurface);
@@ -82,7 +83,7 @@ public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
     
     public void Draw(Transform position, Rectangle? frame = null)
     {
-        Graphics.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
+        Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
     }
     
 }

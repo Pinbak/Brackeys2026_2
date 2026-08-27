@@ -1,6 +1,6 @@
 ﻿namespace Brackeys2026_2.Engine.System;
 
-public static unsafe class Window
+internal static unsafe class WindowManager
 {
     private const string Title = "Hello world";
     internal static SDL.Window* Handle { get; private set; }
@@ -13,11 +13,11 @@ public static unsafe class Window
 
     internal static void SetPresentationLetterbox()
     {
-        if (Graphics.Handle is null)
+        if (Renderer.Handle is null)
         {
             throw new Exception("Renderer cannot be null when calling SetPresentation.");
         }
-        SDL.SetRenderLogicalPresentation(Graphics.Handle, 1280, 720, SDL.Presentation.Letterbox);
+        SDL.SetRenderLogicalPresentation(Renderer.Handle, 1280, 720, SDL.Presentation.Letterbox);
         // SDL.SetWindowResizable(Handle, true);
     }
 

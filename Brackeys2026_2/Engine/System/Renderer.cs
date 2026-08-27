@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using Brackeys2026_2.Engine.Entities;
+using Brackeys2026_2.Engine.GameObjects;
 
 namespace Brackeys2026_2.Engine.System;
 
@@ -37,13 +37,13 @@ public struct Point(float x, float y)
     public float Y = y;
 }
 
-public static unsafe class Graphics
+internal static unsafe class Renderer
 {
     internal static SDL.Renderer* Handle { get; private set; }
 
     internal static void CreateGraphics()
     {
-        Handle = SDL.CreateRenderer(Window.Handle, null);
+        Handle = SDL.CreateRenderer(WindowManager.Handle, null);
         if (Handle == null)
         {
             throw new Exception(SDL.GetError());

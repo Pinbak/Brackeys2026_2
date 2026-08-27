@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Brackeys2026_2.Engine.Entities;
+namespace Brackeys2026_2.Engine.Resources;
 
 public sealed unsafe class Font : Resource, IDisposable
 {
