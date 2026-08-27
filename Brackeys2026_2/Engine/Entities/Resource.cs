@@ -1,14 +1,39 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Brackeys2026_2.Engine.System;
+namespace Brackeys2026_2.Engine.Entities;
 
-internal static unsafe class Resources
+/*
+Adapted from code written by Lloyd J Howarth, under MIT license:
+
+MIT License
+
+Copyright (c) Lloyd J Howarth
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
+
+public abstract unsafe class Resource
 {
     private static readonly Dictionary<string, (Assembly assembly, string fullpath)> EmbeddedResources = new(StringComparer.OrdinalIgnoreCase);
 
-    internal static void GatherResources()
+    internal static void Setup()
     {
         // DebugLog();
         
@@ -43,8 +68,8 @@ internal static unsafe class Resources
             }
         }
     }
-        
-    internal static SDL.IoStream* CreateStream(string path, out GCHandle handle)
+    
+    internal SDL.IoStream* CreateStream(string path, out GCHandle handle)
     {
         // Find Resource
         if (!EmbeddedResources.TryGetValue(path.Replace('\\', '.').Replace('/', '.'), out var resource))

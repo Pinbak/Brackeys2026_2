@@ -60,14 +60,25 @@ public static unsafe class Graphics
         Handle = null;
     }
 
-    private static void SetDrawColour(byte red = 255, byte green = 255, byte blue = 255, byte alpha = 255)
+    private static void SetDrawColour(Colour colour)
     {
-        SDL.SetRenderDrawColor(Handle, red, green, blue, alpha);
+        SDL.SetRenderDrawColor(Handle, colour.Red, colour.Green, colour.Blue, colour.Alpha);
     }
 
-    internal static void DrawBegin(byte red = 255, byte green = 255, byte blue = 255, byte alpha = 255)
+    private static void SetDrawColourWhite()
     {
-        SetDrawColour(red, green, blue, alpha);
+        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+    }
+
+    internal static void DrawBegin()
+    {
+        SetDrawColourWhite();
+        SDL.RenderClear(Handle);
+    }
+    
+    internal static void DrawBegin(Colour colour)
+    {
+        SetDrawColour(colour);
         SDL.RenderClear(Handle);
     }
 
@@ -75,96 +86,20 @@ public static unsafe class Graphics
     {
         SDL.RenderPresent(Handle);
     }
-
-    public static TextData NewText(FontData fontData, Colour colour, string content, int width)
-    {
-        var colour32 = new Colour(colour.Red, colour.Green, colour.Blue, colour.Alpha);
-        return new TextData(fontData, colour32, content, width);
-    }
-
-    public static TextureData NewTexture(string texturePath)
-    {
-        GCHandle gcHandle = default;
-        SDL.Texture* texture;
-        float width, height;
-        try
-        {
-            var stream = Resources.CreateStream(texturePath, out gcHandle);
-            var surface = IMG.LoadIo(stream, true);
-            if (surface == null)
-            {
-                throw new Exception($"Failed to load texture '{texturePath}': {SDL.GetError()}");
-            }
-
-            texture = SDL.CreateTextureFromSurface(Handle, surface);
-            if (texture == null)
-            {
-                throw new Exception($"Failed to create texture '{texturePath}': {SDL.GetError()}");
-            }
-
-            width = surface->width;
-            height = surface->height;
-            SDL.DestroySurface(surface);
-
-        }
-        finally
-        {
-            if (gcHandle.IsAllocated)
-                gcHandle.Free();
-        }
-
-        return new TextureData(texture, width, height);
-    }
-
-    public static void Draw(TextureData textureData)
-    {
-        var textureHandle = textureData.Handle;
-        SDL.RenderTexture(Handle, textureHandle, null, textureData.Dimensions);
-    }
     
-    public static void Draw(TextureData textureData, Transform transform)
+    internal static void Draw(SDL.Texture* texture, Transform position, float width, float height, Rectangle? frame)
     {
-        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, null, transform.Pivot);
-    }
-    
-    public static void Draw(TextureData textureData, Transform transform, Rectangle frame)
-    {
-        Draw(textureData, transform.ActualX, transform.ActualY, transform.ActualAngle, transform.ActualScale, frame, transform.Pivot);
-    }
+        var pivotX = width * position.Pivot.x * position.Scale;
+        var pivotY = height * position.Pivot.y * position.Scale;
+        var destination = new Rectangle(position.ActualX - pivotX, position.ActualY - pivotY, width * position.ActualScale, height * position.ActualScale);
 
-    private static void Draw(TextureData textureData, float x, float y, float angle, float scale, Rectangle? frame, (float x, float y) pivot, bool drawDebug = false)
-    {
-        var width = textureData.Dimensions.Width;
-        var height = textureData.Dimensions.Height;
-        var pivotX = width * pivot.x * scale;
-        var pivotY = height * pivot.y * scale;
-        var destination = new Rectangle(x - pivotX, y - pivotY, width * scale, height * scale);
-        
-        if (drawDebug)
-        {
-            // draws the bounding box kinda
-            SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
-            SDL.RenderRect(Handle, destination);
-            SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
-        }
-        SDL.RenderTextureRotated(Handle, textureData.Handle, null,destination, angle, null, SDL.FlipMode.None);
-    }
-
-    public static void Draw(TextData text, Transform transform, bool drawDebug = false)
-    {
-        var width = text.Dimensions.Width;
-        var height = text.Dimensions.Height;
-        var pivotX = width * transform.Pivot.x * transform.Scale;
-        var pivotY = height * transform.Pivot.y * transform.Scale;
-        var destination = new Rectangle(transform.ActualX - pivotX, transform.ActualY - pivotY, width * transform.ActualScale, height * transform.ActualScale);
-
-        if (drawDebug)
-        {
-            SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
-            SDL.RenderRect(Handle, destination);
-            SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
-        }
-        SDL.RenderTextureRotated(Handle, text.Texture, null, destination, transform.ActualAngle, null, SDL.FlipMode.None);
+        // if (drawDebug)
+        // {
+        //     SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
+        //     SDL.RenderRect(Handle, destination);
+        //     SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+        // }
+        SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
     }
     
 }

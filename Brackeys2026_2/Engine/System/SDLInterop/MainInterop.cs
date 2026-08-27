@@ -240,12 +240,21 @@ public static unsafe partial class SDL
 
     #region Error Handling
 
-    // Get Error
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     private static partial string SDL_GetError();
 
     internal static string GetError() => SDL_GetError();
+
+    #endregion
+
+    #region Helper Functions
+
+    [LibraryImport(Library)]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    private static partial int SDL_GetVersion();
+
+    internal static int GetVersion() => SDL_GetVersion();
 
     #endregion
 }

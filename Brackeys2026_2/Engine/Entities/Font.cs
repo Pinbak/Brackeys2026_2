@@ -1,17 +1,18 @@
 ﻿using System.Runtime.InteropServices;
-using Brackeys2026_2.Engine.Entities;
 
-namespace Brackeys2026_2.Engine.System;
+namespace Brackeys2026_2.Engine.Entities;
 
-public static unsafe class Font
+public sealed unsafe class Font : Resource, IDisposable
 {
-    public static FontData New(string fontPath, float size = 24)
+    internal TTF.Font* Handle { get; private set; }
+    
+    public Font(string fontPath, float size = 24)
     {
         GCHandle gcHandle = default;
         TTF.Font* font;
         try
         {
-            var stream = Resources.CreateStream(fontPath, out gcHandle);
+            var stream = CreateStream(fontPath, out gcHandle);
             font = TTF.OpenFontIo(stream, true, size);
             if (font == null)
             {
@@ -27,7 +28,13 @@ public static unsafe class Font
                 gcHandle.Free();
         }
 
-        return new FontData(font);
+        Handle = font;
     }
-
+    
+    public void Dispose()
+    {
+        if (Handle != null)
+            TTF.CloseFont(Handle);
+        Handle = null;
+    }
 }

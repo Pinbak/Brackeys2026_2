@@ -10,29 +10,29 @@ public class Game1 : Core
 {
     protected override void Setup()
     {
-        var texture = Graphics.NewTexture("Game/Assets/test.png");
-        var obj = new GameObject(500, 250, null);
-        obj.AddBehaviour(new SineTweener());
-        var sprite = new Sprite(texture);
-        obj.AddBehaviour(sprite);
+        var texture = new Texture("Game/Assets/test.png");
+        var obj = new GameObject(500, 250, null, [
+            new SineTweener(),
+            new SpriteRenderer(texture)]);
         
-        var font = Font.New("Game/Assets/Staatliches-Regular.ttf", 20);
-        var child = new GameObject(100, 100, obj);
-        child.AddBehaviour(new Sprite(texture));
+        var font = new Font("Game/Assets/Staatliches-Regular.ttf", 20);
+        var child = new GameObject(100, 100, obj, [
+            new SpriteRenderer(texture)]);
         
-            var child2 = new GameObject(100, 100, child);
-            child2.AddBehaviour(new Sprite(texture));
-            child2.AddBehaviour(new SineTweener());
+            var child2 = new GameObject(100, 100, child, [
+                new SpriteRenderer(texture),
+                new SineTweener()]);
             
-                var textNode = new GameObject(0, 0, child2);
-                var text = new Text(font, new Colour(0, 0, 0, 255), "Hello world this is longer", 150);
-                var texture2 = Graphics.NewTexture("Game/Assets/test2.png");
-                textNode.AddBehaviour(new Sprite(texture2));
+                var text = new TextRenderer(font, new Colour(0, 0, 0, 255), "Hello world this is longer", 150);
+                var texture2 = new Texture("Game/Assets/test2.png");
+                _ = new GameObject(0, 0, child2,[
+                    new SpriteRenderer(texture2)]);
                 
-                var text2 = new Text(font, new Colour(0, 0, 0, 255), "Hello world", 150);
-                var textNode2 = new GameObject(150, 50, child2);
-                textNode2.AddBehaviour(new InputTesting());
-                textNode2.AddBehaviour(text2);
+                var text2 = new TextRenderer(font, new Colour(0, 0, 0, 255), "Hello world", 150);
+                _ = new GameObject(150, 50, child2, [
+                    new InputTesting(),
+                    text2
+                ]);
         
         // child.IsEnabled = false;
 

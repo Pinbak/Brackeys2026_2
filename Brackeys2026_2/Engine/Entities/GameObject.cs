@@ -7,12 +7,15 @@ public sealed class GameObject : GameObjectBase
     public GameObjectBase Parent { get; set; }
     private List<UpdatableBehaviour> Components { get; set; } = [];
     
-    public GameObject(float relativeX, float relativeY, GameObjectBase? parent)
+    public GameObject(float relativeX, float relativeY, GameObjectBase? parent, Behaviour[]? behaviours = null)
     {
         if (parent is null) Parent = RootGameObject;
         else Parent = parent;
         Transform = new Transform(this, relativeX, relativeY, Parent.Transform);
         Parent.Children.Add(this);
+        
+        if (behaviours is null) return;
+        foreach (var behaviour in behaviours) AddBehaviour(behaviour);
     }
     
     public void AddBehaviour(Behaviour behaviour)

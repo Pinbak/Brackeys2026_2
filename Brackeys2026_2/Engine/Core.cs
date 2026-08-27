@@ -25,7 +25,7 @@ public abstract class Core
         GameObjectBase.RootGameObject = new RootGameObject();
         Window.CreateWindow();
         Graphics.CreateGraphics();
-        Resources.GatherResources();
+        Resource.Setup();
         Window.SetPresentationLetterbox();
         
         Setup();

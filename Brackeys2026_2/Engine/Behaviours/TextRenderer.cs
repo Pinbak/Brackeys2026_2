@@ -3,17 +3,17 @@ using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Behaviours;
 
-public unsafe class Text : UpdatableBehaviour
+public unsafe class TextRenderer : UpdatableBehaviour
 {
-    private TextData _textData;
+    private Text _text;
     private string _content;
     private Colour _colour;
 
-    public Text(FontData fontData, Colour colour, string content, int width)
+    public TextRenderer(Font font, Colour colour, string content, int width)
     {
         _content = content;
         _colour = colour;
-        _textData = Graphics.NewText(fontData, colour, content, width);
+        _text = new Text(content, font, colour, width);
     }
     
     public override void OnInitialise()
@@ -22,11 +22,11 @@ public unsafe class Text : UpdatableBehaviour
 
     public void Set(string content)
     {
-        _textData.UpdateText(content);
+        _text.UpdateText(content);
     }
 
     public override void OnDraw()
     {
-        Graphics.Draw(_textData, GameObject.Transform);
+        _text.Draw(GameObject.Transform);
     }
 }

@@ -3,13 +3,13 @@ using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Behaviours;
 
-public class Sprite : UpdatableBehaviour
+public class SpriteRenderer : UpdatableBehaviour
 {
-    private readonly TextureData _spriteTexture;
+    private readonly Texture _spriteTexture;
     
-    public Sprite(TextureData textureData)
+    public SpriteRenderer(Texture texture)
     {
-        _spriteTexture = textureData;
+        _spriteTexture = texture;
     }
 
     public override void OnInitialise()
@@ -18,7 +18,7 @@ public class Sprite : UpdatableBehaviour
 
     public override void OnDraw()
     {
-        Graphics.Draw(_spriteTexture, GameObject.Transform);
+        _spriteTexture.Draw(GameObject.Transform);
     }
 
 }

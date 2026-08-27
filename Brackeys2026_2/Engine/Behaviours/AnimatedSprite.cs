@@ -5,13 +5,13 @@ namespace Brackeys2026_2.Engine.Behaviours;
 
 public class AnimatedSprite : UpdatableBehaviour
 {
-    private readonly TextureData _spriteTexture;
+    private readonly Texture _spriteTexture;
     private readonly Rectangle _frame;
     
-    public AnimatedSprite(TextureData textureData, Rectangle frame)
+    public AnimatedSprite(Texture texture, Rectangle frame)
     {
         _frame = frame;
-        _spriteTexture = textureData;
+        _spriteTexture = texture;
     }
 
     public override void OnUpdate()
@@ -21,7 +21,7 @@ public class AnimatedSprite : UpdatableBehaviour
 
     public override void OnDraw()
     {
-        Graphics.Draw(_spriteTexture, GameObject.Transform, _frame);
+        _spriteTexture.Draw(GameObject.Transform, _frame);
     }
 
 }
