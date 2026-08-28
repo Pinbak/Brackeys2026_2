@@ -88,9 +88,9 @@ public class Game1 : Core
             ]);
 
             const float padding = 10;
-            var currentX = 120f;
+            var currentX = 100f;
             const float gap = 30f;
-            _ = new GameObject(padding, currentX += gap, rightFolder, [
+            _ = new GameObject(0, currentX += gap, rightFolder, [
                 new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 11),
             ]);
             _ = new GameObject(padding, currentX += gap, rightFolder, [
@@ -101,7 +101,7 @@ public class Game1 : Core
                 goalText
             ]){ Transform = { Pivot = (0, 0) } };
             
-            _ = new GameObject(padding, currentX += gap * 2, rightFolder, [
+            _ = new GameObject(0, currentX += gap * 2, rightFolder, [
                 new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 11),
             ]);
             _ = new GameObject(padding, currentX += gap, rightFolder, [
@@ -113,7 +113,7 @@ public class Game1 : Core
             ]) { Transform = { Pivot = (0, 0) } };
             
         // logic
-        var ministers = new GameObject(435, 0, leftFolder, [
+        var ministers = new GameObject(360, 0, leftFolder, [
             new Ministers(card, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmaller)
         ]);
 

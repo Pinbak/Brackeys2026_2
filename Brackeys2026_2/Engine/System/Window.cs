@@ -17,8 +17,8 @@ internal static unsafe class Window
         {
             throw new Exception("Renderer cannot be null when calling SetPresentation.");
         }
-        SDL.SetRenderLogicalPresentation(Renderer.Handle, 1280, 720, SDL.Presentation.Letterbox);
-        // SDL.SetWindowResizable(Handle, true);
+        SDL.SetRenderLogicalPresentation(Renderer.Handle, 1920, 1080, SDL.Presentation.Letterbox);
+        SDL.SetWindowResizable(Handle, true);
     }
 
     internal static void CleanUpResources()

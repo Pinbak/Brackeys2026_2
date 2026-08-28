@@ -25,11 +25,11 @@ public abstract class Core
         Time.Setup();
         Time.SetFramerateLimit(120);
         GameObjectBase.RootGameObject = new RootGameObject();
-        System.Window.CreateWindow();
+        Window.CreateWindow();
         Renderer.Setup();
         Mixer.Setup();
         Resource.ImportAllEmbedded();
-        System.Window.SetPresentationLetterbox();
+        Window.SetPresentationLetterbox();
         
         Layout(); // run the game code
         GameObjectBase.RootGameObject.OnInitialise(); // inits all game objects as is recursive
@@ -52,7 +52,6 @@ public abstract class Core
             Mouse.ProcessEvent(@event);
             // events.Clear();
         }
-
         Tweener.Process();
         GameObjectBase.RootGameObject.OnUpdate(); // updates all game objects as is recursive
         GameObjectBase.RootGameObject.OnDraw(); // draw all game objects as is recursive

@@ -37,8 +37,8 @@ public static partial class SDL
         internal uint WindowID;
         internal uint MouseID;
         internal Mouse.ButtonFlags State;
-        internal float AbsoluteX;
-        internal float AbsoluteY;
+        internal float X;
+        internal float Y;
         internal float RelativeX;
         internal float RelativeY;
     }

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Brackeys2026_2.Engine.GameObjects;
+using Brackeys2026_2.Engine.System.Inputs;
 
 namespace Brackeys2026_2.Engine.System;
 
@@ -112,5 +113,11 @@ internal static unsafe class Renderer
         SDL.RenderRect(Handle, destination);
         SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
     }
-    
+
+    public static void DrawMousePosition()
+    {
+        SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
+        SDL.RenderRect(Handle, new Rectangle(Mouse.X, Mouse.Y, 10, 10));
+        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+    }
 }

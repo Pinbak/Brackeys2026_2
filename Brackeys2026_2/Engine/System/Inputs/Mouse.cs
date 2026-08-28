@@ -34,8 +34,8 @@ public static unsafe class Mouse
         SideButton2
     }
     
-    public static float X { get; private set; }
-    public static float Y { get; private set; }
+    public static float X { get; internal set; }
+    public static float Y { get; internal set; }
 
     private static readonly HashSet<Button> HeldButtons = [];
     private static readonly HashSet<Button> PressedButtons = [];
@@ -67,8 +67,10 @@ public static unsafe class Mouse
             
             case SDL.EventType.MouseMotion:
                 _mouseMotion = true;
-                X = @event.OnMouseMotion.AbsoluteX;
-                Y = @event.OnMouseMotion.AbsoluteY;
+                SDL.RenderCoordinatesFromWindow(Renderer.Handle, @event.OnMouseMotion.X, @event.OnMouseMotion.Y,
+                    out var newX, out var newY);
+                X = newX;
+                Y = newY;
                 break;
         }
     }

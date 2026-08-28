@@ -5,7 +5,6 @@ namespace Brackeys2026_2.Engine.Components;
 public class SpriteRenderer : Component
 {
     protected readonly Texture SpriteTexture;
-    private Collider? _collider;
     
     public SpriteRenderer(Texture texture)
     {
@@ -14,9 +13,9 @@ public class SpriteRenderer : Component
 
     protected override void OnInitialise()
     {
-        var collider = new Collider(GameObject.Transform, SpriteTexture.Width, SpriteTexture.Height);
-        GameObject.AddComponent(collider);
-        _collider = collider;
+        // var collider = new Collider(GameObject.Transform, SpriteTexture.Width, SpriteTexture.Height);
+        // GameObject.AddComponent(collider);
+        // _collider = collider;
     }
 
     // protected override void OnUpdate()

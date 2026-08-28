@@ -4,14 +4,14 @@ using Brackeys2026_2.Engine.System;
 public static unsafe partial class SDL
 {
     #region Texturing
-    
+
     internal enum TextureAccess
     {
         Static,
         Streaming,
         Target,
     }
-    
+
     [StructLayout(LayoutKind.Sequential)]
     internal struct Texture
     {
@@ -20,7 +20,7 @@ public static unsafe partial class SDL
         internal int Height;
         private int RefCount;
     }
-    
+
     internal enum FlipMode
     {
         None,
@@ -28,7 +28,7 @@ public static unsafe partial class SDL
         Vertical,
         HorizontalVertical = (Horizontal | Vertical)
     }
-    
+
     internal enum BlendMode : uint
     {
         None = 0x00000000,
@@ -88,7 +88,7 @@ public static unsafe partial class SDL
 
     internal static bool SetTextureColorMod(Texture* texture, byte r, byte g, byte b) =>
         SDL_SetTextureColorMod(texture, r, g, b);
-    
+
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -121,10 +121,12 @@ public static unsafe partial class SDL
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureRotated(Renderer* renderer, Texture* texture, Rectangle* src, Rectangle* dst,
+    private static partial bool SDL_RenderTextureRotated(Renderer* renderer, Texture* texture, Rectangle* src,
+        Rectangle* dst,
         double angle, Point* center, FlipMode flip);
 
-    internal static bool RenderTextureRotated(Renderer* renderer, Texture* texture, Rectangle? source, Rectangle? destination, double angle,
+    internal static bool RenderTextureRotated(Renderer* renderer, Texture* texture, Rectangle? source,
+        Rectangle? destination, double angle,
         Point? centre, FlipMode flip)
     {
         var sourceValue = source.GetValueOrDefault();
@@ -141,7 +143,8 @@ public static unsafe partial class SDL
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureAffine(Renderer* renderer, Texture* texture, Rectangle* src, Point* origin,
+    private static partial bool SDL_RenderTextureAffine(Renderer* renderer, Texture* texture, Rectangle* src,
+        Point* origin,
         Point* right, Point* down);
 
     internal static bool RenderTextureAffine(Renderer* renderer, Texture* texture, Rectangle? source, Point? origin,
@@ -161,14 +164,16 @@ public static unsafe partial class SDL
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTextureTiled(Renderer* renderer, Texture* texture, Rectangle* src, float scale,
+    private static partial bool SDL_RenderTextureTiled(Renderer* renderer, Texture* texture, Rectangle* src,
+        float scale,
         Rectangle* dst);
 
-    internal static bool RenderTextureTiled(Renderer* renderer, Texture* texture, Rectangle? source, float scale, Rectangle? destination)
+    internal static bool RenderTextureTiled(Renderer* renderer, Texture* texture, Rectangle? source, float scale,
+        Rectangle? destination)
     {
         var sourceValue = source.GetValueOrDefault();
         var destinationValue = destination.GetValueOrDefault();
-        return SDL_RenderTextureTiled(renderer, texture, 
+        return SDL_RenderTextureTiled(renderer, texture,
             source is null ? null : &sourceValue,
             scale,
             destination is null ? null : &destinationValue);
@@ -177,7 +182,8 @@ public static unsafe partial class SDL
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool SDL_RenderTexture9Grid(Renderer* renderer, Texture* texture, Rectangle* src, float leftWidth,
+    private static partial bool SDL_RenderTexture9Grid(Renderer* renderer, Texture* texture, Rectangle* src,
+        float leftWidth,
         float rightWidth, float topHeight, float bottomHeight, float scale, Rectangle* dst);
 
     internal static bool RenderTexture9Grid(Renderer* renderer, Texture* texture, Rectangle? source, float leftWidth,
@@ -199,7 +205,8 @@ public static unsafe partial class SDL
         float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, Rectangle* dst,
         float tileScale);
 
-    internal static bool RenderTexture9GridTiled(Renderer* renderer, Texture* texture, Rectangle? source, float leftWidth,
+    internal static bool RenderTexture9GridTiled(Renderer* renderer, Texture* texture, Rectangle? source,
+        float leftWidth,
         float rightWidth, float topHeight, float bottomHeight, float scale, Rectangle? destination, float tileScale)
     {
         var sourceValue = source.GetValueOrDefault();
@@ -214,7 +221,7 @@ public static unsafe partial class SDL
     #endregion
 
     #region Rendering
-    
+
     [StructLayout(LayoutKind.Sequential)]
     public struct Renderer;
 
@@ -238,6 +245,16 @@ public static unsafe partial class SDL
     private static partial bool SDL_RenderPresent(Renderer* renderer);
 
     internal static bool RenderPresent(Renderer* renderer) => SDL_RenderPresent(renderer);
+
+    [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderCoordinatesFromWindow(Renderer* renderer, float windowX, float windowY,
+        out float x, out float y);
+
+    internal static bool RenderCoordinatesFromWindow(Renderer* renderer, float windowX, float windowY, out float x,
+        out float y)
+        => SDL_RenderCoordinatesFromWindow(renderer, windowX, windowY, out x, out y);
 
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]

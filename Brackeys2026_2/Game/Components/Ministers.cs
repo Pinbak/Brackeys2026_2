@@ -20,32 +20,41 @@ public class Ministers(Texture card, Texture[] faces, Font nameFont) : Component
             CurrentMinisters.Add(new Minister((RoleType)i, GetRandomFaceTexture()));
         }
 
+        // have to hard-code as no ui-system
         var width = card.Width;
-        var gap = 10f;
+        var gap = 10;
         var padding = 10f;
-        var rowMax = 3;
-        var currentX = 0;
-        var currentY = card.Height * .5f;
-        for (var i = 0; i < CurrentMinisters.Count; i++)
+        var rowMax = 2;
+        var startingX = (int)width * .5f + 30;
+        var currentX = startingX;
+        var currentY = card.Height * .5f + 5;
+        var c = 0;
+        foreach (var minister in CurrentMinisters)
         {
-            if (currentX == rowMax)
+            if (minister.RoleType is RoleType.President) continue;
+            if (c == rowMax)
             {
-                currentX = 0;
+                c = 0;
+                currentX = startingX;
                 currentY += (int)card.Height + gap;
             }
 
-            var minister = CurrentMinisters[i];
-            var ministerGameObject = new GameObject((width + gap) * currentX + padding, padding + currentY, GameObject);
-            currentX += 1;
-
-            var card1 = new GameObject(0, 0, ministerGameObject, [
-                new SpriteRenderer(card)
+            var ministerGameObject = new GameObject(currentX + padding, currentY + padding, GameObject);
+            currentX += (int)width + gap;
+            c++;
+            
+            var cardGameObject = new GameObject(0, 0, ministerGameObject, [
+                new SpriteRenderer(card),
             ]);
+            var collider = new Collider(cardGameObject.Transform, card.Width, card.Height);
+            var cardComponent = new Card(collider);
+            cardGameObject.AddComponent(collider);
+            cardGameObject.AddComponent(cardComponent);
+            cardGameObject.Transform.Angle = 10;
             
-            var face = new GameObject(0, -40, card1, [
+            var face = new GameObject(-64, 0, cardGameObject, [
                 new SpriteRenderer(minister.Face)
-            ]); 
-            
+            ]);
         }
     }
 
