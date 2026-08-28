@@ -50,9 +50,8 @@ public class Ministers(Texture card, Texture[] faces, Font nameFont) : Component
             var cardComponent = new Card(collider);
             cardGameObject.AddComponent(collider);
             cardGameObject.AddComponent(cardComponent);
-            cardGameObject.Transform.Angle = 10;
             
-            var face = new GameObject(-64, 0, cardGameObject, [
+            var face = new GameObject(-96, 0, cardGameObject, [
                 new SpriteRenderer(minister.Face)
             ]);
         }
