@@ -81,6 +81,18 @@ public sealed unsafe class Texture : Resource, IDrawable, IDisposable
         Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
     }
 
+    public void DrawTiled(Transform position, float width, float height, float tileScale = 1f)
+    {
+        var dimensions = new Rectangle(position.ActualX, position.ActualY, width, height);
+        Renderer.Draw(Handle, dimensions, tileScale);
+    }
+
+    public void Draw9Slice(Transform position, float width, float height, float left, float right, float top, float bottom, float tileScale = 1f)
+    {
+        var dimensions = new Rectangle(position.ActualX, position.ActualY, width, height);
+        Renderer.Draw(Handle, dimensions, left, right, top, bottom, tileScale);
+    }
+
     public void ModifyColour(byte red, byte green, byte blue)
     {
         SDL.SetTextureColorMod(Handle, red, green, blue);

@@ -1,6 +1,6 @@
 ﻿namespace Brackeys2026_2.Engine.System;
 
-internal static unsafe class WindowManager
+internal static unsafe class Window
 {
     private const string Title = "Hello world";
     internal static SDL.Window* Handle { get; private set; }
@@ -35,5 +35,15 @@ internal static unsafe class WindowManager
     {
         SDL.ShowWindow(Handle);
         SDL.RaiseWindow(Handle);
+    }
+
+    public static void ChangeBackgroundColour(Colour colour)
+    {
+        Renderer.SetDrawColour(colour);
+    }
+
+    public static void SetFramerateLimit(int limit)
+    {
+        Time.SetFramerateLimit(limit);
     }
 }

@@ -40,10 +40,12 @@ public struct Point(float x, float y)
 internal static unsafe class Renderer
 {
     internal static SDL.Renderer* Handle { get; private set; }
+    private static Colour _renderColour;
 
     internal static void Setup()
     {
-        Handle = SDL.CreateRenderer(WindowManager.Handle, null);
+        _renderColour = new Colour(255, 255, 255, 255);
+        Handle = SDL.CreateRenderer(Window.Handle, null);
         if (Handle == null)
         {
             throw new Exception(SDL.GetError());
@@ -60,25 +62,14 @@ internal static unsafe class Renderer
         Handle = null;
     }
 
-    private static void SetDrawColour(Colour colour)
+    internal static void SetDrawColour(Colour colour)
     {
-        SDL.SetRenderDrawColor(Handle, colour.Red, colour.Green, colour.Blue, colour.Alpha);
-    }
-
-    private static void SetDrawColourWhite()
-    {
-        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
-    }
-
-    internal static void DrawBegin()
-    {
-        SetDrawColourWhite();
-        SDL.RenderClear(Handle);
+        _renderColour = colour;
     }
     
-    internal static void DrawBegin(Colour colour)
+    internal static void DrawBegin()
     {
-        SetDrawColour(colour);
+        SDL.SetRenderDrawColor(Handle, _renderColour.Red, _renderColour.Green, _renderColour.Blue, _renderColour.Alpha);
         SDL.RenderClear(Handle);
     }
 
@@ -92,14 +83,34 @@ internal static unsafe class Renderer
         var pivotX = width * position.Pivot.x * position.Scale;
         var pivotY = height * position.Pivot.y * position.Scale;
         var destination = new Rectangle(position.ActualX - pivotX, position.ActualY - pivotY, width * position.ActualScale, height * position.ActualScale);
-        
-        #if DEBUG
-            SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
-            SDL.RenderRect(Handle, destination);
-            SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
-        #endif
 
         SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
+#if DEBUG
+        DrawBoundingBox(destination);
+#endif
+    }
+    
+    internal static void Draw(SDL.Texture* texture, Rectangle destination, float scale)
+    {
+        SDL.RenderTextureTiled(Handle, texture, null, scale, destination);
+#if DEBUG
+        DrawBoundingBox(destination);
+#endif
+    }
+    
+    internal static void Draw(SDL.Texture* texture, Rectangle destination, float left, float right, float top, float bottom, float scale)
+    {
+        SDL.RenderTexture9GridTiled(Handle, texture, null, left, right, top, bottom, 0f, destination, scale);
+#if DEBUG
+        DrawBoundingBox(destination);
+#endif
+    }
+
+    private static void DrawBoundingBox(Rectangle destination)
+    {
+        SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
+        SDL.RenderRect(Handle, destination);
+        SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
     }
     
 }

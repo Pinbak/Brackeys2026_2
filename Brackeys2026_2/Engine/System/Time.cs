@@ -44,7 +44,7 @@ public static unsafe class Time
         }
     }
 
-    public static void SetFramerateLimit(int limit)
+    internal static void SetFramerateLimit(int limit)
     {
         if (limit <= 0) return;
         _fpsLimit = limit;

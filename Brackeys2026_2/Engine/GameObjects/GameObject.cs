@@ -13,7 +13,7 @@ public sealed class GameObject : GameObjectBase
         if (parent is null) Parent = RootGameObject;
         else Parent = parent;
         Transform = new Transform(this, relativeX, relativeY, Parent.Transform);
-        Parent.Children.Add(this);
+        Parent.Children.Insert(0, this);
         
         if (components is null) return;
         foreach (var behaviour in components) AddComponent(behaviour);
@@ -48,7 +48,7 @@ public sealed class GameObject : GameObjectBase
         }
         component.GameObject = this;
         component.IsOwned = true;
-        Components.Add(component);
+        Components.Insert(0, component);
         // if (behaviour is Component updatableBehaviour)
         // {
         //     

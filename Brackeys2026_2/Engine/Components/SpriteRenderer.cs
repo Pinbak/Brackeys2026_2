@@ -4,36 +4,37 @@ namespace Brackeys2026_2.Engine.Components;
 
 public class SpriteRenderer : Component
 {
-    private readonly Texture _spriteTexture;
-    private Collider _collider = null!;
+    protected readonly Texture SpriteTexture;
+    private Collider? _collider;
     
     public SpriteRenderer(Texture texture)
     {
-        _spriteTexture = texture;
+        SpriteTexture = texture;
     }
 
     protected override void OnInitialise()
     {
-        var collider = new Collider(GameObject.Transform, _spriteTexture.Width, _spriteTexture.Height);
+        var collider = new Collider(GameObject.Transform, SpriteTexture.Width, SpriteTexture.Height);
         GameObject.AddComponent(collider);
         _collider = collider;
     }
 
-    protected override void OnUpdate()
-    {
-        if (_collider.HasMouseEntered())
-        {
-            _spriteTexture.ModifyColour(255, 0, 0);
-        }
-        else if (_collider.HasMouseExited())
-        {
-            _spriteTexture.ResetColour();
-        }
-    }
+    // protected override void OnUpdate()
+    // {
+    //     if (_collider is null) return;
+    //     if (_collider.HasMouseEntered())
+    //     {
+    //         SpriteTexture.ModifyColour(255, 0, 0);
+    //     }
+    //     else if (_collider.HasMouseExited())
+    //     {
+    //         SpriteTexture.ResetColour();
+    //     }
+    // }
 
     protected override void OnDraw()
     {
-        _spriteTexture.Draw(GameObject.Transform);
+        SpriteTexture.Draw(GameObject.Transform);
     }
 
 }

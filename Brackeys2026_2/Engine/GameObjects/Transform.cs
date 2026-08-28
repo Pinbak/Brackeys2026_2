@@ -46,7 +46,7 @@ public class Transform
         }
     } = 1.0f;
 
-    public (float x, float y) Pivot { get; private set; } = (.5f, .5f);
+    public (float x, float y) Pivot { get; set; } = (.5f, .5f);
 
     // actual real world positions
     internal float ActualX { get; private set; }

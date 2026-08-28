@@ -51,4 +51,17 @@ public sealed unsafe class Font : Resource, IDisposable
         Handle = null;
         _isDisposed = true;
     }
+
+    public void SetAlignmentLeft()
+    {
+        TTF.SetFontWrapAlignment(Handle, TTF.HorizontalAlignment.Left);
+    }
+    public void SetAlignmentRight()
+    {
+        TTF.SetFontWrapAlignment(Handle, TTF.HorizontalAlignment.Right);
+    }
+    public void SetAlignmentCentre()
+    {
+        TTF.SetFontWrapAlignment(Handle, TTF.HorizontalAlignment.Center);
+    }
 }

@@ -10,7 +10,7 @@ public class InputTesting() : Component
     {
         if (Mouse.HasPressed(Mouse.Button.Left))
         {
-            Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 2f, EaseFunctions.OutElastic);
+            // Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 2f, EaseFunctions.OutElastic);
             // Tweener.ScaleTo(GameObject.Transform, 2f, 5f, EaseFunctions.OutElastic);
             
             Console.WriteLine($"Left button pressed x: {Mouse.X}, y: {Mouse.Y}");

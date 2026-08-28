@@ -25,11 +25,11 @@ public abstract class Core
         Time.Setup();
         Time.SetFramerateLimit(120);
         GameObjectBase.RootGameObject = new RootGameObject();
-        WindowManager.CreateWindow();
+        System.Window.CreateWindow();
         Renderer.Setup();
         Mixer.Setup();
         Resource.ImportAllEmbedded();
-        WindowManager.SetPresentationLetterbox();
+        System.Window.SetPresentationLetterbox();
         
         Layout(); // run the game code
         GameObjectBase.RootGameObject.OnInitialise(); // inits all game objects as is recursive
@@ -65,7 +65,7 @@ public abstract class Core
         if (IsRunning)
         {
             IsRunning = false;
-            WindowManager.CleanUpResources();
+            System.Window.CleanUpResources();
             Renderer.CleanUpResources();
             Mixer.CleanupResources();
             SDL.QuitSdl();
