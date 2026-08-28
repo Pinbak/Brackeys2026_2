@@ -3,8 +3,11 @@ using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Resources;
 
-public sealed unsafe class Text : Collidable2D, IDrawable, IDisposable
+public sealed unsafe class Text : Resource, IDrawable, IDisposable
 {
+    public float Width { get; private set; }
+    public float Height { get; private set; }
+    private Rectangle Dimensions { get; set; }
     private static readonly Colour Transparent = new(0, 0, 0, 0);
     private SDL.Texture* Handle { get; set; }
     private SDL.Surface* Surface { get; set; }

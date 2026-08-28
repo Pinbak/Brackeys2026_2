@@ -78,7 +78,7 @@ public static unsafe class Mouse
         return _mouseMotion;
     }
 
-    public static bool IsPressed(Button button)
+    public static bool HasPressed(Button button)
     {
         return PressedButtons.Contains(button);
     }
@@ -88,7 +88,7 @@ public static unsafe class Mouse
         return HeldButtons.Contains(button);
     }
 
-    public static bool IsReleased(Button button)
+    public static bool HasReleased(Button button)
     {
         return ReleasedButtons.Contains(button);
     }

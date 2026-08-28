@@ -64,8 +64,9 @@ public sealed class GameObject : GameObjectBase
     // intentionally recursive
     public override void OnInitialise()
     {
-        foreach (var updatableBehaviour in Components)
+        for (var i = Components.Count - 1; i >= 0 ; i--)
         {
+            var updatableBehaviour = Components[i];
             if (!updatableBehaviour.IsEnabled || _isDisposed) continue;
             updatableBehaviour.Initialise();
         }
@@ -75,8 +76,9 @@ public sealed class GameObject : GameObjectBase
 
     public override void OnUpdate()
     {
-        foreach (var updatableBehaviour in Components)
+        for (var i = Components.Count - 1; i >= 0; i--)
         {
+            var updatableBehaviour = Components[i];
             if (!updatableBehaviour.IsEnabled || _isDisposed) continue;
             updatableBehaviour.Update();
         }
@@ -86,8 +88,9 @@ public sealed class GameObject : GameObjectBase
 
     public override void OnDraw()
     {
-        foreach (var drawableBehaviour in Components)
+        for (var i = Components.Count - 1; i >= 0; i--)
         {
+            var drawableBehaviour = Components[i];
             if (!drawableBehaviour.IsEnabled || _isDisposed) continue;
             drawableBehaviour.Draw();
         }

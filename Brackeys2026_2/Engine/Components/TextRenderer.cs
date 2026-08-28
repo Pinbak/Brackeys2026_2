@@ -25,7 +25,7 @@ public unsafe class TextRenderer : Component
         _text.UpdateText(content);
     }
 
-    public bool IsPointInside(Point point) => _text.IsPointInside(point);
+    // public bool IsPointInside(Point point) => _text.IsPointInside(point);
 
     protected override void OnDraw()
     {

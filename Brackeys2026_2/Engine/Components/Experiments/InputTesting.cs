@@ -8,7 +8,7 @@ public class InputTesting() : Component
 {
     protected override void OnUpdate()
     {
-        if (Mouse.IsPressed(Mouse.Button.Left))
+        if (Mouse.HasPressed(Mouse.Button.Left))
         {
             Tweener.MoveXTo(GameObject.Transform, GameObject.Transform.X + 50, 2f, EaseFunctions.OutElastic);
             // Tweener.ScaleTo(GameObject.Transform, 2f, 5f, EaseFunctions.OutElastic);
@@ -17,7 +17,7 @@ public class InputTesting() : Component
 
         }
 
-        if (Mouse.IsReleased(Mouse.Button.Left))
+        if (Mouse.HasReleased(Mouse.Button.Left))
         {
             Console.WriteLine("Left button released");
         }

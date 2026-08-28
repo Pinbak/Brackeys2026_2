@@ -88,7 +88,7 @@ public static unsafe partial class SDL
 
     internal static bool SetTextureColorMod(Texture* texture, byte r, byte g, byte b) =>
         SDL_SetTextureColorMod(texture, r, g, b);
-
+    
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]

@@ -14,7 +14,7 @@ public class AudioPlayer : Component
 
     protected override void OnUpdate()
     {
-        if (Mouse.IsPressed(Mouse.Button.Left))
+        if (Mouse.HasPressed(Mouse.Button.Left))
         {
             _audio.Play();
         }

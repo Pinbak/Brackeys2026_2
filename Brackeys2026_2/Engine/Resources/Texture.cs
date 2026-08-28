@@ -4,8 +4,11 @@ using Brackeys2026_2.Engine.System;
 
 namespace Brackeys2026_2.Engine.Resources;
 
-public sealed unsafe class Texture : Collidable2D, IDrawable, IDisposable
+public sealed unsafe class Texture : Resource, IDrawable, IDisposable
 {
+    public float Width { get; private set; }
+    public float Height { get; private set; }
+    private Rectangle Dimensions { get; set; }
     private SDL.Texture* Handle { get; set; }
     private bool _isDisposed;
 
@@ -71,5 +74,20 @@ public sealed unsafe class Texture : Collidable2D, IDrawable, IDisposable
     public void Draw(Transform position, Rectangle? frame = null)
     {
         Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
+    }
+    
+    public void Draw(Transform position, Colour colourTint, Rectangle? frame = null)
+    {
+        Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
+    }
+
+    public void ModifyColour(byte red, byte green, byte blue)
+    {
+        SDL.SetTextureColorMod(Handle, red, green, blue);
+    }
+
+    public void ResetColour()
+    {
+        SDL.SetTextureColorMod(Handle, 255, 255, 255);
     }
 }
