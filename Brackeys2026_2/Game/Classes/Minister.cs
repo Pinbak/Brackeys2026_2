@@ -2,7 +2,7 @@
 
 namespace Brackeys2026_2.Game.Classes;
 
-public class Minister
+public class Minister : IHasTurn
 {
     public string Name { get; set; }
     public Faction Faction { get; set; }
@@ -76,5 +76,10 @@ public class Minister
             if (currentMinister == this) continue; // don't add yourself
             Suspicions.Add(currentMinister, new Suspicion());
         }
+    }
+
+    public virtual void BeginTurn()
+    {
+        Role.PerformAction(this);
     }
 }

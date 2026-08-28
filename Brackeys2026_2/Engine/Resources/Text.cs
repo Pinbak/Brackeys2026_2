@@ -7,6 +7,7 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
 {
     public float Width { get; private set; }
     public float Height { get; private set; }
+    public string Content { get; private set; }
     private Rectangle Dimensions { get; set; }
     private static readonly Colour Transparent = new(0, 0, 0, 0);
     private SDL.Texture* Handle { get; set; }
@@ -18,6 +19,7 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
     
     public Text(string content, Font font, int wrapWidth)
     {
+        Content = content;
         _wrapWidth = wrapWidth;
         Font = font;
         Colour = Window.Black;

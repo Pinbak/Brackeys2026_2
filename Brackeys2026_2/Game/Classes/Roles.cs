@@ -1,4 +1,5 @@
-﻿using Brackeys2026_2.Game.Components;
+﻿
+using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game.Classes;
 
@@ -8,12 +9,9 @@ public class President(RoleType roleType, string name) : Role(roleType, name)
     
     public override void PerformAction(Minister thisPlayer)
     {
-        base.PerformAction(thisPlayer);
+        CalculateSuspicions(thisPlayer);
         // reshuffle cabinet
-
-
-        
-        GameManager.FinishTurn(Faction.All[0]);
+        GameManager.EndTurn(Faction.All[0]);
     }
 }
 
@@ -22,12 +20,26 @@ public class PresidentsAide : Role
     public PresidentsAide(RoleType roleType, string name) : base(roleType, name)
     {
     }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
+        
+    }
 }
 
 public class MinisterOfNationalSecurity : Role
 {
     public MinisterOfNationalSecurity(RoleType roleType, string name) : base(roleType, name)
     {
+    }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
+        
     }
 }
 
@@ -36,12 +48,25 @@ public class SupremeCommander : Role
     public SupremeCommander(RoleType roleType, string name) : base(roleType, name)
     {
     }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
+        
+    }
 }
 
 public class SecretaryOfImmigration : Role
 {
     public SecretaryOfImmigration(RoleType roleType, string name) : base(roleType, name)
     {
+    }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
     }
 }
 
@@ -50,6 +75,13 @@ public class MinisterOfCommunication : Role
     public MinisterOfCommunication(RoleType roleType, string name) : base(roleType, name)
     {
     }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
+        
+    }
 }
 
 public class MinisterOfInterior : Role
@@ -57,11 +89,25 @@ public class MinisterOfInterior : Role
     public MinisterOfInterior(RoleType roleType, string name) : base(roleType, name)
     {
     }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
+        
+    }
 }
 
 public class SecretaryForPropaganda : Role
 {
     public SecretaryForPropaganda(RoleType roleType, string name) : base(roleType, name)
     {
+    }
+
+    public override void PerformAction(Minister thisPlayer)
+    {CalculateSuspicions(thisPlayer);
+        // reshuffle cabinet
+        GameManager.EndTurn(Faction.All[0]);
+        
     }
 }

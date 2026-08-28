@@ -11,12 +11,17 @@ public class Button : SpriteRenderer
     private Collider? _collider;
     private float _startingY;
     private Texture _downTexture;
+    private Texture _disabledTexture;
     private bool _isDown;
     private Text _text;
+    private bool _isPressable = true;
+    private string _defaultText;
     
-    public Button(Texture upTexture, Texture downTexture, Text content) : base(upTexture)
+    public Button(Texture upTexture, Texture downTexture, Texture disabledTexture, Text content) : base(upTexture)
     {
         _downTexture = downTexture;
+        _disabledTexture = disabledTexture;
+        _defaultText = content.Content;
         _text = content;
         Own(_text);
     }
@@ -32,6 +37,7 @@ public class Button : SpriteRenderer
     protected override void OnUpdate()
     {
         if (_collider is null) return;
+        if (!_isPressable) return;
         if (Mouse.HasPressed(Mouse.Button.Left))
         {
             if (_collider.IsMouseInside())
@@ -60,12 +66,33 @@ public class Button : SpriteRenderer
 
     protected override void OnDraw()
     {
-        if (!_isDown)
-            SpriteTexture.Draw(GameObject.Transform);
+        if (!_isPressable)
+        {
+            _disabledTexture.Draw(GameObject.Transform);
+        }
         else
-            _downTexture.Draw(GameObject.Transform);
-        
+        {
+            if (!_isDown)
+                SpriteTexture.Draw(GameObject.Transform);
+            else
+                _downTexture.Draw(GameObject.Transform);
+        }
         _text.Draw(GameObject.Transform);
+        
+    }
+
+    public void EnablePresses()
+    {
+        _isPressable = true;
+        _text.UpdateText(_defaultText);
+        Tweener.RotateTo(GameObject.Transform, 0, 0.1f);
+    }
+
+    public void DisablePresses(string? disabledMessage = null)
+    {
+        _isPressable = false;
+        _text.UpdateText(disabledMessage ?? _defaultText);
+        Tweener.RotateTo(GameObject.Transform, 0, 0.1f);
     }
 
 }

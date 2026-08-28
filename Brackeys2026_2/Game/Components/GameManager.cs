@@ -22,6 +22,7 @@ public class GameManager : Component
     private PlayerInteraction _player;
     private Button _nextTurnButton;
     private static Minister _currentTurn;
+    private static bool _isInTurn;
 
     private List<GameObject> _ministerGameObjects = [];
     private List<Card> _cards = [];
@@ -43,16 +44,23 @@ public class GameManager : Component
         var playerIndex = Random.Next(1, NumberOfMinisters);
         for (var i = 0; i < NumberOfMinisters; i++)
         {
-            var newMinister = new Minister(Role.GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture());
-            CurrentMinisters.Add(newMinister);
             if (i == playerIndex)
             {
+                var newMinister = new Player(Role.GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture(), _player);
+                CurrentMinisters.Add(newMinister);
                 newMinister.IsPlayer = true;
                 _player.Player = newMinister;
             }
+            else
+            {
+                var newMinister = new Minister(Role.GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture());
+                CurrentMinisters.Add(newMinister);
+                
+                if (i == NumberOfMinisters - 1)
+                    _currentTurn = newMinister;
+            }
 
-            if (i == NumberOfMinisters - 1)
-                _currentTurn = newMinister;
+            
         }
 
         foreach (var currentMinister in CurrentMinisters)
@@ -134,6 +142,7 @@ public class GameManager : Component
     
     private void NextTurn()
     {
+        if (_isInTurn) return;
         var positionInList = CurrentMinisters.FindIndex(a => a == _currentTurn);
         var nextMinisterTurn = positionInList += 1;
         if (nextMinisterTurn > NumberOfMinisters - 1)
@@ -141,17 +150,19 @@ public class GameManager : Component
             nextMinisterTurn = 0;
         }
 
+        _isInTurn = true;
         _currentTurn.IsTurn = false;
         _currentTurn = CurrentMinisters[nextMinisterTurn];
         _currentTurn.IsTurn = true;
 
-        _currentTurn.Role.PerformAction(_currentTurn);
+        _currentTurn.BeginTurn();
     }
 
-    public static void FinishTurn(Faction faction)
+    public static void EndTurn(Faction faction)
     {
         PreviouslyImplementedPolicy = (_currentTurn, faction);
         Turn++;
+        _isInTurn = false;
     }
 
 }

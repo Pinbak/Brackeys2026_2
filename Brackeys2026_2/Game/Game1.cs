@@ -39,6 +39,7 @@ public class Game1 : Core
         var note = new Texture("Game/Assets/note.png");
         var button = new Texture("Game/Assets/button.png");
         var buttonDown = new Texture("Game/Assets/buttonDown.png");
+        var buttonDisabled = new Texture("Game/Assets/buttonDisabled.png");
         var outline = new Texture("Game/Assets/outline.png");
 
         const int leftFolderHeight = 850;
@@ -121,19 +122,18 @@ public class Game1 : Core
                 new SpriteRenderer(note),
             ]) { Transform = { Pivot = (0, 0) } };
 
-            var confirmButton = new Button(button, buttonDown, new Text("Confirm Action", boldFontSmaller, 300));
+            var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
             var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
                 confirmButton,
             ]);
-
-            var nextTurnButton = new Button(button, buttonDown, new Text("Next turn", boldFontSmaller, 300));
+            confirmButton.DisablePresses();
+            var nextTurnButton = new Button(button, buttonDown, buttonDisabled, new Text("Next turn", boldFontSmaller, 300));
             var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
                 nextTurnButton,
             ]);
             
         // logic
-        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText,
-            secretText, goalText, actionText);
+        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText, secretText, goalText, actionText);
         var playerGameObject = new GameObject(0, 0, null, [
             player
         ]);

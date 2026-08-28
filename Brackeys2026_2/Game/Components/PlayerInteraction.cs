@@ -12,11 +12,14 @@ public class PlayerInteraction : Component
     private TextRenderer _secretFaction;
     private TextRenderer _goalText;
     private TextRenderer _actionText;
+    private Button _confirmActionButton;
+    private readonly Button _nextTurnButton;
 
     public PlayerInteraction(Button confirmButton, Button nextTurnButton, TextRenderer playerDescriptionText, TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText)
     {
-        nextTurnButton.HasPressed += NextTurn;
+        _confirmActionButton = confirmButton;
         confirmButton.HasPressed += ConfirmAction;
+        _nextTurnButton = nextTurnButton;
         _playerDescription = playerDescriptionText;
         _jobDescription = jobDescriptionText;
         _secretFaction = secretText;
@@ -33,13 +36,25 @@ public class PlayerInteraction : Component
         _actionText.Set(Player.GetActionText());
     }
 
-    private void NextTurn()
-    {
-        Console.WriteLine("Next turn");
-    }
-
     private void ConfirmAction()
     {
         
+    }
+
+    public void StartOfNewPlayerTurn()
+    {
+        ToggleNextTurnDisabled();
+    }
+
+    private void ToggleNextTurnDisabled()
+    {
+        _nextTurnButton.DisablePresses("Your turn...");
+        _confirmActionButton.EnablePresses();
+    }
+
+    private void ToggleNextTurnEnabled()
+    {
+        _nextTurnButton.EnablePresses();
+        _confirmActionButton.DisablePresses();
     }
 }

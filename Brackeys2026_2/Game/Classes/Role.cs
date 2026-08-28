@@ -17,7 +17,9 @@ public abstract class Role
 
     public string Name { get; }
 
-    public virtual void PerformAction(Minister thisPlayer)
+    public abstract void PerformAction(Minister thisPlayer);
+
+    protected void CalculateSuspicions(Minister thisPlayer)
     {
         if (GameManager.Turn == 0) return;
         (LastTurn, LastPolicy) = GameManager.PreviouslyImplementedPolicy;
