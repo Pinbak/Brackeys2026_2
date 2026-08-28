@@ -2,15 +2,12 @@
 
 public enum RoleType
 {
-    President,
-    MinisterOfNationalSecurity,
-    SupremeCommander,
-    SecretaryOfImmigration,
-    MinisterOfCommunication, 
-    MinisterOfInterior,
-    SecretaryOfLaw,
-    MinisterOfFinance,
-    SecretaryForStateAdvocacy,
-    PresidentsAide,
-    SovietOrganizer
+    President, // can reshuffle cabinet, has final vote
+    PresidentsAide, // always exposed presidents hand
+    MinisterOfNationalSecurity, // can kill people
+    SupremeCommander, // stage a coup against the president
+    SecretaryOfImmigration, // chooses new minister on death
+    MinisterOfCommunication,  // change someone's ideology
+    MinisterOfInterior, // expose actual ideology of member
+    SecretaryForPropaganda, // convince other ministers of ideology
 }

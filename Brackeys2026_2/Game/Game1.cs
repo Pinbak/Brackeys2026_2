@@ -39,6 +39,7 @@ public class Game1 : Core
         var note = new Texture("Game/Assets/note.png");
         var button = new Texture("Game/Assets/button.png");
         var buttonDown = new Texture("Game/Assets/buttonDown.png");
+        var outline = new Texture("Game/Assets/outline.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -119,24 +120,28 @@ public class Game1 : Core
             var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
                 new SpriteRenderer(note),
             ]) { Transform = { Pivot = (0, 0) } };
-            
-            var confirmAction = new GameObject(padding + 50, currentX + 420, rightFolder, [
-                new Button(button, buttonDown),
-            ]) { Transform = { Pivot = (0, 0) } };
-            
-            var nextTurn = new GameObject(padding + 170, currentX + 420 + button.Height + 10, rightFolder, [
-                new Button(button, buttonDown),
-            ]) { Transform = { Pivot = (0, 0) } };
+
+            var confirmButton = new Button(button, buttonDown, new Text("Confirm Action", boldFontSmaller, 300));
+            var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
+                confirmButton,
+            ]);
+
+            var nextTurnButton = new Button(button, buttonDown, new Text("Next turn", boldFontSmaller, 300));
+            var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
+                nextTurnButton,
+            ]);
             
         // logic
-        var ministers = new GameObject(520, 10, leftFolder, [
-            new Ministers(card, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], oldFont, oldFontSmaller)
-        ]);
-
-        var you = new GameObject(0, 0, null, [
-            
+        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText,
+            secretText, goalText, actionText);
+        var playerGameObject = new GameObject(0, 0, null, [
+            player
         ]);
         
+        var ministers = new GameObject(520, 10, leftFolder, [
+            new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], oldFont, oldFontSmaller
+            , confirmButton, nextTurnButton, player)
+        ]);
         
 
     }

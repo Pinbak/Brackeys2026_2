@@ -98,5 +98,10 @@ public sealed class GameObject : GameObjectBase
         base.OnDraw();
     }
 
-    
+
+    public void BringToFront()
+    {
+        Parent.Children.Remove(this);
+        Parent.Children.Insert(0, this);
+    }
 }

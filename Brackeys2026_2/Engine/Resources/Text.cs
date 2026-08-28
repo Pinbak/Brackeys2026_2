@@ -20,7 +20,7 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
     {
         _wrapWidth = wrapWidth;
         Font = font;
-        Colour = new Colour(0, 0, 0, 255);
+        Colour = Window.Black;
         if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dipose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
         Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);

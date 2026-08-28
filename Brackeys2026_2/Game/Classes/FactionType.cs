@@ -2,7 +2,7 @@
 
 public enum FactionType
 {
-    Dots,
+    Spots,
     Stripes,
     Squares,
     Triangles,

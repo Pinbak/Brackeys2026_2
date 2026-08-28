@@ -6,14 +6,19 @@ namespace Brackeys2026_2.Engine.Components;
 
 public class Button : SpriteRenderer
 {
+    public Action? HasPressed { get; set; }
+    
     private Collider? _collider;
     private float _startingY;
     private Texture _downTexture;
     private bool _isDown;
+    private Text _text;
     
-    public Button(Texture upTexture, Texture downTexture) : base(upTexture)
+    public Button(Texture upTexture, Texture downTexture, Text content) : base(upTexture)
     {
         _downTexture = downTexture;
+        _text = content;
+        Own(_text);
     }
 
     protected override void OnInitialise()
@@ -35,6 +40,11 @@ public class Button : SpriteRenderer
 
         if (Mouse.HasReleased(Mouse.Button.Left))
         {
+            if (_isDown)
+            {
+                HasPressed?.Invoke();
+            }
+
             _isDown = false;
         }
         
@@ -54,6 +64,8 @@ public class Button : SpriteRenderer
             SpriteTexture.Draw(GameObject.Transform);
         else
             _downTexture.Draw(GameObject.Transform);
+        
+        _text.Draw(GameObject.Transform);
     }
 
 }

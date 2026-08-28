@@ -81,8 +81,8 @@ internal static unsafe class Renderer
     
     internal static void Draw(SDL.Texture* texture, Transform position, float width, float height, Rectangle? frame)
     {
-        var pivotX = width * position.Pivot.x * position.Scale;
-        var pivotY = height * position.Pivot.y * position.Scale;
+        var pivotX = width * position.Pivot.x * position.ActualScale;
+        var pivotY = height * position.Pivot.y * position.ActualScale;
         var destination = new Rectangle(position.ActualX - pivotX, position.ActualY - pivotY, width * position.ActualScale, height * position.ActualScale);
 
         SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
