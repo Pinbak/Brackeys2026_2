@@ -24,6 +24,18 @@ public class Game1 : Core
         var misc2 = new Texture("Game/Assets/sideThing.png");
         var divider = new Texture("Game/Assets/divider.png");
         var horizontalDivider = new Texture("Game/Assets/horizontalDivider.png");
+        var card = new Texture("Game/Assets/card.png");
+        var face1 = new Texture("Game/Assets/p1.png");
+        var face2 = new Texture("Game/Assets/p2.png");
+        var face3 = new Texture("Game/Assets/p3.png");
+        var face4 = new Texture("Game/Assets/p4.png");
+        var face5 = new Texture("Game/Assets/p5.png");
+        var face6 = new Texture("Game/Assets/p6.png");
+        var face7 = new Texture("Game/Assets/p7.png");
+        var face8 = new Texture("Game/Assets/p8.png");
+        var face9 = new Texture("Game/Assets/p9.png");
+        var face10 = new Texture("Game/Assets/p10.png");
+        var face11 = new Texture("Game/Assets/p11.png");
 
         const int leftFolderHeight = 520;
         var black = new Colour(50, 50, 50, 255);
@@ -101,8 +113,8 @@ public class Game1 : Core
             ]) { Transform = { Pivot = (0, 0) } };
             
         // logic
-        var ministers = new GameObject(360, 0, leftFolder, [
-            new Ministers()
+        var ministers = new GameObject(435, 0, leftFolder, [
+            new Ministers(card, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmaller)
         ]);
 
         var you = new GameObject(0, 0, null, [
