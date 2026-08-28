@@ -92,13 +92,11 @@ internal static unsafe class Renderer
         var pivotX = width * position.Pivot.x * position.Scale;
         var pivotY = height * position.Pivot.y * position.Scale;
         var destination = new Rectangle(position.ActualX - pivotX, position.ActualY - pivotY, width * position.ActualScale, height * position.ActualScale);
-
-        // if (drawDebug)
-        // {
+        
         SDL.SetRenderDrawColor(Handle, 0, 255, 0, 255);
         SDL.RenderRect(Handle, destination);
         SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
-        // }
+
         SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
     }
     

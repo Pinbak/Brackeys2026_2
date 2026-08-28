@@ -14,7 +14,7 @@ public class Game1 : Core
         var texture = new Texture("Game/Assets/test.png");
         var audio = new Audio("Game/Assets/BungalowBossa.ogg");
         var obj = new GameObject(500, 250, null, [
-            // new SineTweener(),
+            new SineTweener(),
             new SpriteRenderer(texture),
             // new AudioPlayer(audio),
         ]);
@@ -24,7 +24,7 @@ public class Game1 : Core
             ]);
                 var child2 = new GameObject(100, 100, child, [
                     new SpriteRenderer(texture),
-                    // new SineTweener()
+                    new SineTweener()
                 ]);
                     var text = new TextRenderer(font, new Colour(0, 0, 0, 255), "Hello world this is longer", 150);
                     var texture2 = new Texture("Game/Assets/test2.png");
@@ -33,7 +33,7 @@ public class Game1 : Core
                     ]);
                     var text2 = new TextRenderer(font, new Colour(0, 0, 0, 255), "Hello world", 150);
                     _ = new GameObject(150, 50, child2, [
-                        new InputTesting(toRemove),
+                        new InputTesting(),
                         text2
                     ]);
         

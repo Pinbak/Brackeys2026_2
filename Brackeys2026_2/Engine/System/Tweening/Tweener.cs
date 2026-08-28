@@ -15,11 +15,15 @@ public static class Tweener
 
     internal static void Process()
     {
-        for (var i = 0; i < ActiveTweens.Count; i++)
+        for (var i = 0; i < ActiveTweens.Count;)
         {
             if (ActiveTweens[i].Process())
             {
                 ActiveTweens.RemoveAt(i);
+            }
+            else
+            {
+                i++;
             }
         }
     }

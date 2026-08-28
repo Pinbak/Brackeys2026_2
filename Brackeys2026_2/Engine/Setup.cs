@@ -6,7 +6,7 @@ namespace Brackeys2026_2.Engine;
 internal static unsafe class Setup
 {
     private static Core? _engine;
-    private static Queue<SDL.Event> _newEvents = new();
+    private static readonly Queue<SDL.Event> NewEvents = new();
     
     internal static void Run(Core core)
     {
@@ -32,9 +32,7 @@ internal static unsafe class Setup
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
     private static SDL.AppResult SdlIterate(IntPtr appState)
     {
-        var events = _newEvents;
-        _newEvents = new Queue<SDL.Event>();
-        _engine?.MainLoop(events);
+        _engine?.MainLoop(NewEvents);
         
         if (_engine is null) return StopEngineMessage();
         return !_engine.IsRunning ? StopEngineMessage() : SDL.AppResult.Continue;
@@ -49,7 +47,7 @@ internal static unsafe class Setup
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
     private static SDL.AppResult SdlEvent(IntPtr appState, SDL.Event* @event)
     {
-        _newEvents.Enqueue(*@event);
+        NewEvents.Enqueue(*@event);
         {
             return SDL.AppResult.Continue;
         }

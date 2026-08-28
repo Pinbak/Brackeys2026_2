@@ -1,13 +1,11 @@
-﻿using Brackeys2026_2.Engine.GameObjects;
+﻿using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Engine.System.Inputs;
 using Brackeys2026_2.Engine.System.Tweening;
 
 namespace Brackeys2026_2.Engine.Components.Experiments;
 
-public class InputTesting(GameObject? gm) : Component
+public class InputTesting() : Component
 {
-    private GameObject? _gm = gm;
-
     protected override void OnUpdate()
     {
         if (Mouse.IsPressed(Mouse.Button.Left))
@@ -17,9 +15,6 @@ public class InputTesting(GameObject? gm) : Component
             
             Console.WriteLine($"Left button pressed x: {Mouse.X}, y: {Mouse.Y}");
 
-            // sprite.di
-            _gm?.Destroy();
-            _gm = null;
         }
 
         if (Mouse.IsReleased(Mouse.Button.Left))

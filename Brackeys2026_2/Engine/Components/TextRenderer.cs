@@ -5,7 +5,7 @@ namespace Brackeys2026_2.Engine.Components;
 
 public unsafe class TextRenderer : Component
 {
-    private Text _text;
+    private readonly Text _text;
     private string _content;
     private Colour _colour;
 
@@ -13,8 +13,7 @@ public unsafe class TextRenderer : Component
     {
         _content = content;
         _colour = colour;
-        _text = new Text(content, font, colour, width);
-        Own(_text);
+        _text = Own(new Text(content, font, colour, width));
     }
     
     protected override void OnInitialise()

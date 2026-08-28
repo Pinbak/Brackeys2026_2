@@ -23,6 +23,7 @@ public abstract class Core
     internal void MainInitialise()
     {
         Time.Setup();
+        Time.SetFramerateLimit(120);
         GameObjectBase.RootGameObject = new RootGameObject();
         WindowManager.CreateWindow();
         Renderer.Setup();
@@ -37,7 +38,7 @@ public abstract class Core
     internal void MainLoop(Queue<SDL.Event> events)
     {
         if (!IsRunning) return;
-        Time.Update();
+        Time.FrameStart();
         Renderer.DrawBegin();
         Mouse.ClearEvents();
         while (events.Count > 0)
@@ -49,11 +50,14 @@ public abstract class Core
                 return;
             }
             Mouse.ProcessEvent(@event);
+            // events.Clear();
         }
+
         Tweener.Process();
         GameObjectBase.RootGameObject.OnUpdate(); // updates all game objects as is recursive
         GameObjectBase.RootGameObject.OnDraw(); // draw all game objects as is recursive
         Renderer.DrawEnd();
+        Time.FrameEnd();
     }
 
     public void Quit()

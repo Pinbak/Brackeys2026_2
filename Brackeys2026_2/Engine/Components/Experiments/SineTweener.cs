@@ -9,7 +9,8 @@ public class SineTweener : Component
     protected override void OnUpdate()
     {
         _time += Time.DeltaTime;
-        // GameObject.Transform.Y = float.Sin(_time * 2) * 100;
-        GameObject.Transform.Angle += 100f * Time.DeltaTime;
+        Console.WriteLine($"{Time.DeltaTime * 1000.0:F3} ms");
+        // GameObject.Transform.X = float.Sin(_time * 2) * 100;
+        // GameObject.Transform.Angle += 100f * Time.DeltaTime;
     }
 }
