@@ -36,6 +36,9 @@ public class Game1 : Core
         var face9 = new Texture("Game/Assets/p9.png");
         var face10 = new Texture("Game/Assets/p10.png");
         var face11 = new Texture("Game/Assets/p11.png");
+        var note = new Texture("Game/Assets/note.png");
+        var button = new Texture("Game/Assets/button.png");
+        var buttonDown = new Texture("Game/Assets/buttonDown.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -74,16 +77,17 @@ public class Game1 : Core
                     Angle = -90
                 }
             };
+            const int rightFolderOverlap = 20;
             var playerDescriptionText = new TextRenderer(boldFont, black, "Insert name here", 500);
-            _ = new GameObject(rightFolderWidth * .5f, 40, rightFolder, [
+            _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 40, rightFolder, [
                 playerDescriptionText
             ]);
             var jobDescriptionText = new TextRenderer(oldFont, black, "Minister of finance", 500);
-            _ = new GameObject(rightFolderWidth * .5f, 85, rightFolder, [
+            _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 85, rightFolder, [
                 jobDescriptionText
             ]);
             var secretText = new TextRenderer(oldFont, black, "Secretly Supports Circles", 500);
-            _ = new GameObject(rightFolderWidth * .5f, 130, rightFolder, [
+            _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 130, rightFolder, [
                 secretText
             ]);
 
@@ -112,6 +116,18 @@ public class Game1 : Core
                 actionText
             ]) { Transform = { Pivot = (0, 0) } };
             
+            var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
+                new SpriteRenderer(note),
+            ]) { Transform = { Pivot = (0, 0) } };
+            
+            var confirmAction = new GameObject(padding + 50, currentX + 420, rightFolder, [
+                new Button(button, buttonDown),
+            ]) { Transform = { Pivot = (0, 0) } };
+            
+            var nextTurn = new GameObject(padding + 170, currentX + 420 + button.Height + 10, rightFolder, [
+                new Button(button, buttonDown),
+            ]) { Transform = { Pivot = (0, 0) } };
+            
         // logic
         var ministers = new GameObject(520, 10, leftFolder, [
             new Ministers(card, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], oldFont, oldFontSmaller)
@@ -120,6 +136,8 @@ public class Game1 : Core
         var you = new GameObject(0, 0, null, [
             
         ]);
+        
+        
 
     }
 }

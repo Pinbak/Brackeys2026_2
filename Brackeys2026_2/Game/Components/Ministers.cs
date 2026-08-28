@@ -16,9 +16,13 @@ public class Ministers(Texture card, Texture[] faces, Font nameFont, Font smalle
 
     protected override void OnInitialise()
     {
+        var playerIndex = Random.Next(0, NumberOfMinisters);
         for (var i = 0; i < NumberOfMinisters; i++)
         {
-            CurrentMinisters.Add(new Minister((RoleType)i, GetRandomFaceTexture()));
+            var newMinister = new Minister((RoleType)i, GetRandomFaceTexture());
+            CurrentMinisters.Add(newMinister);
+            if (i == playerIndex)
+                newMinister.IsPlayer = true;
         }
 
         GenerateMinisterGameObjects();
@@ -67,8 +71,14 @@ public class Ministers(Texture card, Texture[] faces, Font nameFont, Font smalle
                 new SpriteRenderer(minister.Face)
             ]);
 
+            var displayName = minister.Name;
+            if (minister.IsPlayer)
+            {
+                displayName += " (YOU)";
+            }
+
             var nameText = new GameObject(50, -30, cardGameObject, [
-                new TextRenderer(smallerFont, minister.Name, 200)
+                new TextRenderer(smallerFont, displayName, 200)
             ]);
             var roleText = new GameObject(60, 10, cardGameObject, [
                 new TextRenderer(smallerFont, minister.GetHumanReadableRole(), 200)
