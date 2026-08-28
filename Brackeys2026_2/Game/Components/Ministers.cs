@@ -1,11 +1,12 @@
 ﻿using Brackeys2026_2.Engine.Components;
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
+using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Game.Classes;
 
 namespace Brackeys2026_2.Game.Components;
 
-public class Ministers(Texture card, Texture[] faces, Font nameFont) : Component
+public class Ministers(Texture card, Texture[] faces, Font nameFont, Font smallerFont) : Component
 {
     public List<Minister> CurrentMinisters { get; set; } = [];
     private const int NumberOfMinisters = 11;
@@ -20,6 +21,17 @@ public class Ministers(Texture card, Texture[] faces, Font nameFont) : Component
             CurrentMinisters.Add(new Minister((RoleType)i, GetRandomFaceTexture()));
         }
 
+        GenerateMinisterGameObjects();
+        GeneratePresidentGameObject();
+    }
+
+    private void GeneratePresidentGameObject()
+    {
+        
+    }
+
+    private void GenerateMinisterGameObjects()
+    {
         // have to hard-code as no ui-system
         var width = card.Width;
         var gap = 10;
@@ -54,11 +66,18 @@ public class Ministers(Texture card, Texture[] faces, Font nameFont) : Component
             var face = new GameObject(-96, 0, cardGameObject, [
                 new SpriteRenderer(minister.Face)
             ]);
+
+            var nameText = new GameObject(50, -30, cardGameObject, [
+                new TextRenderer(smallerFont, minister.Name, 200)
+            ]);
+            var roleText = new GameObject(60, 10, cardGameObject, [
+                new TextRenderer(smallerFont, minister.GetHumanReadableRole(), 200)
+            ]);
         }
     }
 
     private Texture GetRandomFaceTexture()
     {
-        return faces[Random.Next(0, faces.Length - 1)];
+        return faces[Random.Next(0, faces.Length)];
     }
 }

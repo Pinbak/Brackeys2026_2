@@ -15,6 +15,13 @@ public unsafe class TextRenderer : Component
         _colour = colour;
         _text = Own(new Text(content, font, colour, width));
     }
+
+    public TextRenderer(Font font, string content, int width)
+    {
+        _content = content;
+        _colour = Window.Black;
+        _text = Own(new Text(content, font, _colour, width));
+    }
     
     protected override void OnInitialise()
     {
