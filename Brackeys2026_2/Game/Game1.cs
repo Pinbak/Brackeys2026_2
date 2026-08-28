@@ -84,7 +84,7 @@ public class Game1 : Core
             _ = new GameObject(padding, currentX += gap, rightFolder, [
                 new TextRenderer(boldFontSmaller, black, "Goal:", 150)
             ]){ Transform = { Pivot = (0, 0) } };
-            var goalText = new TextRenderer(oldFontSmaller, black, "Have all the ministers support the cause for circles", 290);
+            var goalText = new TextRenderer(oldFontSmaller, black, "Have all the ministers support the cause for dots", 290);
             _ = new GameObject(padding, currentX += gap, rightFolder, [
                 goalText
             ]){ Transform = { Pivot = (0, 0) } };
