@@ -1,7 +1,7 @@
 ﻿using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Game.Components;
 
-namespace Brackeys2026_2.Game.Classes;
+namespace Brackeys2026_2.Game.Classes.Ministers;
 
 public class Minister : IHasTurn
 {
@@ -40,7 +40,7 @@ public class Minister : IHasTurn
     private const float SuspicionThreshold = 20f;
     private const float TrustGain = 5f;
     private const float TrustLoss = 1f;
-    protected Minister LastTurn { get; set; }
+    protected Minister? LastTurn { get; set; }
     protected Faction LastPolicy { get; set; }
 
     public Minister(Role role, Texture face, GameManager gameManager)
@@ -63,7 +63,7 @@ public class Minister : IHasTurn
     
     public void CalculateSuspicions()
     {
-        if (GameManager.Turn == 0) return;
+        if (LastTurn is null) return;
         (LastTurn, LastPolicy) = GameManager.PreviouslyImplementedPolicy;
         if (LastTurn == this) return;
         
@@ -266,7 +266,7 @@ public class Minister : IHasTurn
         }
     }
 
-    private void DecreasePoliticalCapital(int amount)
+    public void DecreasePoliticalCapital(int amount)
     {
         PoliticalCapital -= amount;
         if (IsPlayer)
@@ -318,7 +318,7 @@ public class Minister : IHasTurn
         return dict;
     }
 
-public Minister GetMinisterWhomLeastTrusted()
+    public Minister GetMinisterWhomLeastTrusted()
     {
         var (lastTurn, lastPolicy) = GameManager.PreviouslyImplementedPolicy;
         var lowestTrust = Suspicions[lastTurn].Trust;
@@ -364,5 +364,17 @@ public Minister GetMinisterWhomLeastTrusted()
 
         throw new Exception("Minister appears to have gone missing!");
     }
-    
+
+    public void Die()
+    {
+        
+    }
+
+    public Minister ChooseNewMinister()
+    {
+        var ministerOptions = GameManager.ThisTurnsMinisters;
+        if (ministerOptions[0].Faction == Faction) return ministerOptions[0];
+        if (ministerOptions[1].Faction == Faction) return ministerOptions[1];
+        return ministerOptions[0];
+    }
 }

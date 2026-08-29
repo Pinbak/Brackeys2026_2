@@ -1,5 +1,6 @@
 ﻿
 using Brackeys2026_2.Engine.GameObjects;
+using Brackeys2026_2.Game.Classes.Ministers;
 using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game.Classes;
@@ -11,37 +12,35 @@ public class President(RoleType roleType, string name, GameManager gameManager) 
     public override void PerformAction(Minister thisPlayer)
     {
         // reshuffle cabinet
-        if (GameManager.Turn != 0)
+        if (GameManager.Turn == 0) return;
+        var lowestTrust = thisPlayer.GetMinisterWhomLeastTrusted();
+
+        if (thisPlayer.Suspicions[lowestTrust].Trust < ReshuffleValue)
         {
-            var lowestTrust = thisPlayer.GetMinisterWhomLeastTrusted();
-
-            if (thisPlayer.Suspicions[lowestTrust].Trust < ReshuffleValue)
+            var mostThreatening = thisPlayer.RankOrderThreats();
+            // we don't know their role, so go off of assumption
+            var belief = thisPlayer.Suspicions[lowestTrust].GetHighest();
+            if (belief != thisPlayer.Faction)
             {
-                var mostThreatening = thisPlayer.RankOrderThreats();
-                // we don't know their role, so go off of assumption
-                var belief = thisPlayer.Suspicions[lowestTrust].GetHighest();
-                if (belief != thisPlayer.Faction)
+                if (mostThreatening[0] == lowestTrust.Role.RoleType ||
+                    mostThreatening[1] == lowestTrust.Role.RoleType ||
+                    mostThreatening[2] == lowestTrust.Role.RoleType)
                 {
-                    if (mostThreatening[0] == lowestTrust.Role.RoleType ||
-                        mostThreatening[1] == lowestTrust.Role.RoleType ||
-                        mostThreatening[2] == lowestTrust.Role.RoleType)
+                    // we swap with a lower threat role, as long as they are somewhat trustworthy
+                    var leastThreateningRoles = thisPlayer.RankOrderLeastThreatening();
+                    var leastThreateningMinisterByRole = thisPlayer.FindMinisterGivenRole(leastThreateningRoles[0]);
+                    if (thisPlayer.Suspicions[leastThreateningMinisterByRole].Trust > 0f)
                     {
-                        // we swap with a lower threat role, as long as they are somewhat trustworthy
-                        var leastThreateningRoles = thisPlayer.RankOrderLeastThreatening();
-                        var leastThreateningMinisterByRole = thisPlayer.FindMinisterGivenRole(leastThreateningRoles[0]);
-                        if (thisPlayer.Suspicions[leastThreateningMinisterByRole].Trust > 0f)
-                        {
-                            SwapMinisterRoles(lowestTrust, leastThreateningMinisterByRole);
-                            return;
-                        }
-                        
-                        leastThreateningMinisterByRole = thisPlayer.FindMinisterGivenRole(leastThreateningRoles[1]);
-                        if (thisPlayer.Suspicions[leastThreateningMinisterByRole].Trust > 0f)
-                        {
-                            SwapMinisterRoles(lowestTrust, leastThreateningMinisterByRole);
-                        }
-
+                        SwapMinisterRoles(lowestTrust, leastThreateningMinisterByRole);
+                        return;
                     }
+                        
+                    leastThreateningMinisterByRole = thisPlayer.FindMinisterGivenRole(leastThreateningRoles[1]);
+                    if (thisPlayer.Suspicions[leastThreateningMinisterByRole].Trust > 0f)
+                    {
+                        SwapMinisterRoles(lowestTrust, leastThreateningMinisterByRole);
+                    }
+
                 }
             }
         }
@@ -74,21 +73,6 @@ public class PresidentsAide : Role
 
     public override void PerformAction(Minister thisPlayer)
     {
-        
-    }
-}
-
-public class MinisterOfNationalSecurity : Role
-{
-    private const float DisposalCost = 50f;
-    
-    public MinisterOfNationalSecurity(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-        // can kill people
         
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Brackeys2026_2.Engine.Resources;
+using Brackeys2026_2.Game.Classes.Ministers;
 using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game.Classes;

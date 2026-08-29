@@ -1,17 +1,21 @@
 ﻿using Brackeys2026_2.Engine.Components;
 using Brackeys2026_2.Engine.GameObjects;
+using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System.Tweening;
 using Brackeys2026_2.Game.Classes;
+using Brackeys2026_2.Game.Classes.Ministers;
 
 namespace Brackeys2026_2.Game.Components;
 
-public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton) : Component
+public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton, SpriteRenderer face) : Component
 {
     public Role Role => _minister.Role;
 
     public Minister Minister => _minister;
 
     public TextRenderer? RoleText { get; set; }
+    public TextRenderer? NameText { get; set; }
+    private SpriteRenderer _face = face;
 
     private static readonly Random Random = new();
     private GameObject _outline = cardOutline;
@@ -58,6 +62,19 @@ public class MinisterFaceCard(Minister minister, Collider collider, GameObject c
     public void UpdateRoleText()
     {
         RoleText?.Set(_minister.Role.Name);
+    }
+
+    public void UpdateNameText()
+    {
+        NameText?.Set(_minister.Name);
+    }
+
+    public void ChangeMinister(Minister newMinister)
+    {
+        _minister = newMinister;
+        UpdateRoleText();
+        UpdateNameText();
+        face.ChangeTexture(newMinister.Face);
     }
     
     public void MoveToNewPosition(float x, float y)

@@ -198,16 +198,38 @@ public class PlayerInteraction : Component
         UpdateActions();
     }
 
-    private void ToggleNextTurnDisabled()
+    public void ToggleNextTurnDisabled()
     {
         _nextTurnButton.DisablePresses("Choose Two Cards...");
         _confirmActionButton.EnablePresses();
     }
 
-    private void ToggleNextTurnEnabled()
+    public void ToggleNextTurnEnabled()
     {
         _nextTurnButton.EnablePresses();
         _confirmActionButton.DisablePresses();
+    }
+    
+    public void DisableButtons()
+    {
+        _nextTurnButton.DisablePresses("AI Taking Turn...");
+        _confirmActionButton.DisablePresses();
+    }
+    
+    public void EnableButtons()
+    {
+        _nextTurnButton.EnablePresses();
+        _confirmActionButton.DisablePresses();
+    }
+
+    public void ChooseMinister()
+    {
+        // Player.GameManager.ToRemove = newMinister;
+    }
+
+    public void EndGame()
+    {
+        throw new NotImplementedException();
     }
 
     

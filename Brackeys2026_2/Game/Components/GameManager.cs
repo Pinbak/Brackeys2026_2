@@ -3,6 +3,7 @@ using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Game.Classes;
+using Brackeys2026_2.Game.Classes.Ministers;
 
 namespace Brackeys2026_2.Game.Components;
 
@@ -10,10 +11,14 @@ public class GameManager : Component
 {
     public List<Minister> CurrentMinisters { get; set; } = [];
     private const int NumberOfMinisters = 8;
-    public (Minister, Faction) PreviouslyImplementedPolicy;
+    public (Minister, Faction) PreviouslyImplementedPolicy { get; set; }
+    public float TurnDelay { get; set; }
     public int Turn { get; set; }
     public List<Faction> ThisTurnsCards = [];
-    
+    public List<Minister> ThisTurnsMinisters = [];
+    public bool SomeoneIsDying;
+    public Minister ToRemove;
+
     private static readonly Random Random = new();
     private Font _nameFont;
     private readonly Texture _card;
@@ -24,6 +29,7 @@ public class GameManager : Component
     private Button _nextTurnButton;
     private static Minister _currentTurn;
     private static bool _isInTurn;
+    private const float TurnLength = 0.0f;
 
     private Dictionary<RoleType, (float x, float y)> MinisterPositions { get; set; } = new();
 
@@ -40,6 +46,26 @@ public class GameManager : Component
         nextTurnButton.HasPressed += NextTurn;
         _player = player;
         _cardOutline = cardOutline;
+    }
+
+    protected override void OnUpdate()
+    {
+        if (!_isInTurn) return;
+        TurnDelay -= Time.DeltaTime;
+        if (TurnDelay <= 0)
+        {
+            _isInTurn = false;
+            TurnDelay = 0f;
+            if (_player.IsTurn)
+            {
+                _player.ToggleNextTurnDisabled();
+            }
+            else
+            {
+                _player.ToggleNextTurnEnabled();   
+            }
+            
+        }
     }
 
     protected override void OnInitialise()
@@ -102,17 +128,19 @@ public class GameManager : Component
                 new SpriteRenderer(_cardOutline),
             ]) { IsEnabled = false };
             
-            var cardComponent = new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton);
-            ministerGameObject.AddComponent(collider);
-            ministerGameObject.AddComponent(cardComponent);
 
             var cardGameObject = new GameObject(0, 0, ministerGameObject, [
                 new SpriteRenderer(_card),
             ]);
-            
-            var face = new GameObject(-96, 0, cardGameObject, [
-                new SpriteRenderer(minister.Face)
+
+            var face = new SpriteRenderer(minister.Face);
+            _ = new GameObject(-96, 0, cardGameObject, [
+                face
             ]);
+            
+            var cardComponent = new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton, face);
+            ministerGameObject.AddComponent(collider);
+            ministerGameObject.AddComponent(cardComponent);
 
             var displayName = minister.Name;
             if (minister.IsPlayer)
@@ -124,37 +152,18 @@ public class GameManager : Component
             _ = new GameObject(60, -10, cardGameObject, [
                roleText 
             ]);
-            var nameText = new GameObject(50, 40, cardGameObject, [
-                new TextRenderer(_smallerFont, displayName, 200)
+            var nameText = new TextRenderer(_smallerFont, displayName, 200);
+            _ = new GameObject(50, 40, cardGameObject, [
+                nameText
             ]);
 
+            cardComponent.NameText = nameText;
             cardComponent.RoleText = roleText;
 
             _cards.Add(cardComponent);
             _ministerGameObjects.Add(ministerGameObject);
             
         }
-    }
-
-    public void UpdatePositions()
-    {
-        foreach (var ministerFaceCard in _cards)
-        {
-            var (x, y) = MinisterPositions[ministerFaceCard.Role.RoleType];
-            ministerFaceCard.MoveToNewPosition(x, y);
-            ministerFaceCard.UpdateRoleText();
-            if (ministerFaceCard.Minister.IsPlayer)
-            {
-                _player.UpdateTextUi();
-            }
-        }
-
-        CabinetReshuffled();
-    }
-
-    private void CabinetReshuffled()
-    {
-        throw new NotImplementedException();
     }
 
     private Role GetRoleFromRoleType(RoleType roleType)
@@ -188,7 +197,7 @@ public class GameManager : Component
         {
             if (_isInTurn) return;
             var positionInList = CurrentMinisters.FindIndex(a => a == _currentTurn);
-            var nextMinisterTurn = positionInList += 1;
+            var nextMinisterTurn = positionInList + 1;
             if (nextMinisterTurn > NumberOfMinisters - 1)
             {
                 nextMinisterTurn = 0;
@@ -200,6 +209,7 @@ public class GameManager : Component
         
             // new turn
             _isInTurn = true;
+            _player.DisableButtons();
             GenerateFirstOfTurnCards();
             _currentTurn.BeginTurn();
         }
@@ -212,8 +222,7 @@ public class GameManager : Component
         foreach (var minister in CurrentMinisters) minister.CalculateSuspicions();
         PreviouslyImplementedPolicy = (_currentTurn, faction);
         Turn++;
-        
-        _isInTurn = false;
+        TurnDelay = TurnLength;
     }
 
     public void GenerateFirstOfTurnCards()
@@ -227,4 +236,110 @@ public class GameManager : Component
             ThisTurnsCards.Add(card);    
         }
     }
+    
+    public void UpdatePositions()
+    {
+        foreach (var ministerFaceCard in _cards)
+        {
+            var (x, y) = MinisterPositions[ministerFaceCard.Role.RoleType];
+            ministerFaceCard.MoveToNewPosition(x, y);
+            ministerFaceCard.UpdateRoleText();
+            if (ministerFaceCard.Minister.IsPlayer)
+            {
+                _player.UpdateTextUi();
+            }
+        }
+
+        CabinetReshuffled();
+    }
+
+    private void CabinetReshuffled()
+    {
+        Console.WriteLine("Cabinet reshuffled");
+    }
+
+    private Minister GetMinisterByRoleType(RoleType role)
+    {
+        foreach (var currentMinister in CurrentMinisters)
+        {
+            if (currentMinister.Role.RoleType == role)
+                return currentMinister;
+        }
+
+        throw new Exception($"Could not find {role}.");
+    }
+
+    private void GenerateMinisterChoices(Role role)
+    {
+        ThisTurnsMinisters.Clear();
+        ThisTurnsMinisters.Add(new Minister(role, GetRandomFaceTexture(), this));
+        ThisTurnsMinisters.Add(new Minister(role, GetRandomFaceTexture(), this));
+        
+    }
+
+    public void KillMinister(Minister lowestTrust)
+    {
+        Minister newMinister;
+        SomeoneIsDying = true;
+        TurnDelay += 5f;
+        // on player death, end game
+        if (lowestTrust.IsPlayer)
+        {
+            _player.EndGame();
+            return;
+        }
+        ToRemove = lowestTrust;
+        GenerateMinisterChoices(lowestTrust.Role);
+        if (lowestTrust.Role.RoleType is RoleType.SecretaryOfImmigration)
+        {
+            newMinister = new Minister(lowestTrust.Role, GetRandomFaceTexture(), this);
+            ChosenNewMinister(newMinister);
+        }
+        else
+        {
+            var secretary = GetMinisterByRoleType(RoleType.SecretaryOfImmigration);
+            if (secretary.IsPlayer)
+            {
+                _player.ChooseMinister();
+            }
+            else
+            {
+                newMinister = secretary.ChooseNewMinister();
+                ChosenNewMinister(newMinister);
+            }
+        }
+        
+    }
+
+    private void ChosenNewMinister(Minister newMinister)
+    {
+        Console.WriteLine($"{ToRemove.Name} has been killed {newMinister.Name} has taken his place.");
+        foreach (var ministerFaceCard in _cards)
+        {
+            if (ministerFaceCard.Minister == ToRemove)
+            {
+                ministerFaceCard.ChangeMinister(newMinister);
+            }
+        }
+
+        var positionInList = CurrentMinisters.FindIndex(m => m == ToRemove);
+        CurrentMinisters.Remove(ToRemove);
+        CurrentMinisters.Insert(positionInList, newMinister);
+        
+        foreach (var currentMinister in CurrentMinisters)
+        {
+            currentMinister.Suspicions.Remove(ToRemove);
+            currentMinister.Suspicions.Add(newMinister, new Suspicion());
+        }
+
+        if (PreviouslyImplementedPolicy.Item1 == ToRemove)
+        {
+            PreviouslyImplementedPolicy = (newMinister, PreviouslyImplementedPolicy.Item2);
+        }
+        
+        newMinister.PopulateSuspicions(CurrentMinisters);
+        
+        SomeoneIsDying = false;
+    }
+    
 }

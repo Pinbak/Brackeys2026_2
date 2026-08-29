@@ -4,7 +4,7 @@ namespace Brackeys2026_2.Engine.Components;
 
 public class SpriteRenderer : Component
 {
-    protected readonly Texture SpriteTexture;
+    protected Texture SpriteTexture;
     
     public SpriteRenderer(Texture texture)
     {
@@ -34,6 +34,11 @@ public class SpriteRenderer : Component
     protected override void OnDraw()
     {
         SpriteTexture.Draw(GameObject.Transform);
+    }
+
+    public void ChangeTexture(Texture texture)
+    {
+        SpriteTexture = texture;
     }
 
 }

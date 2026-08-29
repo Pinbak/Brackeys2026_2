@@ -3,11 +3,11 @@
 public enum RoleType
 {
     President, // can reshuffle cabinet, has final vote
-    PresidentsAide, // always exposed presidents hand
+    PresidentsAide, // always exposed presidents hand // can bribe
     MinisterOfNationalSecurity, // can kill people
     SupremeCommander, // stage a coup against the president
     SecretaryOfImmigration, // chooses new minister on death
     MinisterOfCommunication,  // change someone's ideology
-    MinisterOfInterior, // expose actual ideology of member
-    SecretaryForPropaganda, // convince other ministers of someone elses
+    MinisterOfInterior, // expose actual ideology of member // can bribe
+    SecretaryForPropaganda, // convince other ministers of someone elses // can bribe
 }
