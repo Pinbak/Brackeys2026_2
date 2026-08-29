@@ -5,7 +5,7 @@ using Brackeys2026_2.Game.Classes;
 
 namespace Brackeys2026_2.Game.Components;
 
-public class Card(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton) : Component
+public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton) : Component
 {
     private static readonly Random Random = new();
     private GameObject _outline = cardOutline;

@@ -28,7 +28,7 @@ public class GameManager : Component
     private Dictionary<RoleType, (float x, float y)> MinisterPositions { get; set; } = new();
 
     private List<GameObject> _ministerGameObjects = [];
-    private List<Card> _cards = [];
+    private List<MinisterFaceCard> _cards = [];
 
     public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont, Button confirmButton, Button nextTurnButton, PlayerInteraction player)
     {
@@ -52,7 +52,7 @@ public class GameManager : Component
                 var newMinister = new Player(GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture(), _player, this);
                 CurrentMinisters.Add(newMinister);
                 newMinister.IsPlayer = true;
-                _player.Player = newMinister;
+                _player.UpdateTextUi(newMinister);
             }
             else
             {
@@ -102,7 +102,7 @@ public class GameManager : Component
                 new SpriteRenderer(_cardOutline),
             ]) { IsEnabled = false };
             
-            var cardComponent = new Card(minister, collider, cardOutline, _nextTurnButton);
+            var cardComponent = new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton);
             ministerGameObject.AddComponent(collider);
             ministerGameObject.AddComponent(cardComponent);
 

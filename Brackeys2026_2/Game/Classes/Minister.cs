@@ -14,7 +14,7 @@ public class Minister : IHasTurn
 
     public readonly Dictionary<Minister, Suspicion> Suspicions = new();
     public Perception Perception { get; set; } = new();
-    protected GameManager GameManager { get; set; }
+    public GameManager GameManager { get; set; }
 
     public static Minister President { get; private set; } = null!;
 
@@ -89,7 +89,14 @@ public class Minister : IHasTurn
 
     public string GetGoal()
     {
-        return $"Have every minister support {Faction.Name.ToLower()}.";
+        return Faction.FactionType switch
+        {
+            FactionType.Loyalist => "You win if all members of the cabinet are Loyalist. Glory to our leader!",
+            FactionType.Technocrat => "You win if all members of the cabinet are Technocrats. Embrace technology and change!",
+            FactionType.Agrarian => "You win if all members of the cabinet are Agrarian. The old ways are what made our country great!",
+            FactionType.Federalist => "You win if all members of the cabinet are Federalists. Long live democracy!",
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     public string GetActionText()
@@ -98,7 +105,7 @@ public class Minister : IHasTurn
         {
             RoleType.President => "Can reshuffle cabinet, has final vote.",
             RoleType.MinisterOfNationalSecurity => "'Dispose' of target.",
-            RoleType.SupremeCommander => "Stage a coup against the president (become president).",
+            RoleType.SupremeCommander => "Stage a coup against the president.",
             RoleType.SecretaryOfImmigration => "Choose a new minister on a peer's death.",
             RoleType.MinisterOfCommunication => "Change target's ideology.",
             RoleType.PresidentsAide => "President's hand is always exposed.",
@@ -132,6 +139,12 @@ public class Minister : IHasTurn
             var card = President.SelectOneOfTwoCards(a, b);
             GameManager.EndTurn(card);
         }
+    }
+
+    public void EndPlayerTurn(Faction cardA, Faction cardB)
+    {
+        var card = President.SelectOneOfTwoCards(cardA, cardB);
+        GameManager.EndTurn(card);
     }
 
     private Faction SelectOneOfThreeCards()

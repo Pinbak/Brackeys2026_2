@@ -42,16 +42,20 @@ public class Game1 : Core
         var buttonDown = new Texture("Game/Assets/buttonDown.png");
         var buttonDisabled = new Texture("Game/Assets/buttonDisabled.png");
         var outline = new Texture("Game/Assets/outline.png");
+        var federalist = new Texture("Game/Assets/federalistPolicy.png");
+        var loyalist = new Texture("Game/Assets/loyalistPolicy.png");
+        var agrarian = new Texture("Game/Assets/agrarianPolicy.png");
+        var technocrat = new Texture("Game/Assets/technocratPolicy.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
         var leftFolder = new GameObject(-20, 100, null, [
             new Tiled9SliceSpriteRenderer(folderTexture, 1300, leftFolderHeight, 45)
         ]);
-        var text = new GameObject(1100, 80, null, [
+        var text = new GameObject(800, 75, null, [
             new TextRenderer(oldFont, black, "Cabinet", 150)
         ]);
-        var arrow = new GameObject(1180, 80, null, [
+        var arrow = new GameObject(880, 75, null, [
             new SpriteRenderer(misc1)
         ]);
         text.Transform.Angle = -5;
@@ -134,7 +138,7 @@ public class Game1 : Core
             ]);
             
         // logic
-        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText, secretText, goalText, actionText);
+        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText, secretText, goalText, actionText, loyalist, agrarian, technocrat, federalist);
         var playerGameObject = new GameObject(0, 0, null, [
             player
         ]);

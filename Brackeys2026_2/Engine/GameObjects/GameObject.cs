@@ -49,6 +49,7 @@ public sealed class GameObject : GameObjectBase
         component.GameObject = this;
         component.IsOwned = true;
         Components.Insert(0, component);
+        component.Initialise();
         // if (behaviour is Component updatableBehaviour)
         // {
         //     
@@ -62,18 +63,6 @@ public sealed class GameObject : GameObjectBase
     }
 
     // intentionally recursive
-    public override void OnInitialise()
-    {
-        for (var i = Components.Count - 1; i >= 0 ; i--)
-        {
-            var updatableBehaviour = Components[i];
-            if (!updatableBehaviour.IsEnabled || _isDisposed) continue;
-            updatableBehaviour.Initialise();
-        }
-
-        base.OnInitialise();
-    }
-
     public override void OnUpdate()
     {
         for (var i = Components.Count - 1; i >= 0; i--)

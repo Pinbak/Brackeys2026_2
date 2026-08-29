@@ -15,6 +15,6 @@ public class Player : Minister
     public override void BeginTurn()
     {
         Console.WriteLine("players turn");
-        _player.StartOfNewPlayerTurn();
+        _player.StartOfNewPlayerTurn(GameManager.ThisTurnsCards);
     }
 }

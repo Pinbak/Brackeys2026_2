@@ -81,6 +81,11 @@ public class Button : SpriteRenderer
         
     }
 
+    public void SetText(string text)
+    {
+        _text.UpdateText(text);
+    }
+    
     public void EnablePresses()
     {
         _isPressable = true;
