@@ -7,6 +7,12 @@ namespace Brackeys2026_2.Game.Components;
 
 public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton) : Component
 {
+    public Role Role => _minister.Role;
+
+    public Minister Minister => _minister;
+
+    public TextRenderer? RoleText { get; set; }
+
     private static readonly Random Random = new();
     private GameObject _outline = cardOutline;
     private Minister _minister = minister;
@@ -49,11 +55,16 @@ public class MinisterFaceCard(Minister minister, Collider collider, GameObject c
         }
     }
 
-    private void MoveToNewPosition(float x, float y)
+    public void UpdateRoleText()
     {
-        const float durationSeconds = 3f;
-        Tweener.MoveXTo(GameObject.Transform, x, durationSeconds);
-        Tweener.MoveYTo(GameObject.Transform, y, durationSeconds);
+        RoleText?.Set(_minister.Role.Name);
+    }
+    
+    public void MoveToNewPosition(float x, float y)
+    {
+        const float durationSeconds = 2f;
+        Tweener.MoveXTo(GameObject.Transform, x, durationSeconds, EaseFunctions.OutQuart, .5f);
+        Tweener.MoveYTo(GameObject.Transform, y, durationSeconds, EaseFunctions.OutQuart, .5f);
     }
 
 }

@@ -2,7 +2,7 @@
 
 public class Suspicion
 {
-    public float Trust;
+    public float Trust { get; private set; }
     private readonly Dictionary<Faction, float> _actualValues = new();
 
     public Suspicion()
@@ -50,11 +50,28 @@ public class Suspicion
 
         return highestFaction;
     }
+    
+    public void RaiseTrust(float amount)
+    {
+        Trust += amount;
+    }
 
-    public void UpdateTrust(Faction lastPolicy, Faction playerFaction, float trustGain)
+    public void LowerTrust(float amount)
+    {
+        Trust -= amount;
+    }
+
+    public void UpdateTrust(Faction lastPolicy, Faction playerFaction, float trustGain, float trustLoss)
     {
         if (lastPolicy == playerFaction)
+        {
             Trust += trustGain;
+        }
+
+        else if (lastPolicy != playerFaction)
+        {
+            Trust -= trustLoss;
+        }
     }
     
 }

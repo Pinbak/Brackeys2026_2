@@ -1,4 +1,5 @@
 ﻿
+using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game.Classes;
@@ -22,11 +23,19 @@ public class President(RoleType roleType, string name, GameManager gameManager) 
                 if (belief != thisPlayer.Faction)
                 {
                     if (mostThreatening[0] == lowestTrust.Role.RoleType ||
-                        mostThreatening[1] == lowestTrust.Role.RoleType)
+                        mostThreatening[1] == lowestTrust.Role.RoleType ||
+                        mostThreatening[2] == lowestTrust.Role.RoleType)
                     {
                         // we swap with a lower threat role, as long as they are somewhat trustworthy
                         var leastThreateningRoles = thisPlayer.RankOrderLeastThreatening();
                         var leastThreateningMinisterByRole = thisPlayer.FindMinisterGivenRole(leastThreateningRoles[0]);
+                        if (thisPlayer.Suspicions[leastThreateningMinisterByRole].Trust > 0f)
+                        {
+                            SwapMinisterRoles(lowestTrust, leastThreateningMinisterByRole);
+                            return;
+                        }
+                        
+                        leastThreateningMinisterByRole = thisPlayer.FindMinisterGivenRole(leastThreateningRoles[1]);
                         if (thisPlayer.Suspicions[leastThreateningMinisterByRole].Trust > 0f)
                         {
                             SwapMinisterRoles(lowestTrust, leastThreateningMinisterByRole);
@@ -44,7 +53,15 @@ public class President(RoleType roleType, string name, GameManager gameManager) 
         var currentBRole = b.Role;
         a.Role = currentBRole;
         b.Role = currentARole;
-        Console.WriteLine("Swapped ministers");
+        
+        // swap order
+        var positionInListA = GameManager.CurrentMinisters.FindIndex(m => m == a);
+        var positionInListB = GameManager.CurrentMinisters.FindIndex(m => m == b);
+        (GameManager.CurrentMinisters[positionInListA], GameManager.CurrentMinisters[positionInListB]) = (
+            GameManager.CurrentMinisters[positionInListB], GameManager.CurrentMinisters[positionInListA]);
+        
+        GameManager.UpdatePositions();
+        
     }
     
 }
@@ -63,12 +80,15 @@ public class PresidentsAide : Role
 
 public class MinisterOfNationalSecurity : Role
 {
+    private const float DisposalCost = 50f;
+    
     public MinisterOfNationalSecurity(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
     {
     }
 
     public override void PerformAction(Minister thisPlayer)
     {
+        // can kill people
         
     }
 }

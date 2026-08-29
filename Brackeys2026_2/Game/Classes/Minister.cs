@@ -38,7 +38,8 @@ public class Minister : IHasTurn
     private const float GenericSuspicionDecrease = 2f;
     private const float PresidentialSuspicionDecrease = 1f;
     private const float SuspicionThreshold = 20f;
-    private const float TrustGain = 1f;
+    private const float TrustGain = 5f;
+    private const float TrustLoss = 1f;
     protected Minister LastTurn { get; set; }
     protected Faction LastPolicy { get; set; }
 
@@ -69,11 +70,10 @@ public class Minister : IHasTurn
         // suspicions of other players
         Suspicions[LastTurn].UpdateSuspicions(LastPolicy, GenericSuspicionIncrease, GenericSuspicionDecrease);
 
-        Suspicions[LastTurn].UpdateTrust(LastPolicy, Faction, TrustGain);
+        Suspicions[LastTurn].UpdateTrust(LastPolicy, Faction, TrustGain, TrustLoss);
 
         if (Role.RoleType is RoleType.President) return;
-        Suspicions[President]
-            .UpdateSuspicions(LastPolicy, PresidentialSuspicionIncrease, PresidentialSuspicionDecrease);
+        Suspicions[President].UpdateSuspicions(LastPolicy, PresidentialSuspicionIncrease, PresidentialSuspicionDecrease);
     }
 
     private string GenerateName()
@@ -209,10 +209,25 @@ public class Minister : IHasTurn
         // from the predisent's point of view
         if (Suspicions[minister].Trust > 1f)
         {
-            var amount = int.Clamp((int)Suspicions[minister].Trust, 1, 10);
+            var amount = int.Clamp((int)Suspicions[minister].Trust, 1, 5);
             amount += 1;
             minister.IncreasePolitcalCapital(amount);
         }
+
+        if (a == b)
+        {
+            if (Faction != a)
+                Suspicions[minister].LowerTrust(1f);
+            else
+                Suspicions[minister].RaiseTrust(3f);
+        }
+        
+        if (a == Faction || b == Faction)
+            Suspicions[minister].RaiseTrust(1f);
+        
+        if (a != Faction && b != Faction)
+            Suspicions[minister].LowerTrust(2f);
+        
         var cards = new List<Faction>() { a, b };
         foreach (var faction in cards)
         {
@@ -232,7 +247,7 @@ public class Minister : IHasTurn
             
         }
 
-        if (a == minister.Faction)
+        if (a == minister.Faction || b == minister.Faction)
         {
             minister.IncreasePolitcalCapital(10);
         }

@@ -119,17 +119,42 @@ public class GameManager : Component
             {
                 displayName += " (YOU)";
             }
-            
-            var roleText = new GameObject(60, -10, cardGameObject, [
-                new TextRenderer(_nameFont, minister.Role.Name, 200)
+
+            var roleText = new TextRenderer(_nameFont, minister.Role.Name, 200);
+            _ = new GameObject(60, -10, cardGameObject, [
+               roleText 
             ]);
             var nameText = new GameObject(50, 40, cardGameObject, [
                 new TextRenderer(_smallerFont, displayName, 200)
             ]);
-            
+
+            cardComponent.RoleText = roleText;
+
+            _cards.Add(cardComponent);
             _ministerGameObjects.Add(ministerGameObject);
             
         }
+    }
+
+    public void UpdatePositions()
+    {
+        foreach (var ministerFaceCard in _cards)
+        {
+            var (x, y) = MinisterPositions[ministerFaceCard.Role.RoleType];
+            ministerFaceCard.MoveToNewPosition(x, y);
+            ministerFaceCard.UpdateRoleText();
+            if (ministerFaceCard.Minister.IsPlayer)
+            {
+                _player.UpdateTextUi();
+            }
+        }
+
+        CabinetReshuffled();
+    }
+
+    private void CabinetReshuffled()
+    {
+        throw new NotImplementedException();
     }
 
     private Role GetRoleFromRoleType(RoleType roleType)

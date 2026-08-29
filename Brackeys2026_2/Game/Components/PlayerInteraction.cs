@@ -46,7 +46,12 @@ public class PlayerInteraction : Component
         _pcText = pcText;
         _token = token;
     }
-    
+
+    public void UpdateTextUi()
+    {
+        UpdateTextUi(Player);
+    }
+
     public void UpdateTextUi(Player thisPlayer)
     {
         Player = thisPlayer;
@@ -59,7 +64,6 @@ public class PlayerInteraction : Component
 
     private void ConfirmAction()
     {
-        
     }
     
     public void FinishPlayerTurn()
