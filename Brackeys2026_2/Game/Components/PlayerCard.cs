@@ -83,8 +83,8 @@ public class PlayerCard : Component
     {
         if (IsSelected)
         {
-            Tweener.MoveYTo(GameObject.Transform, 190, 0.5f, EaseFunctions.OutQuart, delay, true);
             Tweener.MoveXTo(GameObject.Transform, 650, 0.5f, EaseFunctions.OutQuart, delay, true);
+            Tweener.MoveYTo(GameObject.Transform, 190, 0.5f, EaseFunctions.OutQuart, delay, true);
             Tweener.ScaleTo(GameObject.Transform, 0.1f, 0.5f, EaseFunctions.OutQuart, delay, true);
         }
         else

@@ -8,16 +8,19 @@ namespace Brackeys2026_2.Game.Components;
 public class PlayerInteraction : Component
 {
     private Player Player { get; set; }
+    public bool IsTurn { get; set; }
     
     private TextRenderer _playerDescription;
     private TextRenderer _jobDescription;
     private TextRenderer _secretFaction;
     private TextRenderer _goalText;
     private TextRenderer _actionText;
+    private TextRenderer _pcText;
     private Texture _agrarianTexture;
     private Texture _technocratTexture;
     private Texture _federalistTexture;
     private Texture _loyalistTexture;
+    private Texture _token;
     private Button _confirmActionButton;
     private readonly Button _nextTurnButton;
     private readonly List<GameObject> _playerCardsGameObjects = [];
@@ -25,13 +28,12 @@ public class PlayerInteraction : Component
     private readonly List<Faction> _selected = [];
 
     public PlayerInteraction(Button confirmButton, Button nextTurnButton, TextRenderer playerDescriptionText,
-        TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText,
-        Texture loyalist, Texture agrarian, Texture technocrat, Texture federalist)
+        TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText, TextRenderer pcText,
+        Texture loyalist, Texture agrarian, Texture technocrat, Texture federalist, Texture token)
     {
         _confirmActionButton = confirmButton;
         confirmButton.HasPressed += ConfirmAction;
         _nextTurnButton = nextTurnButton;
-        _nextTurnButton.HasPressed += FinishTurn;
         _playerDescription = playerDescriptionText;
         _jobDescription = jobDescriptionText;
         _secretFaction = secretText;
@@ -41,6 +43,8 @@ public class PlayerInteraction : Component
         _technocratTexture = technocrat;
         _federalistTexture = federalist;
         _loyalistTexture = loyalist;
+        _pcText = pcText;
+        _token = token;
     }
     
     public void UpdateTextUi(Player thisPlayer)
@@ -58,8 +62,9 @@ public class PlayerInteraction : Component
         
     }
     
-    private void FinishTurn()
+    public void FinishPlayerTurn()
     {
+        if (!Player.IsTurn) return;
         if (_selected.Count == 2)
         {
             ToggleNextTurnEnabled();
@@ -89,14 +94,33 @@ public class PlayerInteraction : Component
             var playerCard = _playerCards[i];
             playerCard.RemoveTween(i * .1f);
         }
-
+        
         Player.EndPlayerTurn(_selected[0], _selected[1]);
+        IsTurn = false;
     }
 
     public void StartOfNewPlayerTurn(List<Faction> gameManagerThisTurnsCards)
     {
+        IsTurn = true;
         ToggleNextTurnDisabled();
         ShowCards(gameManagerThisTurnsCards);
+    }
+
+    public void IncreasePoliticalCapital(int amount)
+    {
+        _pcText.Set($"Political Capital: {Player.PoliticalCapital}");
+
+        for (var i = 0; i < amount; i++)
+        {
+            _ = new GameObject(650, 190, GameObject, [new SpriteRenderer(_token), new PoliticalCapitalToken(i * .1f)]);    
+        }
+        
+        
+    }
+    
+    public void DecreasePoliticalCapital(int amount)
+    {
+        _pcText.Set($"Political Capital: {Player.PoliticalCapital}");
     }
 
     private void ShowCards(List<Faction> thisTurn)
@@ -181,4 +205,6 @@ public class PlayerInteraction : Component
         _nextTurnButton.EnablePresses();
         _confirmActionButton.DisablePresses();
     }
+
+    
 }

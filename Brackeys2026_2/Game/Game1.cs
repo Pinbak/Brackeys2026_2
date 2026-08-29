@@ -46,6 +46,8 @@ public class Game1 : Core
         var loyalist = new Texture("Game/Assets/loyalistPolicy.png");
         var agrarian = new Texture("Game/Assets/agrarianPolicy.png");
         var technocrat = new Texture("Game/Assets/technocratPolicy.png");
+        var pc = new Texture("Game/Assets/pC.png");
+        var fist = new Texture("Game/Assets/fist.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -118,14 +120,18 @@ public class Game1 : Core
             _ = new GameObject(padding, currentX += gap, rightFolder, [
                 new TextRenderer(boldFont, black, "Action:", 200)
             ]){ Transform = { Pivot = (0, 0) } };
+            var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
+            _ = new GameObject(padding, currentX += gap, rightFolder, [
+                pcText,
+            ]) { Transform = { Pivot = (0, 0)} };
             var actionText = new TextRenderer(oldFont, black, "Bribe the target, reducing their suspicion.", 500);
             _ = new GameObject(padding, currentX += gap, rightFolder, [
                 actionText
             ]) { Transform = { Pivot = (0, 0) } };
             
-            var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
-                new SpriteRenderer(note),
-            ]) { Transform = { Pivot = (0, 0) } };
+            // var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
+            //     new SpriteRenderer(note),
+            // ]) { Transform = { Pivot = (0, 0) } };
 
             var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
             var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
@@ -138,7 +144,8 @@ public class Game1 : Core
             ]);
             
         // logic
-        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText, secretText, goalText, actionText, loyalist, agrarian, technocrat, federalist);
+        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText,
+            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc);
         var playerGameObject = new GameObject(0, 0, null, [
             player
         ]);

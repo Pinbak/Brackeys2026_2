@@ -155,22 +155,30 @@ public class GameManager : Component
     
     private void NextTurn()
     {
-        if (_isInTurn) return;
-        var positionInList = CurrentMinisters.FindIndex(a => a == _currentTurn);
-        var nextMinisterTurn = positionInList += 1;
-        if (nextMinisterTurn > NumberOfMinisters - 1)
+        if (_player.IsTurn)
         {
-            nextMinisterTurn = 0;
+            _player.FinishPlayerTurn();
         }
+        else
+        {
+            if (_isInTurn) return;
+            var positionInList = CurrentMinisters.FindIndex(a => a == _currentTurn);
+            var nextMinisterTurn = positionInList += 1;
+            if (nextMinisterTurn > NumberOfMinisters - 1)
+            {
+                nextMinisterTurn = 0;
+            }
 
-        _currentTurn.IsTurn = false;
-        _currentTurn = CurrentMinisters[nextMinisterTurn];
-        _currentTurn.IsTurn = true;
+            _currentTurn.IsTurn = false;
+            _currentTurn = CurrentMinisters[nextMinisterTurn];
+            _currentTurn.IsTurn = true;
         
-        // new turn
-        _isInTurn = true;
-        GenerateFirstOfTurnCards();
-        _currentTurn.BeginTurn();
+            // new turn
+            _isInTurn = true;
+            GenerateFirstOfTurnCards();
+            _currentTurn.BeginTurn();
+        }
+        
     }
 
     public void EndTurn(Faction faction)
@@ -179,6 +187,7 @@ public class GameManager : Component
         foreach (var minister in CurrentMinisters) minister.CalculateSuspicions();
         PreviouslyImplementedPolicy = (_currentTurn, faction);
         Turn++;
+        
         _isInTurn = false;
     }
 

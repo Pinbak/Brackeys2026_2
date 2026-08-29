@@ -11,6 +11,8 @@ public class Minister : IHasTurn
     public Texture Face { get; set; }
     public bool IsPlayer { get; set; }
     public bool IsTurn { get; set; }
+    
+    public int PoliticalCapital { get; set; }
 
     public readonly Dictionary<Minister, Suspicion> Suspicions = new();
     public Perception Perception { get; set; } = new();
@@ -128,6 +130,11 @@ public class Minister : IHasTurn
     {
         UpdatePerceptions();
         Role.PerformAction(this);
+        EndAiTurn();
+    }
+
+    private void EndAiTurn()
+    {
         if (Role.RoleType is RoleType.President)
         {
             var card = SelectOneOfThreeCards();
@@ -136,14 +143,14 @@ public class Minister : IHasTurn
         else
         {
             var (a, b) = SelectTwoOfThreeCards();
-            var card = President.SelectOneOfTwoCards(a, b);
+            var card = President.SelectOneOfTwoCards(this, a, b);
             GameManager.EndTurn(card);
         }
     }
 
     public void EndPlayerTurn(Faction cardA, Faction cardB)
     {
-        var card = President.SelectOneOfTwoCards(cardA, cardB);
+        var card = President.SelectOneOfTwoCards(this, cardA, cardB);
         GameManager.EndTurn(card);
     }
 
@@ -197,9 +204,15 @@ public class Minister : IHasTurn
         return (chosenCards[0], chosenCards[1]);
     }
 
-    public Faction SelectOneOfTwoCards(Faction a, Faction b)
+    private Faction SelectOneOfTwoCards(Minister minister, Faction a, Faction b)
     {
-        var chosenCard = a;
+        // from the predisent's point of view
+        if (Suspicions[minister].Trust > 1f)
+        {
+            var amount = int.Clamp((int)Suspicions[minister].Trust, 1, 10);
+            amount += 1;
+            minister.IncreasePolitcalCapital(amount);
+        }
         var cards = new List<Faction>() { a, b };
         foreach (var faction in cards)
         {
@@ -218,8 +231,34 @@ public class Minister : IHasTurn
             }
             
         }
+
+        if (a == minister.Faction)
+        {
+            minister.IncreasePolitcalCapital(10);
+        }
         
-        return chosenCard;
+        return a;
+    }
+
+    private void IncreasePolitcalCapital(int amount)
+    {
+        PoliticalCapital += amount;
+        Console.WriteLine($"Poltical capital of {Name} increased by {amount}");
+        if (IsPlayer)
+        {
+            var player = this as Player;
+            player?.JustIncreasedPoliticalCapital(amount);
+        }
+    }
+
+    private void DecreasePoliticalCapital(int amount)
+    {
+        PoliticalCapital -= amount;
+        if (IsPlayer)
+        {
+            var player = this as Player;
+            player?.JustDecreasedPoliticalCapital(amount);
+        }
     }
 
     private bool IsPerceivedAThreat()
