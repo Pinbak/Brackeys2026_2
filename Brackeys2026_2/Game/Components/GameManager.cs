@@ -11,7 +11,7 @@ public class GameManager : Component
 {
     public List<Minister> CurrentMinisters { get; set; } = [];
     private const int NumberOfMinisters = 8;
-    public (Minister, Faction) PreviouslyImplementedPolicy { get; set; }
+    public (Minister, Faction) PreviouslyImplementedPolicy { get; private set; }
     public static float TurnDelay { get; set; }
     public int Turn { get; set; }
     public List<Faction> ThisTurnsCards = [];
@@ -30,13 +30,15 @@ public class GameManager : Component
     private static Minister _currentTurn;
     private static bool _isInTurn;
     private const float TurnLength = 0.0f;
+    private LastPlayed _lastPlayed;
 
     private Dictionary<RoleType, (float x, float y)> MinisterPositions { get; set; } = new();
 
     private List<GameObject> _ministerGameObjects = [];
     private List<MinisterFaceCard> _cards = [];
 
-    public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont, Button confirmButton, Button nextTurnButton, PlayerInteraction player)
+    public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont,
+        Button confirmButton, Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed)
     {
         _nameFont = nameFont;
         _card = card;
@@ -46,6 +48,7 @@ public class GameManager : Component
         nextTurnButton.HasPressed += NextTurn;
         _player = player;
         _cardOutline = cardOutline;
+        _lastPlayed = lastPlayed;
     }
 
     protected override void OnUpdate()
@@ -221,6 +224,8 @@ public class GameManager : Component
         Console.WriteLine($"End of turn, {faction.Name} was chosen.");
         foreach (var minister in CurrentMinisters) minister.CalculateSuspicions();
         PreviouslyImplementedPolicy = (_currentTurn, faction);
+        // _ = new GameObject(650 - 520, 190 - 10, GameObject, [new SpriteRenderer(faction.Texture), new CardToken()]);
+        _lastPlayed.UpdateTexture(faction);
         Turn++;
         TurnDelay = TurnLength;
     }

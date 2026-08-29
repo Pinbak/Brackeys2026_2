@@ -45,6 +45,27 @@ public class PlayerInteraction : Component
         _loyalistTexture = loyalist;
         _pcText = pcText;
         _token = token;
+        foreach (var faction in Faction.All)
+        {
+            switch (faction.FactionType)
+            {
+                case FactionType.Loyalist:
+                    faction.Texture = loyalist;
+                    break;
+                case FactionType.Technocrat:
+                    faction.Texture = technocrat;
+                    break;
+                case FactionType.Agrarian:
+                    faction.Texture = agrarian;
+                    break;
+                case FactionType.Federalist:
+                    faction.Texture = federalist;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+        }
     }
 
     public void UpdateTextUi()

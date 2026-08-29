@@ -1,10 +1,13 @@
-﻿namespace Brackeys2026_2.Game.Classes;
+﻿using Brackeys2026_2.Engine.Resources;
+
+namespace Brackeys2026_2.Game.Classes;
 
 public class Faction
 {
     public string Name { get; set; }
     public string SecretName { get; set; }
     public FactionType FactionType { get; set; }
+    public Texture Texture { get; set; }
     
     public Faction(FactionType factionType)
     {

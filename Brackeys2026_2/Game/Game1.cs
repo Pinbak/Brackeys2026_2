@@ -48,6 +48,7 @@ public class Game1 : Core
         var technocrat = new Texture("Game/Assets/technocratPolicy.png");
         var pc = new Texture("Game/Assets/pC.png");
         var fist = new Texture("Game/Assets/fist.png");
+        var policyOutline = new Texture("Game/Assets/policyOutline.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -144,6 +145,17 @@ public class Game1 : Core
             ]);
             
         // logic
+        var lastPlayed = new LastPlayed(policyOutline, federalist, loyalist, agrarian, technocrat);
+        _ = new GameObject(210, 250, leftFolder, [lastPlayed]);
+        var bureaucracy = new GameObject(150, -50, leftFolder, [
+            new TextRenderer(oldFont, black, "Bureaucracy", 300)
+        ]);
+        _ = new GameObject(210, 50, leftFolder, [new TextRenderer(boldFontSmallerCentered, "Last Policy Implemented:", 300)]);
+        _ = new GameObject(250, -30, leftFolder, [
+            new SpriteRenderer(misc1)
+        ]);
+        bureaucracy.Transform.Angle = 5;
+        
         var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText,
             secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc);
         var playerGameObject = new GameObject(0, 0, null, [
@@ -152,9 +164,7 @@ public class Game1 : Core
         
         var ministers = new GameObject(520, 10, leftFolder, [
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
-            , confirmButton, nextTurnButton, player)
+            , confirmButton, nextTurnButton, player, lastPlayed)
         ]);
-        
-
     }
 }
