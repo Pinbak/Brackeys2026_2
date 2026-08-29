@@ -11,21 +11,21 @@ public class Faction
         FactionType = factionType;
         switch (factionType)
         {
-            case FactionType.Spots:
-                Name = "Spots";
-                SecretName = "Secretly supports spots";
+            case FactionType.Loyalist:
+                Name = "Loyalist";
+                SecretName = "Proudly a Loyalist";
                 break;
-            case FactionType.Stripes:
-                Name = "Stripes";
-                SecretName = "Secretly supports stripes";
+            case FactionType.Technocrat:
+                Name = "Technocrat";
+                SecretName = "Secretly a Technocrat";
                 break;
-            case FactionType.Squares:
-                Name = "Squares";
-                SecretName = "Secretly supports squares";
+            case FactionType.Agrarian:
+                Name = "Agrarian";
+                SecretName = "Secretly an Agrarian";
                 break;
-            case FactionType.Triangles:
-                Name = "Triangles";
-                SecretName = "Secretly supports triangles";
+            case FactionType.Federalist:
+                Name = "Federalist";
+                SecretName = "Secretly a Federalist";
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(factionType), factionType, null);
@@ -34,9 +34,9 @@ public class Faction
     
     public static readonly Faction[] All =
     [
-        new(FactionType.Spots),
-        new(FactionType.Stripes),
-        new(FactionType.Squares),
-        new(FactionType.Triangles)
+        new(FactionType.Loyalist),
+        new(FactionType.Technocrat),
+        new(FactionType.Agrarian),
+        new(FactionType.Federalist)
     ];
 }

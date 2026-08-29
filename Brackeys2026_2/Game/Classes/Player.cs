@@ -7,7 +7,7 @@ public class Player : Minister
 {
     private PlayerInteraction _player;
     
-    public Player(Role role, Texture face, PlayerInteraction player) : base(role, face)
+    public Player(Role role, Texture face, PlayerInteraction player, GameManager gameManager) : base(role, face, gameManager)
     {
         _player = player;
     }

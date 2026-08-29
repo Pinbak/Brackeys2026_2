@@ -10,8 +10,9 @@ public class GameManager : Component
 {
     public List<Minister> CurrentMinisters { get; set; } = [];
     private const int NumberOfMinisters = 8;
-    public static (Minister, Faction) PreviouslyImplementedPolicy;
-    public static int Turn { get; set; }
+    public (Minister, Faction) PreviouslyImplementedPolicy;
+    public int Turn { get; set; }
+    public List<Faction> ThisTurnsCards = [];
     
     private static readonly Random Random = new();
     private Font _nameFont;
@@ -23,6 +24,8 @@ public class GameManager : Component
     private Button _nextTurnButton;
     private static Minister _currentTurn;
     private static bool _isInTurn;
+
+    private Dictionary<RoleType, (float x, float y)> MinisterPositions { get; set; } = new();
 
     private List<GameObject> _ministerGameObjects = [];
     private List<Card> _cards = [];
@@ -41,26 +44,24 @@ public class GameManager : Component
 
     protected override void OnInitialise()
     {
-        var playerIndex = Random.Next(1, NumberOfMinisters);
+        var playerIndex = Random.Next(1, NumberOfMinisters - 1);
         for (var i = 0; i < NumberOfMinisters; i++)
         {
             if (i == playerIndex)
             {
-                var newMinister = new Player(Role.GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture(), _player);
+                var newMinister = new Player(GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture(), _player, this);
                 CurrentMinisters.Add(newMinister);
                 newMinister.IsPlayer = true;
                 _player.Player = newMinister;
             }
             else
             {
-                var newMinister = new Minister(Role.GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture());
+                var newMinister = new Minister(GetRoleFromRoleType((RoleType)i), GetRandomFaceTexture(), this);
                 CurrentMinisters.Add(newMinister);
                 
                 if (i == NumberOfMinisters - 1)
                     _currentTurn = newMinister;
             }
-
-            
         }
 
         foreach (var currentMinister in CurrentMinisters)
@@ -69,12 +70,6 @@ public class GameManager : Component
         }
         
         GenerateMinisterGameObjects();
-        GeneratePresidentGameObject();
-    }
-
-    private void GeneratePresidentGameObject()
-    {
-        
     }
 
     private void GenerateMinisterGameObjects()
@@ -98,6 +93,7 @@ public class GameManager : Component
             }
 
             var ministerGameObject = new GameObject(currentX + padding, currentY + padding, GameObject);
+            MinisterPositions.Add(minister.Role.RoleType, (currentX + padding, currentY + padding));
             currentX += (int)width + gap;
             c++;
             var collider = new Collider(ministerGameObject.Transform, _card.Width, _card.Height);
@@ -123,16 +119,33 @@ public class GameManager : Component
             {
                 displayName += " (YOU)";
             }
-
-            var nameText = new GameObject(50, -30, cardGameObject, [
-                new TextRenderer(_smallerFont, displayName, 200)
+            
+            var roleText = new GameObject(60, -10, cardGameObject, [
+                new TextRenderer(_nameFont, minister.Role.Name, 200)
             ]);
-            var roleText = new GameObject(60, 10, cardGameObject, [
-                new TextRenderer(_smallerFont, minister.Role.Name, 200)
+            var nameText = new GameObject(50, 40, cardGameObject, [
+                new TextRenderer(_smallerFont, displayName, 200)
             ]);
             
             _ministerGameObjects.Add(ministerGameObject);
+            
         }
+    }
+
+    private Role GetRoleFromRoleType(RoleType roleType)
+    {
+        return roleType switch
+        {
+            RoleType.President => new President(roleType, "President", this),
+            RoleType.PresidentsAide => new PresidentsAide(roleType, "President's Aide", this),
+            RoleType.MinisterOfNationalSecurity => new MinisterOfNationalSecurity(roleType, "Minister of National Security", this),
+            RoleType.SupremeCommander => new SupremeCommander(roleType, "Supreme Commander", this),
+            RoleType.SecretaryOfImmigration => new SecretaryOfImmigration(roleType, "Secretary of Immigration", this),
+            RoleType.MinisterOfCommunication => new MinisterOfCommunication(roleType, "Minister of Communication", this),
+            RoleType.MinisterOfInterior => new MinisterOfInterior(roleType, "Minister of Interior", this),
+            RoleType.SecretaryForPropaganda => new SecretaryForPropaganda(roleType, "Secretary for Propaganda", this),
+            _ => throw new ArgumentOutOfRangeException(nameof(roleType), roleType, null)
+        };
     }
 
     private Texture GetRandomFaceTexture()
@@ -150,19 +163,34 @@ public class GameManager : Component
             nextMinisterTurn = 0;
         }
 
-        _isInTurn = true;
         _currentTurn.IsTurn = false;
         _currentTurn = CurrentMinisters[nextMinisterTurn];
         _currentTurn.IsTurn = true;
-
+        
+        // new turn
+        _isInTurn = true;
+        GenerateFirstOfTurnCards();
         _currentTurn.BeginTurn();
     }
 
-    public static void EndTurn(Faction faction)
+    public void EndTurn(Faction faction)
     {
+        Console.WriteLine($"End of turn, {faction.Name} was chosen.");
+        foreach (var minister in CurrentMinisters) minister.CalculateSuspicions();
         PreviouslyImplementedPolicy = (_currentTurn, faction);
         Turn++;
         _isInTurn = false;
     }
 
+    public void GenerateFirstOfTurnCards()
+    {
+        const int numberOfCardsPerTurn = 3;
+        ThisTurnsCards.Clear();
+        for (var j = 0; j < numberOfCardsPerTurn; j++)
+        {
+            var i = Random.Next(0, 4);
+            var card = Faction.All[i];
+            ThisTurnsCards.Add(card);    
+        }
+    }
 }

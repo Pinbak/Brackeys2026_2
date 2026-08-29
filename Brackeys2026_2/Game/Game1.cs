@@ -17,9 +17,10 @@ public class Game1 : Core
         var folderLighterTexture = new Texture("Game/Assets/folderLighter.png");
         var oldFont = new Font("Game/Assets/IBMPlexSerif-Light.ttf");
         var oldFontSmaller = new Font("Game/Assets/IBMPlexSerif-Light.ttf", 20);
-        var boldFont = new Font("Game/Assets/RubikMonoOne-Regular.ttf", 30);
-        boldFont.SetAlignmentCentre();
-        var boldFontSmaller = new Font("Game/Assets/RubikMonoOne-Regular.ttf", 24);
+        var boldFont = new Font("Game/Assets/Staatliches-Regular.ttf", 34);
+        var boldFontSmaller = new Font("Game/Assets/Staatliches-Regular.ttf", 28);
+        var boldFontSmallerCentered = new Font("Game/Assets/Staatliches-Regular.ttf", 28);
+        boldFontSmallerCentered.SetAlignmentCentre();
         var misc1 = new Texture("Game/Assets/arrow.png");
         var misc2 = new Texture("Game/Assets/sideThing.png");
         var divider = new Texture("Game/Assets/divider.png");
@@ -84,11 +85,11 @@ public class Game1 : Core
             _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 40, rightFolder, [
                 playerDescriptionText
             ]);
-            var jobDescriptionText = new TextRenderer(oldFont, black, "Minister of finance", 500);
+            var jobDescriptionText = new TextRenderer(boldFontSmallerCentered, black, "Minister of finance", 500);
             _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 85, rightFolder, [
                 jobDescriptionText
             ]);
-            var secretText = new TextRenderer(oldFont, black, "Secretly Supports Circles", 500);
+            var secretText = new TextRenderer(boldFontSmallerCentered, black, "Secretly...", 500);
             _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 130, rightFolder, [
                 secretText
             ]);
@@ -99,7 +100,7 @@ public class Game1 : Core
             _ = new GameObject(0, currentX += gap, rightFolder, [
                 new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
             ]);
-            _ = new GameObject(padding - 25, currentX += gap, rightFolder, [
+            _ = new GameObject(padding, currentX += gap, rightFolder, [
                 new TextRenderer(boldFont, black, "Goal:", 200)
             ]){ Transform = { Pivot = (0, 0) } };
             var goalText = new TextRenderer(oldFont, black, "Have all the ministers support the cause for dots", 500);
@@ -139,7 +140,7 @@ public class Game1 : Core
         ]);
         
         var ministers = new GameObject(520, 10, leftFolder, [
-            new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], oldFont, oldFontSmaller
+            new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
             , confirmButton, nextTurnButton, player)
         ]);
         

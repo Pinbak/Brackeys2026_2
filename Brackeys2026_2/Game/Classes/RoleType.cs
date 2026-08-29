@@ -9,5 +9,5 @@ public enum RoleType
     SecretaryOfImmigration, // chooses new minister on death
     MinisterOfCommunication,  // change someone's ideology
     MinisterOfInterior, // expose actual ideology of member
-    SecretaryForPropaganda, // convince other ministers of ideology
+    SecretaryForPropaganda, // convince other ministers of someone elses
 }

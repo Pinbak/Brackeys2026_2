@@ -2,8 +2,8 @@
 
 public enum FactionType
 {
-    Spots,
-    Stripes,
-    Squares,
-    Triangles,
+    Loyalist,
+    Technocrat,
+    Agrarian,
+    Federalist,
 }

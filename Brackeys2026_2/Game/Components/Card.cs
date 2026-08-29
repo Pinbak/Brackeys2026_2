@@ -47,7 +47,13 @@ public class Card(Minister minister, Collider collider, GameObject cardOutline, 
             _outline.IsEnabled = false;
             Tweener.ScaleTo(GameObject.Transform, 1f, 0.1f);
         }
-        
+    }
+
+    private void MoveToNewPosition(float x, float y)
+    {
+        const float durationSeconds = 3f;
+        Tweener.MoveXTo(GameObject.Transform, x, durationSeconds);
+        Tweener.MoveYTo(GameObject.Transform, y, durationSeconds);
     }
 
 }
