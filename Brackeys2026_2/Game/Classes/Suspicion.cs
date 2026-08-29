@@ -50,12 +50,22 @@ public class Suspicion
 
         return highestFaction;
     }
+
+    public void SetActualValue(Faction toSet, float value)
+    {
+        _actualValues[toSet] = value;
+    }
     
     public void RaiseTrust(float amount)
     {
         Trust += amount;
     }
 
+    public void SetTrust(float amount)
+    {
+        Trust = amount;
+    }
+    
     public void LowerTrust(float amount)
     {
         Trust -= amount;

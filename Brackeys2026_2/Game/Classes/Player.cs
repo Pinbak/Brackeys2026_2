@@ -20,6 +20,16 @@ public class Player : Minister
         _player.StartOfNewPlayerTurn(GameManager.ThisTurnsCards);
     }
 
+    public override void RespondToBribe(Minister sender)
+    {
+        
+    }
+
+    public override void RespondToConversion(Minister thisPlayer)
+    {
+        
+    }
+
     public void JustIncreasedPoliticalCapital(int amount)
     {
         _player.IncreasePoliticalCapital(amount);

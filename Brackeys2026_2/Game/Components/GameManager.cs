@@ -12,7 +12,7 @@ public class GameManager : Component
     public List<Minister> CurrentMinisters { get; set; } = [];
     private const int NumberOfMinisters = 8;
     public (Minister, Faction) PreviouslyImplementedPolicy { get; set; }
-    public float TurnDelay { get; set; }
+    public static float TurnDelay { get; set; }
     public int Turn { get; set; }
     public List<Faction> ThisTurnsCards = [];
     public List<Minister> ThisTurnsMinisters = [];
@@ -341,5 +341,22 @@ public class GameManager : Component
         
         SomeoneIsDying = false;
     }
-    
+
+    public void BribeMinister(Minister thisPlayer, Minister lowestTrust, int amount)
+    {
+        Console.WriteLine($"{thisPlayer.Name} has bribed {lowestTrust.Name}.");
+        lowestTrust.PoliticalCapital += amount;
+        lowestTrust.RespondToBribe(thisPlayer);
+    }
+
+    public void ConvertIdeology(Minister thisPlayer, Minister lowestTrust)
+    {
+        Console.WriteLine($"{thisPlayer.Name} has converted {lowestTrust.Name} to {thisPlayer.Faction.Name}.");
+        lowestTrust.Faction = thisPlayer.Faction;
+        lowestTrust.Suspicions[thisPlayer].SetTrust(10f);
+        thisPlayer.Suspicions[lowestTrust].SetTrust(10f);
+        lowestTrust.Suspicions[thisPlayer].SetActualValue(thisPlayer.Faction, 10f);
+        thisPlayer.Suspicions[lowestTrust].SetActualValue(thisPlayer.Faction, 10f);
+        lowestTrust.RespondToConversion(thisPlayer);
+    }
 }

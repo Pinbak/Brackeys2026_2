@@ -1,7 +1,8 @@
 ﻿using Brackeys2026_2.Engine.Resources;
+using Brackeys2026_2.Game.Classes.Ministers;
 using Brackeys2026_2.Game.Components;
 
-namespace Brackeys2026_2.Game.Classes.Ministers;
+namespace Brackeys2026_2.Game.Classes;
 
 public class Minister : IHasTurn
 {
@@ -376,5 +377,18 @@ public class Minister : IHasTurn
         if (ministerOptions[0].Faction == Faction) return ministerOptions[0];
         if (ministerOptions[1].Faction == Faction) return ministerOptions[1];
         return ministerOptions[0];
+    }
+
+    public virtual void RespondToBribe(Minister sender)
+    { 
+        if (Suspicions[sender].GetHighest() == Faction)
+            Suspicions[sender].RaiseTrust(10f);
+        else
+            Suspicions[sender].RaiseTrust(5f);
+    }
+
+    public virtual void RespondToConversion(Minister thisPlayer)
+    {
+        
     }
 }

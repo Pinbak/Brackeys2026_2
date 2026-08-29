@@ -1,9 +1,6 @@
-﻿
-using Brackeys2026_2.Engine.GameObjects;
-using Brackeys2026_2.Game.Classes.Ministers;
-using Brackeys2026_2.Game.Components;
+﻿using Brackeys2026_2.Game.Components;
 
-namespace Brackeys2026_2.Game.Classes;
+namespace Brackeys2026_2.Game.Classes.Ministers;
 
 public class President(RoleType roleType, string name, GameManager gameManager) : Role(roleType, name, gameManager)
 {
@@ -63,75 +60,4 @@ public class President(RoleType roleType, string name, GameManager gameManager) 
         
     }
     
-}
-
-public class PresidentsAide : Role
-{
-    public PresidentsAide(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-        
-    }
-}
-
-public class SupremeCommander : Role
-{
-    public SupremeCommander(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-        
-    }
-}
-
-public class SecretaryOfImmigration : Role
-{
-    public SecretaryOfImmigration(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-    }
-}
-
-public class MinisterOfCommunication : Role
-{
-    public MinisterOfCommunication(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-        
-    }
-}
-
-public class MinisterOfInterior : Role
-{
-    public MinisterOfInterior(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-        
-    }
-}
-
-public class SecretaryForPropaganda : Role
-{
-    public SecretaryForPropaganda(RoleType roleType, string name, GameManager gameManager) : base(roleType, name, gameManager)
-    {
-    }
-
-    public override void PerformAction(Minister thisPlayer)
-    {
-        
-    }
 }
