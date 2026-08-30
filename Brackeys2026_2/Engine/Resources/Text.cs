@@ -23,7 +23,7 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         _wrapWidth = wrapWidth;
         Font = font;
         Colour = Window.Black;
-        if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dipose it this text needs updating.");
+        if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dispose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
         Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
         Handle = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
@@ -38,7 +38,7 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         _wrapWidth = wrapWidth;
         Font = font;
         Colour = colour;
-        if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dipose it this text needs updating.");
+        if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dispose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
         Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
         Handle = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
@@ -72,7 +72,7 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         // Create the new resources first
         if (Font.Handle == null)
         {
-            throw new Exception("Font was disposed of. Try removing using or not calling dipose it this text needs updating.");
+            throw new Exception("Font was disposed of. Try removing using or not calling dispose it this text needs updating.");
         }
         var newSurface = TTF.RenderTextShadedWrapped(Font.Handle, content, Colour, Transparent, _wrapWidth);
         if (newSurface == null)

@@ -56,7 +56,7 @@ public class Game1 : Core
         var yellowNote = new Texture("Game/Assets/yellowNote.png");
         var mainMenuTexture = new Texture("Game/Assets/mainMenu.png");
         
-        var soundTrack = new Audio("Game/Assets/VibingOverVenus.mp3");
+        var soundTrack = new Audio("Game/Assets/VibingOverVenus.ogg");
         soundTrack.Play();
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -154,7 +154,7 @@ public class Game1 : Core
                 var killCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 300, rightFolderMinisterView,
                     [killCost]);
-                var killButton = new Button(button, buttonDown, buttonDisabled, new Text("'Dipose' of", boldFontSmaller, 300));
+                var killButton = new Button(button, buttonDown, buttonDisabled, new Text("'Dispose' of", boldFontSmaller, 300));
                 var killAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 300, rightFolderMinisterView, [
                     killButton,
                 ]);

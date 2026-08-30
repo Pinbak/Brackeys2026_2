@@ -108,7 +108,7 @@ public class Minister : IHasTurn
         {
             RoleType.President => "Can reshuffle cabinet, has final vote.",
             RoleType.MinisterOfNationalSecurity => "Removing a minister costs 50% less political capital.",
-            RoleType.SupremeCommander => "Can 'dipose' of the president.",
+            RoleType.SupremeCommander => "Can 'dispose' of the president.",
             RoleType.SecretaryOfImmigration => "None",
             RoleType.MinisterOfCommunication => "Converting someone's ideology costs 30% less political capital.",
             RoleType.PresidentsAide => "None",
