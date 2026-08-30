@@ -41,6 +41,6 @@ public class MenuManager : Component
         _gameOverScreen.IsEnabled = true;
         _gameOver.Set(isWin
             ? "All ministers are aligned. You have won! Congratulations on reaching unity in the cabinet."
-            : "You have been removed from office. Perhaps you were unfortunate, but your peers don't seem to have agreed with you.");
+            : "You have been assassinated! Perhaps you were unfortunate, but your peers don't seem to have agreed with you.");
     }
 }

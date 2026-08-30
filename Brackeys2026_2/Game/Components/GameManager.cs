@@ -338,6 +338,7 @@ public class GameManager : Component
         // on player death, end game
         if (lowestTrust.IsPlayer)
         {
+            _crowd.Play();
             _player.EndGame();
             return;
         }
