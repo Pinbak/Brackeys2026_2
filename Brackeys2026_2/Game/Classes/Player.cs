@@ -6,7 +6,7 @@ namespace Brackeys2026_2.Game.Classes;
 
 public class Player : Minister
 {
-    private PlayerInteraction _player;
+    private readonly PlayerInteraction _player;
 
     public Player(Role role, Texture face, PlayerInteraction player, GameManager gameManager) : base(role, face,
         gameManager)
@@ -22,12 +22,12 @@ public class Player : Minister
 
     public override void RespondToBribe(Minister sender)
     {
-        
+        _player.UpdatePoliticalCapitalUi();
     }
 
     public override void RespondToConversion(Minister thisPlayer)
     {
-        
+        _player.UpdateTextUi();
     }
 
     public void JustIncreasedPoliticalCapital(int amount)

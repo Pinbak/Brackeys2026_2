@@ -7,8 +7,8 @@ public class PoliticalCapitalToken(float delay) : Component
 {
     protected override void OnInitialise()
     {
-        Tweener.MoveXTo(GameObject.Transform, 1500, 0.8f, EaseFunctions.OutQuart, delay, true);
-        Tweener.MoveYTo(GameObject.Transform, 475, 0.8f, EaseFunctions.OutQuart, delay, true);
+        Tweener.MoveXTo(GameObject.Transform, 40, 0.8f, EaseFunctions.OutQuart, delay, true);
+        Tweener.MoveYTo(GameObject.Transform, 1000, 0.8f, EaseFunctions.OutQuart, delay, true);
         Tweener.ScaleTo(GameObject.Transform, 0.1f, 0.8f, EaseFunctions.OutQuart, delay, true);
     }
 }

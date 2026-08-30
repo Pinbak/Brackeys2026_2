@@ -50,6 +50,7 @@ public class Game1 : Core
         var fist = new Texture("Game/Assets/fist.png");
         var policyOutline = new Texture("Game/Assets/policyOutline.png");
         var misc3 = new Texture("Game/Assets/sideThingDarker.png");
+        var misc4 = new Texture("Game/Assets/pcBackground.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -71,6 +72,13 @@ public class Game1 : Core
         _ = new GameObject(450, 100, null, [
             new TiledSpriteRenderer(divider, 30, leftFolderHeight)
         ]); 
+        
+        // political capital
+        _ = new GameObject(20, 1000, null, [new SpriteRenderer(misc4)]){ Transform = { Pivot = (0, 0)} };
+        var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
+        _ = new GameObject(70, 1020, null, [
+            pcText
+        ]) { Transform = { Pivot = (0, 0)} };
         
         // right folder
         const int rightFolderWidth = 600;
@@ -179,14 +187,12 @@ public class Game1 : Core
                 _ = new GameObject(0, currentX += gap * 2, rightFolder, [
                     new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
                 ]);
+                
                 _ = new GameObject(padding, currentX += gap, rightFolder, [
-                    new TextRenderer(boldFont, black, "Action:", 200)
+                    new TextRenderer(boldFont, black, "Perk of the Role:", 350)
                 ]){ Transform = { Pivot = (0, 0) } };
-                var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
-                _ = new GameObject(padding, currentX += gap, rightFolder, [
-                    pcText,
-                ]) { Transform = { Pivot = (0, 0)} };
-                var actionText = new TextRenderer(oldFont, black, "Bribe the target, reducing their suspicion.", 500);
+                
+                var actionText = new TextRenderer(oldFont, black, "", 500);
                 _ = new GameObject(padding, currentX += gap, rightFolder, [
                     actionText
                 ]) { Transform = { Pivot = (0, 0) } };

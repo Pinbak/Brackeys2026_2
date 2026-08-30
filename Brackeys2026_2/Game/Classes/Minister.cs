@@ -107,13 +107,13 @@ public class Minister : IHasTurn
         return Role.RoleType switch
         {
             RoleType.President => "Can reshuffle cabinet, has final vote.",
-            RoleType.MinisterOfNationalSecurity => "'Dispose' of target.",
-            RoleType.SupremeCommander => "Stage a coup against the president.",
-            RoleType.SecretaryOfImmigration => "Choose a new minister on a peer's death.",
-            RoleType.MinisterOfCommunication => "Change target's ideology.",
-            RoleType.PresidentsAide => "President's hand is always exposed.",
-            RoleType.MinisterOfInterior => "Expose actual ideology or target.",
-            RoleType.SecretaryForPropaganda => "Convince target of ideology.",
+            RoleType.MinisterOfNationalSecurity => "Removing a minister costs 50% less political capital.",
+            RoleType.SupremeCommander => "Can 'dipose' of the president.",
+            RoleType.SecretaryOfImmigration => "None",
+            RoleType.MinisterOfCommunication => "Converting someone's ideology costs 30% less political capital.",
+            RoleType.PresidentsAide => "None",
+            RoleType.MinisterOfInterior => "None",
+            RoleType.SecretaryForPropaganda => "Bribing someone costs 50% less political capital.",
             _ => throw new ArgumentOutOfRangeException()
         };
     }

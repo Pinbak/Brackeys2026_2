@@ -162,6 +162,7 @@ public class PlayerInteraction : Component
         _secretFaction.Set(Player.Faction.SecretName);
         _goalText.Set(Player.GetGoal());
         _actionText.Set(Player.GetActionText());
+        _actionText.Set(Player.GetActionText());
     }
     
     public void FinishPlayerTurn()
@@ -209,7 +210,7 @@ public class PlayerInteraction : Component
         ShowCards(gameManagerThisTurnsCards);
     }
 
-    private void UpdatePoliticalCapitalUi()
+    public void UpdatePoliticalCapitalUi()
     {
         _pcText.Set($"Political Capital: {Player.PoliticalCapital}");
     }
@@ -325,17 +326,11 @@ public class PlayerInteraction : Component
         _rightFolderManager.DisablePresses();
     }
 
-    public void ChooseMinister()
-    {
-        // Player.GameManager.ToRemove = newMinister;
-    }
-
     public void EndGame()
     {
         throw new NotImplementedException();
     }
-
-
+    
     public void ClickedOnCard(MinisterFaceCard ministerFaceCard)
     {
         _currentlySelected = ministerFaceCard;

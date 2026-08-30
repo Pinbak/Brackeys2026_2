@@ -295,23 +295,16 @@ public class GameManager : Component
         }
         ToRemove = lowestTrust;
         GenerateMinisterChoices(lowestTrust.Role);
-        if (lowestTrust.Role.RoleType is RoleType.SecretaryOfImmigration)
+        if (lowestTrust.Role.RoleType is RoleType.President)
         {
             newMinister = new Minister(lowestTrust.Role, GetRandomFaceTexture(), this);
             ChosenNewMinister(newMinister);
         }
         else
         {
-            var secretary = GetMinisterByRoleType(RoleType.SecretaryOfImmigration);
-            if (secretary.IsPlayer)
-            {
-                _player.ChooseMinister();
-            }
-            else
-            {
-                newMinister = secretary.ChooseNewMinister();
-                ChosenNewMinister(newMinister);
-            }
+            var president = GetMinisterByRoleType(RoleType.President);
+            newMinister = president.ChooseNewMinister();
+            ChosenNewMinister(newMinister);
         }
         
     }
