@@ -195,7 +195,6 @@ public class RightFolderManager : Component
     
     public void RemoveSelected()
     {
-        DisablePresses();
         _selectedMinister = null;
         _selected?.Destroy();
         _selected = null;

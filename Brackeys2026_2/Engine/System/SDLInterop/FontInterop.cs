@@ -43,7 +43,7 @@ public static unsafe partial class TTF
         Colour foreground, int wrapWidth);
 
     internal static SDL.Surface* RenderTextSolidWrapped(Font* font, string text, Colour foreground, int wrapWidth)
-        => TTF_RenderText_Solid_Wrapped(font, text, (UIntPtr)text.Length, foreground, wrapWidth);
+        => TTF_RenderText_Solid_Wrapped(font, text, 0, foreground, wrapWidth);
 
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
@@ -52,7 +52,7 @@ public static unsafe partial class TTF
 
     internal static SDL.Surface* RenderTextShadedWrapped(Font* font, string text, Colour foreground,
         Colour background, int wrapWidth)
-        => TTF_RenderText_Shaded_Wrapped(font, text, (UIntPtr)text.Length, foreground, background, wrapWidth);
+        => TTF_RenderText_Shaded_Wrapped(font, text, 0, foreground, background, wrapWidth);
 
     // Render Text Blended Wrapped
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
@@ -61,7 +61,7 @@ public static unsafe partial class TTF
         Colour color, int wrapWidth);
 
     internal static SDL.Surface* RenderTextBlendedWrapped(Font* font, string text, Colour color, int wrapWidth)
-        => TTF_RenderText_Blended_Wrapped(font, text, (UIntPtr)text.Length, color, wrapWidth);
+        => TTF_RenderText_Blended_Wrapped(font, text, 0, color, wrapWidth);
 
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
@@ -70,7 +70,7 @@ public static unsafe partial class TTF
         out int w, out int h);
 
     internal static bool GetStringSizeWrapped(Font* font, string text, int wrapWidth, out int w, out int h)
-        => TTF_GetStringSizeWrapped(font, text, (UIntPtr)text.Length, wrapWidth, out w, out h);
+        => TTF_GetStringSizeWrapped(font, text, 0, wrapWidth, out w, out h);
 
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]

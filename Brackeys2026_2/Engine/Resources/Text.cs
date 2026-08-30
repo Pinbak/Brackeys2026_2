@@ -11,7 +11,6 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
     private Rectangle Dimensions { get; set; }
     private static readonly Colour Transparent = new(0, 0, 0, 0);
     private SDL.Texture* Handle { get; set; }
-    private SDL.Surface* Surface { get; set; }
     private Colour Colour { get; set; }
     private Font Font { get; }
     private readonly int _wrapWidth;
@@ -25,12 +24,13 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         Colour = Window.Black;
         if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dispose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
-        Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
-        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
+        var surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
+        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
         TTF.GetStringSizeWrapped(font.Handle, content, wrapWidth, out var actualWidth, out var actualHeight);
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
+        SDL.DestroySurface(surface);
     }
     
     public Text(string content, Font font, Colour colour, int wrapWidth)
@@ -40,12 +40,13 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         Colour = colour;
         if (Font.Handle == null) throw new Exception("Font was disposed of. Try removing using or not calling dispose it this text needs updating.");
         // https://stackoverflow.com/questions/60181474/how-to-improve-font-quality-in-sdl-ttf-and-dynamically-display-text-and-numbers
-        Surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
-        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, Surface);
+        var surface = TTF.RenderTextShadedWrapped(font.Handle, content, Colour, Transparent, wrapWidth);
+        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
         TTF.GetStringSizeWrapped(font.Handle, content, wrapWidth, out var actualWidth, out var actualHeight);
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
+        SDL.DestroySurface(surface);
     }
     
     ~Text()
@@ -63,7 +64,6 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
     {
         if (_isDisposed) return;
         SDL.DestroyTexture(Handle);
-        SDL.DestroySurface(Surface);
         _isDisposed = true;
     }
     
@@ -86,17 +86,13 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         }
         if (Handle != null)
             SDL.DestroyTexture(Handle);
-
-        if (Surface != null)
-            SDL.DestroySurface(Surface);
-
-        Surface = newSurface;
         Handle = newTexture;
-
+        SDL.DestroySurface(newSurface);
         TTF.GetStringSizeWrapped(Font.Handle, content, _wrapWidth, out var actualWidth, out var actualHeight);
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
+        Content = content;
         return true;
     }
     
