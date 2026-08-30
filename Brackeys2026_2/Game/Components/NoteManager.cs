@@ -20,11 +20,8 @@ public class NoteManager(TextRenderer stickyNoteText, SpriteRenderer stickyNote,
         if (newString.Length > 300)
         {
             _totalContent = content + "\n\n";    
-            if (_isYellow)
-            {
-                _isYellow = false;
-                stickyNote.ChangeTexture(normalNote);
-            }
+            _isYellow = false;
+            stickyNote.ChangeTexture(normalNote);
         }
         else
         {

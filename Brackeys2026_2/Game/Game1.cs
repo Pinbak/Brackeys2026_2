@@ -4,6 +4,7 @@ using Brackeys2026_2.Engine.Components.Experiments;
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
+using Brackeys2026_2.Game.Classes;
 using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game;
@@ -54,7 +55,9 @@ public class Game1 : Core
         var news = new Texture("Game/Assets/news.png");
         var yellowNote = new Texture("Game/Assets/yellowNote.png");
         var mainMenuTexture = new Texture("Game/Assets/mainMenu.png");
-
+        
+        var soundTrack = new Audio("Game/Assets/VibingOverVenus.mp3");
+        soundTrack.Play();
         const int leftFolderHeight = 850;
         var black = Window.Black;
 
@@ -65,7 +68,10 @@ public class Game1 : Core
             var playText = new Text("Play", boldFont, 300);
             var playButton = new Button(button, buttonDown, buttonDisabled, playText);
             _ = new GameObject(50, -50, menuFolder, [playButton]);
-            
+            _ = new GameObject(10, 960, mainMenu, [new TextRenderer(boldFontSmaller, "Art and Programming by Joe Ash\nMusic by Kevin MacLeod\nSound effects from FreeSounds", 800)])
+                { Transform = { Pivot = (0, 0) } };
+            _ = new GameObject(1750, 1020, mainMenu, [new TextRenderer(boldFontSmaller, "Version 0.1", 800)])
+                { Transform = { Pivot = (0, 0) } };
         
         var gameOverScreen = new GameObject(0, 0, null);
         var gameOverText = new TextRenderer(boldFont, black, "", 500);

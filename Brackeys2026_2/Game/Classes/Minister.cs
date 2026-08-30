@@ -23,13 +23,13 @@ public class Minister : IHasTurn
 
     private static readonly string[] FirstNames =
     [
-        "A", "B", "C", "D", "E", "F", "G", "M", "O", "R", "S", "T", "W", "Z", "Y"
+        "A", "B", "C", "D", "E", "F", "G", "M", "O", "R", "S", "T", "W", "Z", "Y", "Z", "Y"
     ];
 
     private static readonly string[] LastNames =
     [
         "Smirnov", "Ivanov", "Sokolov", "Popov", "Lebedev", "Kozlov", "Novikov", "Morozov", "Solovyov", "Volkov",
-        "Zaytsev"
+        "Zaytsev", "Melnyk", "Shevchenko", "Kovalenko", "Bondarenko", "Boyko", "Oliynyk", "Ivanenko", "Nazarenko"
     ];
 
     private static readonly Random Random = new();

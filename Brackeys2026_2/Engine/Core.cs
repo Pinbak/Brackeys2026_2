@@ -69,6 +69,7 @@ public abstract class Core
             Mixer.CleanupResources();
             SDL.QuitSdl();
             TTF.QuitTtf();
+            MIX.Quit();
         }
     }
 

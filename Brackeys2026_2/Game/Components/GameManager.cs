@@ -34,6 +34,7 @@ public class GameManager : Component
     private LastPlayed _lastPlayed;
 
     private NoteManager _stickyNote;
+
     // private News _news;
 
     private Dictionary<RoleType, (float x, float y)> MinisterPositions { get; set; } = new();
@@ -349,7 +350,6 @@ public class GameManager : Component
 
     private void ChosenNewMinister(Minister newMinister)
     {
-        
         _stickyNote.Add(
             $"{ToRemove.Name} has mysteriously disappeared. In other news, we welcome {newMinister.Name} to take his place. {newMinister.Name} was chosen by our glorious leader.", true);
         foreach (var ministerFaceCard in _cards)
@@ -385,7 +385,7 @@ public class GameManager : Component
     public void BribeMinister(Minister thisPlayer, Minister lowestTrust, int amount)
     {
         Console.WriteLine($"{thisPlayer.Name} has bribed {lowestTrust.Name}.");
-        lowestTrust.PoliticalCapital += amount;
+        lowestTrust.PoliticalCapital += 30;
         lowestTrust.RespondToBribe(thisPlayer);
     }
 

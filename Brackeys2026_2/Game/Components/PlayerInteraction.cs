@@ -71,6 +71,11 @@ public class PlayerInteraction : Component
             };
         }
     }
+
+    public void SendMessage(string content, bool isUrgent)
+    {
+        _stickyNote.Add(content, isUrgent);
+    }
     
     public void Killed(Minister toRemove)
     {
