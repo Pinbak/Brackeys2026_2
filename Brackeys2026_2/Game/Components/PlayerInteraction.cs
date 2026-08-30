@@ -348,7 +348,7 @@ public class PlayerInteraction : Component
 
     public void EndGame()
     {
-        throw new NotImplementedException();
+        Player.GameManager.MenuManager.GameOver(false);
     }
     
     public void ClickedOnCard(MinisterFaceCard ministerFaceCard)

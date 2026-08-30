@@ -19,7 +19,7 @@ public abstract class Role
         Name = name;
     }
     
-    protected bool KillSomeone(Minister thisPlayer, int disposalCost = 100, float enoughToKill = -10f, bool canKillPresident = false)
+    protected bool KillSomeone(Minister thisPlayer, int disposalCost = 100, float enoughToKill = -5f, bool canKillPresident = false)
     {
         // can kill people
         if (GameManager.Turn == 0) return false;
@@ -38,7 +38,7 @@ public abstract class Role
         return false;
     }
 
-    protected bool BribeSomeone(Minister thisPlayer, int bribeCost = 30, float enoughToBribe = -5f)
+    protected bool BribeSomeone(Minister thisPlayer, int bribeCost = 30, float enoughToBribe = -1f)
     {
         if (GameManager.Turn == 0) return false;
         if (thisPlayer.PoliticalCapital < bribeCost) return false;

@@ -8,6 +8,12 @@ public class NoteManager(TextRenderer stickyNoteText, SpriteRenderer stickyNote,
     private string _totalContent = "";
     private bool _isYellow;
 
+    public void Clear()
+    {
+        _totalContent = "";
+        stickyNoteText.Set(_totalContent);
+    }
+
     public void Add(string content, bool isUrgent)
     {
         var newString = _totalContent + "\n\n" + content;
@@ -31,7 +37,5 @@ public class NoteManager(TextRenderer stickyNoteText, SpriteRenderer stickyNote,
             stickyNote.ChangeTexture(yellowNote);
             _isYellow = true;
         }
-
-        
     }
 }

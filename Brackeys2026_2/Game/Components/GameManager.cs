@@ -12,6 +12,7 @@ public class GameManager : Component
     public List<Minister> CurrentMinisters { get; set; } = [];
     private const int NumberOfMinisters = 8;
     public (Minister, Faction) PreviouslyImplementedPolicy { get; private set; }
+    public MenuManager MenuManager { get; set; }
     public static float TurnDelay { get; set; }
     public int Turn { get; set; }
     public List<Faction> ThisTurnsCards = [];
@@ -31,6 +32,7 @@ public class GameManager : Component
     private static bool _isInTurn;
     private const float TurnLength = 0.0f;
     private LastPlayed _lastPlayed;
+
     private NoteManager _stickyNote;
     // private News _news;
 
@@ -40,7 +42,8 @@ public class GameManager : Component
     private List<MinisterFaceCard> _cards = [];
 
     public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont,
-        Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed, NoteManager stickyNote)
+        Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed, NoteManager stickyNote,
+        MenuManager menuManager)
     {
         _nameFont = nameFont;
         _card = card;
@@ -53,6 +56,7 @@ public class GameManager : Component
         _lastPlayed = lastPlayed;
         // _news = news;
         _stickyNote = stickyNote;
+        MenuManager = menuManager;
     }
 
     protected override void OnUpdate()
@@ -196,6 +200,7 @@ public class GameManager : Component
     
     private void NextTurn()
     {
+        _stickyNote.Clear();
         if (_player.IsTurn)
         {
             _player.FinishPlayerTurn();

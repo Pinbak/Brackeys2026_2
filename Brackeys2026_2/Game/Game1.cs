@@ -53,32 +53,50 @@ public class Game1 : Core
         var misc4 = new Texture("Game/Assets/pcBackground.png");
         var news = new Texture("Game/Assets/news.png");
         var yellowNote = new Texture("Game/Assets/yellowNote.png");
+        var mainMenuTexture = new Texture("Game/Assets/mainMenu.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
-        var leftFolder = new GameObject(-20, 100, null, [
+
+        var mainMenu = new GameObject(0, 0, null);
+            var menuFolder = new GameObject(960, 540, mainMenu, [
+                new SpriteRenderer(mainMenuTexture),
+            ]);
+            var playText = new Text("Play", boldFont, 300);
+            var playButton = new Button(button, buttonDown, buttonDisabled, playText);
+            _ = new GameObject(50, -80, menuFolder, [playButton]);
+            
+        
+        var gameOverScreen = new GameObject(0, 0, null);
+        var gameOverText = new TextRenderer(boldFont, black, "", 500);
+        _ = new GameObject(960, 540, gameOverScreen, [
+            gameOverText
+        ]);
+        
+        var game = new GameObject(0, 0, null);
+        var leftFolder = new GameObject(-20, 100, game, [
             new Tiled9SliceSpriteRenderer(folderTexture, 1300, leftFolderHeight, 45)
         ]);
-        var text = new GameObject(800, 75, null, [
+        var text = new GameObject(800, 75, game, [
             new TextRenderer(oldFont, black, "Cabinet", 150)
         ]);
-        var arrow = new GameObject(880, 75, null, [
+        var arrow = new GameObject(880, 75, game, [
             new SpriteRenderer(misc1)
         ]);
         text.Transform.Angle = -5;
         
         // dividers
-        _ = new GameObject(400, 100, null, [
+        _ = new GameObject(400, 100, game, [
             new TiledSpriteRenderer(divider, 30, leftFolderHeight)
         ]);
-        _ = new GameObject(450, 100, null, [
+        _ = new GameObject(450, 100, game, [
             new TiledSpriteRenderer(divider, 30, leftFolderHeight)
         ]); 
         
         // political capital
-        _ = new GameObject(20, 1000, null, [new SpriteRenderer(misc4)]){ Transform = { Pivot = (0, 0)} };
+        _ = new GameObject(20, 1000, game, [new SpriteRenderer(misc4)]){ Transform = { Pivot = (0, 0)} };
         var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
-        _ = new GameObject(70, 1020, null, [
+        _ = new GameObject(70, 1020, game, [
             pcText
         ]) { Transform = { Pivot = (0, 0)} };
         
@@ -86,7 +104,7 @@ public class Game1 : Core
         const int rightFolderWidth = 600;
         const int rightFolderHeight = 1080;
 
-        var rightFolders = new GameObject(1400, 0, null);
+        var rightFolders = new GameObject(1400, 0, game);
             var tab = new SpriteRenderer(misc2);
             _ = new GameObject(-10, 120, rightFolders, [
                 tab,
@@ -221,7 +239,7 @@ public class Game1 : Core
 
         // rightFolder.IsEnabled = false;
         
-        // var newsGameObject = new GameObject(500, 500, null);
+        // var newsGameObject = new GameObject(500, 500, game);
         // var newsHeadline = new TextRenderer(boldFont, "", 300);
         // newsGameObject.AddComponent(newsHeadline);
         // newsGameObject.AddComponent(new SpriteRenderer(news));
@@ -233,6 +251,9 @@ public class Game1 : Core
         rightFolders.AddComponent(rightFolderManager);
         
         // logic
+        var menuManager = new MenuManager(mainMenu, game, gameOverScreen, gameOverText, playButton);
+        var menu = new GameObject(0, 0, null, [menuManager]);
+        
         var lastPlayed = new LastPlayed(policyOutline, federalist, loyalist, agrarian, technocrat);
         _ = new GameObject(210, 250, leftFolder, [lastPlayed]);
         var bureaucracy = new GameObject(150, -50, leftFolder, [
@@ -246,13 +267,13 @@ public class Game1 : Core
         
         var player = new PlayerInteraction(nextTurnButton, playerDescriptionText, jobDescriptionText,
             secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager, stickyNoteManager);
-        var playerGameObject = new GameObject(0, 0, null, [
+        var playerGameObject = new GameObject(0, 0, game, [
             player
         ]);
         
         var ministers = new GameObject(520, 10, leftFolder, [
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
-            , nextTurnButton, player, lastPlayed, stickyNoteManager)
+            , nextTurnButton, player, lastPlayed, stickyNoteManager, menuManager)
         ]);
     }
 }

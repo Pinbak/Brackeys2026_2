@@ -88,7 +88,7 @@ public class RightFolderManager : Component
     public void UpdateUi(MinisterFaceCard ministerFaceCard)
     {
         var minister = ministerFaceCard.Minister;
-        _ministerName.Set(minister.Name);
+        _ministerName.Set("Minister Selected: " + minister.Name);
     }
 
     public void UpdateCosts(int toKill, int toConvert, int toBribe)
