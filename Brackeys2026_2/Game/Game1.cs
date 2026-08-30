@@ -91,7 +91,7 @@ public class Game1 : Core
             var tab2 = new SpriteRenderer(misc3);
             _ = new GameObject(-10, 120 + misc2.Width - 20, rightFolders, [
                 tab2,
-                new TextRenderer(oldFont, black, "Other", 150),
+                new TextRenderer(oldFont, black, "Actions", 150),
             ])
             {
                 Transform =
@@ -99,19 +99,56 @@ public class Game1 : Core
                     Angle = -90
                 }
             };
-
+            const float padding = 10;
             var tabColliderGameObject = new GameObject(-10, 200, rightFolders);
             var tabCollider = new Collider(tabColliderGameObject.Transform, misc2.Height - 10, misc2.Width * 2);
             tabColliderGameObject.AddComponent(tabCollider);
         
             var rightFolderMinisterView = new GameObject(0, 0, rightFolders,
                 [new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45)]);
-            
-            
+                const int rightFolderOverlap = 20;
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 40, rightFolderMinisterView, [
+                    new TextRenderer(boldFont, black, "Minister Actions", 500)
+                ]);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 110, rightFolderMinisterView, [
+                    new TextRenderer(oldFont, black, "Click on a minister to show actions. They cost political capital. Actions can be carried out at the start of your turn.", 500)
+                ]);
+                var ministerName = new TextRenderer(boldFontSmallerCentered, black, "", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 200, rightFolderMinisterView, [
+                    ministerName
+                ]);
+                var killCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 300, rightFolderMinisterView,
+                    [killCost]);
+                var killButton = new Button(button, buttonDown, buttonDisabled, new Text("'Dipose' of", boldFontSmaller, 300));
+                var killAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 300, rightFolderMinisterView, [
+                    killButton,
+                ]);
+                var convertCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 360, rightFolderMinisterView,
+                    [convertCost]);
+                var convertButton = new Button(button, buttonDown, buttonDisabled, new Text("Change Ideology", boldFontSmaller, 300));
+                var convertAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 360, rightFolderMinisterView, [
+                    convertButton,
+                ]);
+                var bribeCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 420, rightFolderMinisterView,
+                    [bribeCost]);
+                var bribeButton = new Button(button, buttonDown, buttonDisabled, new Text("Bribe", boldFontSmaller, 300));
+                var bribeAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 420, rightFolderMinisterView, [
+                    bribeButton,
+                ]);
+
+                var feedBack = new TextRenderer(oldFont, black,
+                    "",
+                    500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 550, rightFolderMinisterView, [
+                    feedBack
+                ]);
+                
             var rightFolder = new GameObject(0, 0, rightFolders, [
                 new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45),
             ]);
-                const int rightFolderOverlap = 20;
                 var playerDescriptionText = new TextRenderer(boldFont, black, "Insert name here", 500);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 40, rightFolder, [
                     playerDescriptionText
@@ -125,7 +162,7 @@ public class Game1 : Core
                     secretText
                 ]);
 
-                const float padding = 10;
+        
                 var currentX = 120f;
                 const float gap = 50f;
                 _ = new GameObject(0, currentX += gap, rightFolder, [
@@ -158,11 +195,11 @@ public class Game1 : Core
                 //     new SpriteRenderer(note),
                 // ]) { Transform = { Pivot = (0, 0) } };
 
-                var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
-                var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
-                    confirmButton,
-                ]);
-                confirmButton.DisablePresses();
+                // var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
+                // var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
+                //     confirmButton,
+                // ]);
+                // confirmButton.DisablePresses();
                 var nextTurnButton = new Button(button, buttonDown, buttonDisabled, new Text("Next turn", boldFontSmaller, 300));
                 var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
                     nextTurnButton,
@@ -170,7 +207,8 @@ public class Game1 : Core
 
         // rightFolder.IsEnabled = false;
 
-        var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView, tabCollider);
+        var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView,
+            tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost, feedBack);
         rightFolders.AddComponent(rightFolderManager);
         
         // logic
@@ -185,15 +223,15 @@ public class Game1 : Core
         ]);
         bureaucracy.Transform.Angle = 5;
         
-        var player = new PlayerInteraction(confirmButton, nextTurnButton, playerDescriptionText, jobDescriptionText,
-            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc);
+        var player = new PlayerInteraction(nextTurnButton, playerDescriptionText, jobDescriptionText,
+            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager);
         var playerGameObject = new GameObject(0, 0, null, [
             player
         ]);
         
         var ministers = new GameObject(520, 10, leftFolder, [
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
-            , confirmButton, nextTurnButton, player, lastPlayed)
+            , nextTurnButton, player, lastPlayed)
         ]);
     }
 }

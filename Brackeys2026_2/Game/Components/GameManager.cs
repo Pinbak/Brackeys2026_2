@@ -38,7 +38,7 @@ public class GameManager : Component
     private List<MinisterFaceCard> _cards = [];
 
     public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont,
-        Button confirmButton, Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed)
+        Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed)
     {
         _nameFont = nameFont;
         _card = card;
@@ -140,8 +140,8 @@ public class GameManager : Component
             _ = new GameObject(-96, 0, cardGameObject, [
                 face
             ]);
-            
-            var cardComponent = new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton, face);
+
+            var cardComponent = new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton, face, _player);
             ministerGameObject.AddComponent(collider);
             ministerGameObject.AddComponent(cardComponent);
 
@@ -341,6 +341,8 @@ public class GameManager : Component
         {
             PreviouslyImplementedPolicy = (newMinister, PreviouslyImplementedPolicy.Item2);
         }
+
+        _player.Killed(ToRemove);
         
         newMinister.PopulateSuspicions(CurrentMinisters);
         

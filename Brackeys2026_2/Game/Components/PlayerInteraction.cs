@@ -9,7 +9,11 @@ public class PlayerInteraction : Component
 {
     private Player Player { get; set; }
     public bool IsTurn { get; set; }
-    
+
+    public int CostToKill { get; set; } = 100;
+    public int CostToConvert { get; set; } = 60;
+    public int CostToBribe { get; set; } = 30;
+
     private TextRenderer _playerDescription;
     private TextRenderer _jobDescription;
     private TextRenderer _secretFaction;
@@ -21,18 +25,19 @@ public class PlayerInteraction : Component
     private Texture _federalistTexture;
     private Texture _loyalistTexture;
     private Texture _token;
-    private Button _confirmActionButton;
     private readonly Button _nextTurnButton;
     private readonly List<GameObject> _playerCardsGameObjects = [];
     private readonly List<PlayerCard> _playerCards = [];
     private readonly List<Faction> _selected = [];
+    private RightFolderManager _rightFolderManager;
+    private MinisterFaceCard? _currentlySelected;
 
-    public PlayerInteraction(Button confirmButton, Button nextTurnButton, TextRenderer playerDescriptionText,
-        TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText, TextRenderer pcText,
-        Texture loyalist, Texture agrarian, Texture technocrat, Texture federalist, Texture token)
+    public PlayerInteraction(Button nextTurnButton, TextRenderer playerDescriptionText,
+        TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText,
+        TextRenderer pcText,
+        Texture loyalist, Texture agrarian, Texture technocrat, Texture federalist, Texture token,
+        RightFolderManager rightFolderManager)
     {
-        _confirmActionButton = confirmButton;
-        confirmButton.HasPressed += ConfirmAction;
         _nextTurnButton = nextTurnButton;
         _playerDescription = playerDescriptionText;
         _jobDescription = jobDescriptionText;
@@ -45,26 +50,102 @@ public class PlayerInteraction : Component
         _loyalistTexture = loyalist;
         _pcText = pcText;
         _token = token;
+        rightFolderManager.UpdateCosts(CostToKill, CostToConvert, CostToBribe);
+        rightFolderManager.KillButton.HasPressed += KillButtonHasPressed;
+        rightFolderManager.ConvertButton.HasPressed += ConvertButtonHasPressed;
+        rightFolderManager.BribeButton.HasPressed += BribeButtonHasPressed;
+
+        _rightFolderManager = rightFolderManager;
+        
         foreach (var faction in Faction.All)
         {
-            switch (faction.FactionType)
+            faction.Texture = faction.FactionType switch
             {
-                case FactionType.Loyalist:
-                    faction.Texture = loyalist;
-                    break;
-                case FactionType.Technocrat:
-                    faction.Texture = technocrat;
-                    break;
-                case FactionType.Agrarian:
-                    faction.Texture = agrarian;
-                    break;
-                case FactionType.Federalist:
-                    faction.Texture = federalist;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                FactionType.Loyalist => loyalist,
+                FactionType.Technocrat => technocrat,
+                FactionType.Agrarian => agrarian,
+                FactionType.Federalist => federalist,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
+    
+    public void Killed(Minister toRemove)
+    {
+        if (_currentlySelected is null) return;
+        if (_currentlySelected.Minister == toRemove)
+        {
+            _rightFolderManager.RemoveSelected();
+            _currentlySelected = null;
+        }
+    }
 
+    private void BribeButtonHasPressed()
+    {
+        if (Player.PoliticalCapital < CostToBribe) return;
+        if (_currentlySelected is null)
+        {
+            _rightFolderManager.GiveFeedback("Click on a minister, and then click the action.");
+        }
+        else
+        {
+            if (_currentlySelected.Minister.IsPlayer)
+            {
+                _rightFolderManager.GiveFeedback("You cannot bribe yourself.");
+            }
+            else
+            {
+                _currentlySelected.Minister.RespondToBribe(Player);
+                Player.PoliticalCapital -= CostToBribe;
+                UpdatePoliticalCapitalUi();
+                _rightFolderManager.GiveFeedback($"You have bribed {_currentlySelected.Minister.Name}. This will increase his trust in you.");
+            }
+        }
+    }
+
+    private void ConvertButtonHasPressed()
+    {
+        if (Player.PoliticalCapital < CostToConvert) return;
+        if (_currentlySelected is null)
+        {
+            _rightFolderManager.GiveFeedback("Click on a minister, and then click the action.");
+        }
+        else
+        {
+            if (_currentlySelected.Minister.IsPlayer)
+            {
+                _rightFolderManager.GiveFeedback("You cannot convert yourself.");
+            }
+            else
+            {
+                _currentlySelected.Minister.RespondToConversion(Player);
+                Player.PoliticalCapital -= CostToConvert;
+                UpdatePoliticalCapitalUi();
+                _rightFolderManager.GiveFeedback($"You have converted {_currentlySelected.Minister.Name}. He is now a {Player.Faction.Name} for now...");
+            }
+        }
+    }
+
+    private void KillButtonHasPressed()
+    {
+        if (Player.PoliticalCapital < CostToKill) return;
+        if (_currentlySelected is null)
+        {
+            _rightFolderManager.GiveFeedback("Click on a minister, and then click the action.");
+        }
+        else
+        {
+            if (_currentlySelected.Minister.IsPlayer)
+            {
+                _rightFolderManager.GiveFeedback("You cannot remove yourself. This job is for life...");
+            }
+            else
+            {
+                Player.GameManager.KillMinister(_currentlySelected.Minister);
+                Player.PoliticalCapital -= CostToBribe;
+                UpdatePoliticalCapitalUi();
+                _rightFolderManager.GiveFeedback($"You have 'disposed' of {_currentlySelected.Minister.Name}. His replacement will hopefully be more inline with our cause.");
+            }
         }
     }
 
@@ -81,10 +162,6 @@ public class PlayerInteraction : Component
         _secretFaction.Set(Player.Faction.SecretName);
         _goalText.Set(Player.GetGoal());
         _actionText.Set(Player.GetActionText());
-    }
-
-    private void ConfirmAction()
-    {
     }
     
     public void FinishPlayerTurn()
@@ -126,14 +203,20 @@ public class PlayerInteraction : Component
 
     public void StartOfNewPlayerTurn(List<Faction> gameManagerThisTurnsCards)
     {
+        _rightFolderManager.UpdateButtonEnables(Player.PoliticalCapital, CostToBribe, CostToConvert, CostToKill);
         IsTurn = true;
         ToggleNextTurnDisabled();
         ShowCards(gameManagerThisTurnsCards);
     }
 
-    public void IncreasePoliticalCapital(int amount)
+    private void UpdatePoliticalCapitalUi()
     {
         _pcText.Set($"Political Capital: {Player.PoliticalCapital}");
+    }
+    
+    public void IncreasePoliticalCapital(int amount)
+    {
+        UpdatePoliticalCapitalUi();
 
         for (var i = 0; i < amount; i++)
         {
@@ -145,7 +228,7 @@ public class PlayerInteraction : Component
     
     public void DecreasePoliticalCapital(int amount)
     {
-        _pcText.Set($"Political Capital: {Player.PoliticalCapital}");
+        UpdatePoliticalCapitalUi();
     }
 
     private void ShowCards(List<Faction> thisTurn)
@@ -222,25 +305,24 @@ public class PlayerInteraction : Component
     public void ToggleNextTurnDisabled()
     {
         _nextTurnButton.DisablePresses("Choose Two Cards...");
-        _confirmActionButton.EnablePresses();
     }
 
     public void ToggleNextTurnEnabled()
     {
         _nextTurnButton.EnablePresses();
-        _confirmActionButton.DisablePresses();
+        _rightFolderManager.DisablePresses();
     }
     
     public void DisableButtons()
     {
         _nextTurnButton.DisablePresses("AI Taking Turn...");
-        _confirmActionButton.DisablePresses();
+        _rightFolderManager.DisablePresses();
     }
     
     public void EnableButtons()
     {
         _nextTurnButton.EnablePresses();
-        _confirmActionButton.DisablePresses();
+        _rightFolderManager.DisablePresses();
     }
 
     public void ChooseMinister()
@@ -253,5 +335,10 @@ public class PlayerInteraction : Component
         throw new NotImplementedException();
     }
 
-    
+
+    public void ClickedOnCard(MinisterFaceCard ministerFaceCard)
+    {
+        _currentlySelected = ministerFaceCard;
+        _rightFolderManager.UpdateUi(ministerFaceCard);
+    }
 }

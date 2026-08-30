@@ -1,13 +1,14 @@
 ﻿using Brackeys2026_2.Engine.Components;
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
+using Brackeys2026_2.Engine.System.Inputs;
 using Brackeys2026_2.Engine.System.Tweening;
 using Brackeys2026_2.Game.Classes;
 using Brackeys2026_2.Game.Classes.Ministers;
 
 namespace Brackeys2026_2.Game.Components;
 
-public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton, SpriteRenderer face) : Component
+public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton, SpriteRenderer face, PlayerInteraction player) : Component
 {
     public Role Role => _minister.Role;
 
@@ -41,6 +42,14 @@ public class MinisterFaceCard(Minister minister, Collider collider, GameObject c
         else if (collider.HasMouseExited())
         {
             Tweener.RotateTo(GameObject.Transform, 0f, 0.1f);
+        }
+
+        if (Mouse.HasPressed(Mouse.Button.Left))
+        {
+            if (collider.IsMouseInside())
+            {
+                player.ClickedOnCard(this);
+            }
         }
     }
 

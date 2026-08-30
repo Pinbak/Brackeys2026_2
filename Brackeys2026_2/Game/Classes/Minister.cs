@@ -365,12 +365,7 @@ public class Minister : IHasTurn
 
         throw new Exception("Minister appears to have gone missing!");
     }
-
-    public void Die()
-    {
-        
-    }
-
+    
     public Minister ChooseNewMinister()
     {
         var ministerOptions = GameManager.ThisTurnsMinisters;
