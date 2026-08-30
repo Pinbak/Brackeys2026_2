@@ -162,7 +162,7 @@ public class Game1 : Core
                     new TextRenderer(boldFontSmallerCentered, black, "Technocratic:", 500)
                 ]);
 
-                var tAmount = new TiledSpriteRenderer(tColour, 150, 30);
+                var tAmount = new TiledSpriteRenderer(tColour, 0, 30);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 495, rightFolderMinisterView, [
                     tAmount
                 ]);
@@ -171,7 +171,7 @@ public class Game1 : Core
                     new TextRenderer(boldFontSmallerCentered, black, "Loyalist:", 500)
                 ]);
 
-                var lAmount = new TiledSpriteRenderer(lColour, 150, 30);
+                var lAmount = new TiledSpriteRenderer(lColour, 0, 30);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 535, rightFolderMinisterView, [
                     lAmount
                 ]);
@@ -180,7 +180,7 @@ public class Game1 : Core
                     new TextRenderer(boldFontSmallerCentered, black, "Federalist:", 500)
                 ]);
 
-                var fAmount = new TiledSpriteRenderer(fColour, 150, 30);
+                var fAmount = new TiledSpriteRenderer(fColour, 0, 30);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 575, rightFolderMinisterView, [
                     fAmount
                 ]);
@@ -189,7 +189,7 @@ public class Game1 : Core
                     new TextRenderer(boldFontSmallerCentered, black, "Agrarian:", 500)
                 ]);
 
-                var aAmount = new TiledSpriteRenderer(aColour, 250, 30);
+                var aAmount = new TiledSpriteRenderer(aColour, 0, 30);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 615, rightFolderMinisterView, [
                     aAmount
                 ]);
@@ -216,10 +216,8 @@ public class Game1 : Core
                     bribeButton,
                 ]);
 
-                var feedBack = new TextRenderer(oldFont, black,
-                    "",
-                    500);
-                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 550, rightFolderMinisterView, [
+                var feedBack = new TextRenderer(oldFont, black, "", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 720, rightFolderMinisterView, [
                     feedBack
                 ]);
                 
@@ -238,8 +236,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 130, rightFolder, [
                     secretText
                 ]);
-
-        
+                
                 var currentX = 120f;
                 const float gap = 50f;
                 _ = new GameObject(0, currentX += gap, rightFolder, [

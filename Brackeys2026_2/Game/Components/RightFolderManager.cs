@@ -97,15 +97,20 @@ public class RightFolderManager : Component
         }
         else
         {
-            _tab1.ChangeTexture(_darkerTab);
-            _tab2.ChangeTexture(_lighterTab);
-            _playerInformation.IsEnabled = false;
-            _aiInformation.IsEnabled = true;
+            ShowAiMenu();
             if (_selectedMinister is not null)
                 UpdateHistoryUi(_selectedMinister);
         }
     }
 
+    private void ShowAiMenu()
+    {
+        _tab1.ChangeTexture(_darkerTab);
+        _tab2.ChangeTexture(_lighterTab);
+        _playerInformation.IsEnabled = false;
+        _aiInformation.IsEnabled = true;
+    }
+    
     public void GiveFeedback(string message)
     {
         _feedBack.Set(message);
@@ -113,6 +118,12 @@ public class RightFolderManager : Component
     
     public void UpdateUi(MinisterFaceCard ministerFaceCard)
     {
+        _paperFlick.Play();
+        if (!_tab)
+        {
+            ShowAiMenu();
+            _tab = !_tab;
+        }
         // var minister = ministerFaceCard.Minister;
         // _ministerName.Set("Minister Selected: " + minister.Name);
         _selected = new GameObject(0, 0, GameObject);
@@ -165,7 +176,11 @@ public class RightFolderManager : Component
         _ = new GameObject(60, -10, cardGameObject, [
             roleText 
         ]);
-        var nameText = new TextRenderer(_light, minister.Name, 200);
+
+        var name = minister.Name;
+        if (minister.IsPlayer) name += " (YOU)";
+        
+        var nameText = new TextRenderer(_light, name, 200);
         _ = new GameObject(50, 40, cardGameObject, [
             nameText
         ]);
@@ -184,6 +199,10 @@ public class RightFolderManager : Component
         _selectedMinister = null;
         _selected?.Destroy();
         _selected = null;
+        _aAmount.UpdateWidth(0);
+        _tAmount.UpdateWidth(0);
+        _lAmount.UpdateWidth(0);
+        _fAmount.UpdateWidth(0);
     }
     
     public void EnablePresses()
