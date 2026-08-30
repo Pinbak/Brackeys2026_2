@@ -29,14 +29,15 @@ public class PlayerInteraction : Component
     private readonly List<GameObject> _playerCardsGameObjects = [];
     private readonly List<PlayerCard> _playerCards = [];
     private readonly List<Faction> _selected = [];
-    private RightFolderManager _rightFolderManager;
+    private readonly RightFolderManager _rightFolderManager;
     private MinisterFaceCard? _currentlySelected;
-
+    private NoteManager _stickyNote;
+    
     public PlayerInteraction(Button nextTurnButton, TextRenderer playerDescriptionText,
         TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText,
         TextRenderer pcText,
         Texture loyalist, Texture agrarian, Texture technocrat, Texture federalist, Texture token,
-        RightFolderManager rightFolderManager)
+        RightFolderManager rightFolderManager, NoteManager stickyNote)
     {
         _nextTurnButton = nextTurnButton;
         _playerDescription = playerDescriptionText;
@@ -55,6 +56,7 @@ public class PlayerInteraction : Component
         rightFolderManager.ConvertButton.HasPressed += ConvertButtonHasPressed;
         rightFolderManager.BribeButton.HasPressed += BribeButtonHasPressed;
 
+        _stickyNote = stickyNote;
         _rightFolderManager = rightFolderManager;
         
         foreach (var faction in Faction.All)
@@ -97,6 +99,7 @@ public class PlayerInteraction : Component
             {
                 _currentlySelected.Minister.RespondToBribe(Player);
                 Player.PoliticalCapital -= CostToBribe;
+                _rightFolderManager.UpdateButtonEnables(Player.PoliticalCapital, CostToBribe, CostToConvert, CostToKill);
                 UpdatePoliticalCapitalUi();
                 _rightFolderManager.GiveFeedback($"You have bribed {_currentlySelected.Minister.Name}. This will increase his trust in you.");
             }
@@ -120,8 +123,9 @@ public class PlayerInteraction : Component
             {
                 _currentlySelected.Minister.RespondToConversion(Player);
                 Player.PoliticalCapital -= CostToConvert;
+                _rightFolderManager.UpdateButtonEnables(Player.PoliticalCapital, CostToBribe, CostToConvert, CostToKill);
                 UpdatePoliticalCapitalUi();
-                _rightFolderManager.GiveFeedback($"You have converted {_currentlySelected.Minister.Name}. He is now a {Player.Faction.Name} for now...");
+                _rightFolderManager.GiveFeedback($"You have converted {_currentlySelected.Minister.Name}. He is now a {Player.Faction.Name}.");
             }
         }
     }
@@ -141,10 +145,20 @@ public class PlayerInteraction : Component
             }
             else
             {
-                Player.GameManager.KillMinister(_currentlySelected.Minister);
-                Player.PoliticalCapital -= CostToBribe;
-                UpdatePoliticalCapitalUi();
-                _rightFolderManager.GiveFeedback($"You have 'disposed' of {_currentlySelected.Minister.Name}. His replacement will hopefully be more inline with our cause.");
+                if (_currentlySelected.Minister == Minister.President && Player.Role.RoleType != RoleType.SupremeCommander)
+                {
+                    _rightFolderManager.GiveFeedback("You cannot remove the president. The supreme commander on the other hand...");
+                }
+                else
+                {
+                    Player.GameManager.KillMinister(_currentlySelected.Minister);
+                    Player.PoliticalCapital -= CostToKill;
+                    UpdatePoliticalCapitalUi();
+                    _rightFolderManager.UpdateButtonEnables(Player.PoliticalCapital, CostToBribe, CostToConvert, CostToKill);
+                    _rightFolderManager.GiveFeedback($"You have 'disposed' of {_currentlySelected.Minister.Name}. His replacement will hopefully be more inline with your cause.");
+                    Killed(_currentlySelected.Minister);
+                }
+                
             }
         }
     }
@@ -163,6 +177,11 @@ public class PlayerInteraction : Component
         _goalText.Set(Player.GetGoal());
         _actionText.Set(Player.GetActionText());
         _actionText.Set(Player.GetActionText());
+
+        if (thisPlayer.Role.RoleType is RoleType.MinisterOfInterior) CostToBribe = 15;
+        if (thisPlayer.Role.RoleType is RoleType.MinisterOfNationalSecurity) CostToKill = 50;
+        if (thisPlayer.Role.RoleType is RoleType.MinisterOfCommunication) CostToConvert = 40;
+        _rightFolderManager.UpdateCosts(CostToKill, CostToConvert, CostToBribe);
     }
     
     public void FinishPlayerTurn()
@@ -217,6 +236,7 @@ public class PlayerInteraction : Component
     
     public void IncreasePoliticalCapital(int amount)
     {
+        // _stickyNote.Add("Your political capital has increased.");
         UpdatePoliticalCapitalUi();
 
         for (var i = 0; i < amount; i++)

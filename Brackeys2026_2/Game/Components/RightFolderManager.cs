@@ -113,6 +113,7 @@ public class RightFolderManager : Component
     
     public void UpdateButtonEnables(int playerPoliticalCapital, int costToBribe, int costToConvert, int costToKill)
     {
+        DisablePresses();
         if (playerPoliticalCapital >= costToBribe) BribeButton.EnablePresses();
         if (playerPoliticalCapital >= costToConvert) ConvertButton.EnablePresses();
         if (playerPoliticalCapital >= costToKill) KillButton.EnablePresses();

@@ -37,7 +37,7 @@ public class Game1 : Core
         var face9 = new Texture("Game/Assets/p9.png");
         var face10 = new Texture("Game/Assets/p10.png");
         var face11 = new Texture("Game/Assets/p11.png");
-        var note = new Texture("Game/Assets/note.png");
+        var note = new Texture("Game/Assets/note2.png");
         var button = new Texture("Game/Assets/button.png");
         var buttonDown = new Texture("Game/Assets/buttonDown.png");
         var buttonDisabled = new Texture("Game/Assets/buttonDisabled.png");
@@ -51,6 +51,8 @@ public class Game1 : Core
         var policyOutline = new Texture("Game/Assets/policyOutline.png");
         var misc3 = new Texture("Game/Assets/sideThingDarker.png");
         var misc4 = new Texture("Game/Assets/pcBackground.png");
+        var news = new Texture("Game/Assets/news.png");
+        var yellowNote = new Texture("Game/Assets/yellowNote.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -196,10 +198,15 @@ public class Game1 : Core
                 _ = new GameObject(padding, currentX += gap, rightFolder, [
                     actionText
                 ]) { Transform = { Pivot = (0, 0) } };
-                
-                // var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
-                //     new SpriteRenderer(note),
-                // ]) { Transform = { Pivot = (0, 0) } };
+
+                var stickySprite = new SpriteRenderer(note);
+                var stickyNote = new GameObject(padding, currentX += gap + 25, rightFolder, [
+                    stickySprite
+                ]) { Transform = { Pivot = (0, 0) } };
+                var stickyNoteText = new TextRenderer(oldFont, "", 500);
+                var noteText = new GameObject(padding, currentX + 25, rightFolder, [stickyNoteText]) { Transform = { Pivot = (0, 0) } };
+                var stickyNoteManager = new NoteManager(stickyNoteText, stickySprite, note, yellowNote);
+                noteText.AddComponent(stickyNoteManager);
 
                 // var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
                 // var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
@@ -210,9 +217,17 @@ public class Game1 : Core
                 var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
                     nextTurnButton,
                 ]);
+                
 
         // rightFolder.IsEnabled = false;
-
+        
+        // var newsGameObject = new GameObject(500, 500, null);
+        // var newsHeadline = new TextRenderer(boldFont, "", 300);
+        // newsGameObject.AddComponent(newsHeadline);
+        // newsGameObject.AddComponent(new SpriteRenderer(news));
+        // var newsComponent = new News();
+        // newsGameObject.AddComponent(newsComponent);
+        
         var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView,
             tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost, feedBack);
         rightFolders.AddComponent(rightFolderManager);
@@ -230,14 +245,14 @@ public class Game1 : Core
         bureaucracy.Transform.Angle = 5;
         
         var player = new PlayerInteraction(nextTurnButton, playerDescriptionText, jobDescriptionText,
-            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager);
+            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager, stickyNoteManager);
         var playerGameObject = new GameObject(0, 0, null, [
             player
         ]);
         
         var ministers = new GameObject(520, 10, leftFolder, [
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
-            , nextTurnButton, player, lastPlayed)
+            , nextTurnButton, player, lastPlayed, stickyNoteManager)
         ]);
     }
 }

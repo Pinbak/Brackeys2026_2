@@ -31,6 +31,8 @@ public class GameManager : Component
     private static bool _isInTurn;
     private const float TurnLength = 0.0f;
     private LastPlayed _lastPlayed;
+    private NoteManager _stickyNote;
+    // private News _news;
 
     private Dictionary<RoleType, (float x, float y)> MinisterPositions { get; set; } = new();
 
@@ -38,7 +40,7 @@ public class GameManager : Component
     private List<MinisterFaceCard> _cards = [];
 
     public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont,
-        Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed)
+        Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed, NoteManager stickyNote)
     {
         _nameFont = nameFont;
         _card = card;
@@ -49,6 +51,8 @@ public class GameManager : Component
         _player = player;
         _cardOutline = cardOutline;
         _lastPlayed = lastPlayed;
+        // _news = news;
+        _stickyNote = stickyNote;
     }
 
     protected override void OnUpdate()
@@ -221,7 +225,12 @@ public class GameManager : Component
 
     public void EndTurn(Faction faction)
     {
-        Console.WriteLine($"End of turn, {faction.Name} was chosen.");
+        if (_currentTurn == Minister.President)
+            _stickyNote.Add($"{faction.Name} policy was enacted. This was implemented by our glorious leader.", false);
+        else if (_currentTurn.IsPlayer)
+            _stickyNote.Add($"{faction.Name} policy was enacted. This was sponsored by you and implemented by our glorious leader.", false);
+        else
+            _stickyNote.Add($"{faction.Name} policy was enacted. This was sponsored by {_currentTurn.Name} and implemented by our glorious leader.", false);
         foreach (var minister in CurrentMinisters) minister.CalculateSuspicions();
         PreviouslyImplementedPolicy = (_currentTurn, faction);
         // _ = new GameObject(650 - 520, 190 - 10, GameObject, [new SpriteRenderer(faction.Texture), new CardToken()]);
@@ -254,13 +263,24 @@ public class GameManager : Component
                 _player.UpdateTextUi();
             }
         }
-
-        CabinetReshuffled();
     }
 
-    private void CabinetReshuffled()
+    public void CabinetReshuffled(Minister a, Minister b)
     {
-        Console.WriteLine("Cabinet reshuffled");
+        if (a.IsPlayer)
+        {
+            _stickyNote.Add($"Our glorious leader has reshuffled the cabinet. You have changed role. You are now the {a.Role.Name}.", true);
+        }
+        else if (b.IsPlayer)
+        {
+            _stickyNote.Add($"Our glorious leader has reshuffled the cabinet. You have changed role. You are now the {b.Role.Name}.", true);
+        }
+        else
+        {
+            _stickyNote.Add(
+                $"Our glorious leader has reshuffled the cabinet. The former {b.Role.Name}, {a.Name} is now the {a.Role.Name}. The former {a.Role.Name}, {b.Name} is now the {b.Role.Name}", true);
+        }
+        
     }
 
     private Minister GetMinisterByRoleType(RoleType role)
@@ -286,7 +306,7 @@ public class GameManager : Component
     {
         Minister newMinister;
         SomeoneIsDying = true;
-        TurnDelay += 5f;
+        // TurnDelay += 5f;
         // on player death, end game
         if (lowestTrust.IsPlayer)
         {
@@ -311,7 +331,9 @@ public class GameManager : Component
 
     private void ChosenNewMinister(Minister newMinister)
     {
-        Console.WriteLine($"{ToRemove.Name} has been killed {newMinister.Name} has taken his place.");
+        
+        _stickyNote.Add(
+            $"{ToRemove.Name} has mysteriously disappeared. In other news, we welcome {newMinister.Name} to take his place. {newMinister.Name} was chosen by our glorious leader.", true);
         foreach (var ministerFaceCard in _cards)
         {
             if (ministerFaceCard.Minister == ToRemove)

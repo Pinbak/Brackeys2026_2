@@ -19,7 +19,7 @@ public abstract class Role
         Name = name;
     }
     
-    protected bool KillSomeone(Minister thisPlayer, int disposalCost = 100, float enoughToKill = -20f, bool canKillPresident = false)
+    protected bool KillSomeone(Minister thisPlayer, int disposalCost = 100, float enoughToKill = -10f, bool canKillPresident = false)
     {
         // can kill people
         if (GameManager.Turn == 0) return false;
@@ -43,7 +43,7 @@ public abstract class Role
         if (GameManager.Turn == 0) return false;
         if (thisPlayer.PoliticalCapital < bribeCost) return false;
         
-        var choice = Random.Next(0, 4);
+        var choice = Random.Next(0, 3);
         if (choice == 0)
         {
             var lowestTrust = thisPlayer.GetMinisterWhomLeastTrusted();
@@ -55,7 +55,7 @@ public abstract class Role
                 return true;
             }
         }
-        else if (choice == 2)
+        else if (choice == 1)
         {
             foreach (var (minister, suspicion) in thisPlayer.Suspicions)
             {
@@ -77,7 +77,7 @@ public abstract class Role
         if (GameManager.Turn == 0) return false;
         if (thisPlayer.PoliticalCapital < convertCost) return false;
 
-        var choice = Random.Next(0, 4);
+        var choice = Random.Next(0, 2);
 
         if (choice == 0)
         {

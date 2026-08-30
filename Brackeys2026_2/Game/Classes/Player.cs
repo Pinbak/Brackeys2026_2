@@ -12,11 +12,12 @@ public class Player : Minister
         gameManager)
     {
         _player = player;
+        PoliticalCapital = 100;
     }
 
     public override void BeginTurn()
     {
-        Console.WriteLine("players turn");
+        // Console.WriteLine("players turn");
         _player.StartOfNewPlayerTurn(GameManager.ThisTurnsCards);
     }
 

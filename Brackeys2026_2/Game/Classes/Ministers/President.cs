@@ -57,7 +57,8 @@ public class President(RoleType roleType, string name, GameManager gameManager) 
             GameManager.CurrentMinisters[positionInListB], GameManager.CurrentMinisters[positionInListA]);
         
         GameManager.UpdatePositions();
-        
+        GameManager.CabinetReshuffled(a, b);
+
     }
     
 }

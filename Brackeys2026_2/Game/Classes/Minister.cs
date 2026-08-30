@@ -212,7 +212,7 @@ public class Minister : IHasTurn
         {
             var amount = int.Clamp((int)Suspicions[minister].Trust, 1, 5);
             amount += 1;
-            minister.IncreasePolitcalCapital(amount);
+            minister.IncreasePoliticalCapital(amount);
         }
 
         if (a == b)
@@ -228,6 +228,11 @@ public class Minister : IHasTurn
         
         if (a != Faction && b != Faction)
             Suspicions[minister].LowerTrust(2f);
+        
+        if (a == minister.Faction || b == minister.Faction)
+        {
+            minister.IncreasePoliticalCapital(10);
+        }
         
         var cards = new List<Faction>() { a, b };
         foreach (var faction in cards)
@@ -247,19 +252,14 @@ public class Minister : IHasTurn
             }
             
         }
-
-        if (a == minister.Faction || b == minister.Faction)
-        {
-            minister.IncreasePolitcalCapital(10);
-        }
         
         return a;
     }
 
-    private void IncreasePolitcalCapital(int amount)
+    private void IncreasePoliticalCapital(int amount)
     {
         PoliticalCapital += amount;
-        Console.WriteLine($"Poltical capital of {Name} increased by {amount}");
+        // Console.WriteLine($"Poltical capital of {Name} increased by {amount}");
         if (IsPlayer)
         {
             var player = this as Player;
