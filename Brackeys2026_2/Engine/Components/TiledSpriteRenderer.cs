@@ -24,4 +24,9 @@ public class TiledSpriteRenderer : SpriteRenderer
     {
         SpriteTexture.DrawTiled(GameObject.Transform, _width, _height, _scale);
     }
+
+    public void UpdateWidth(float newWidth)
+    {
+        _width = newWidth;
+    }
 }

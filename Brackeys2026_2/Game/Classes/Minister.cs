@@ -16,6 +16,7 @@ public class Minister : IHasTurn
     public int PoliticalCapital { get; set; }
 
     public readonly Dictionary<Minister, Suspicion> Suspicions = new();
+    public readonly Dictionary<FactionType, int> Implemented = new();
     public Perception Perception { get; set; } = new();
     public GameManager GameManager { get; set; }
 
@@ -52,6 +53,10 @@ public class Minister : IHasTurn
         Role = role;
         Face = face;
         GameManager = gameManager;
+        foreach (var faction in Faction.All)
+        {
+            Implemented.Add(faction.FactionType, 0);
+        }
     }
 
     private void UpdatePerceptions()

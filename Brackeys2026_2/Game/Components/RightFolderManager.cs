@@ -2,6 +2,7 @@
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System.Inputs;
+using Brackeys2026_2.Game.Classes;
 
 namespace Brackeys2026_2.Game.Components;
 
@@ -28,11 +29,18 @@ public class RightFolderManager : Component
     private readonly Audio _buttonClick;
     private readonly Font _bold;
     private readonly Font _light;
+    private readonly Audio _paperFlick;
+    private readonly TiledSpriteRenderer _aAmount;
+    private readonly TiledSpriteRenderer _tAmount;
+    private readonly TiledSpriteRenderer _fAmount;
+    private readonly TiledSpriteRenderer _lAmount;
+    private Minister? _selectedMinister;
 
     public RightFolderManager(Texture misc2, Texture misc3, SpriteRenderer tab, SpriteRenderer tab2,
         GameObject rightFolder, GameObject rightFolderMinisterView, Collider tabCollider, TextRenderer ministerName,
         Button killButton, Button bribeButton, Button convertButton, TextRenderer killCost, TextRenderer bribeCost,
-        TextRenderer convertCost, TextRenderer feedBack, Audio buttonClick, Font bold, Font light)
+        TextRenderer convertCost, TextRenderer feedBack, Audio buttonClick, Font bold, Font light, Audio paperFlick, TiledSpriteRenderer aAmount, TiledSpriteRenderer tAmount,
+        TiledSpriteRenderer fAmount, TiledSpriteRenderer lAmount)
     {
         _collider = tabCollider;
         _lighterTab = misc2;
@@ -58,6 +66,11 @@ public class RightFolderManager : Component
         _buttonClick = buttonClick;
         _bold = bold;
         _light = light;
+        _paperFlick = paperFlick;
+        _aAmount = aAmount;
+        _tAmount = tAmount;
+        _fAmount = fAmount;
+        _lAmount = lAmount;
     }
 
     protected override void OnUpdate()
@@ -67,6 +80,7 @@ public class RightFolderManager : Component
             if (_collider.IsMouseInside())
             {
                 _tab = !_tab;
+                _paperFlick.Play();
                 ChangeUi();
             }
         }
@@ -87,6 +101,8 @@ public class RightFolderManager : Component
             _tab2.ChangeTexture(_lighterTab);
             _playerInformation.IsEnabled = false;
             _aiInformation.IsEnabled = true;
+            if (_selectedMinister is not null)
+                UpdateHistoryUi(_selectedMinister);
         }
     }
 
@@ -100,7 +116,34 @@ public class RightFolderManager : Component
         // var minister = ministerFaceCard.Minister;
         // _ministerName.Set("Minister Selected: " + minister.Name);
         _selected = new GameObject(0, 0, GameObject);
+        _selectedMinister = ministerFaceCard.Minister;
         GenerateFaceCard(ministerFaceCard);
+        UpdateHistoryUi(ministerFaceCard.Minister);
+    }
+
+    private void UpdateHistoryUi(Minister minister)
+    {
+        var totalAmount = 0;
+        foreach (var (faction, amount) in minister.Implemented)
+        {
+            totalAmount += amount;
+        }
+
+        if (totalAmount == 0)
+        {
+            _aAmount.UpdateWidth(0);
+            _tAmount.UpdateWidth(0);
+            _lAmount.UpdateWidth(0);
+            _fAmount.UpdateWidth(0);
+        }
+        else
+        {
+            const int fullWidth = 300;
+            _aAmount.UpdateWidth(minister.Implemented[FactionType.Agrarian] / (float)totalAmount * fullWidth);
+            _tAmount.UpdateWidth(minister.Implemented[FactionType.Technocrat] / (float)totalAmount * fullWidth);
+            _lAmount.UpdateWidth(minister.Implemented[FactionType.Loyalist] / (float)totalAmount * fullWidth);
+            _fAmount.UpdateWidth(minister.Implemented[FactionType.Federalist] / (float)totalAmount * fullWidth);
+        }
     }
 
     private void GenerateFaceCard(MinisterFaceCard ministerFaceCard)
@@ -138,6 +181,7 @@ public class RightFolderManager : Component
     public void RemoveSelected()
     {
         DisablePresses();
+        _selectedMinister = null;
         _selected?.Destroy();
         _selected = null;
     }

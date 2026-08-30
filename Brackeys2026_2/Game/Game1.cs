@@ -50,6 +50,10 @@ public class Game1 : Core
         var misc4 = new Texture("Game/Assets/pcBackground.png");
         var yellowNote = new Texture("Game/Assets/yellowNote.png");
         var mainMenuTexture = new Texture("Game/Assets/mainMenu.png");
+        var fColour = new Texture("Game/Assets/federalistColour.png");
+        var aColour = new Texture("Game/Assets/agrarianColour.png");
+        var lColour = new Texture("Game/Assets/loyalistColour.png");
+        var tColour = new Texture("Game/Assets/technocratColour.png");
         
         var soundTrack = new Audio("Game/Assets/VibingOverVenus.ogg");
         var crowd = new Audio("Game/Assets/crowdReaction.ogg");
@@ -150,6 +154,46 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 200, rightFolderMinisterView, [
                     ministerName
                 ]);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 450, rightFolderMinisterView, [
+                    new TextRenderer(boldFontSmallerCentered, black, "Policy History:", 500)
+                ]);
+                
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 520, rightFolderMinisterView, [
+                    new TextRenderer(boldFontSmallerCentered, black, "Technocratic:", 500)
+                ]);
+
+                var tAmount = new TiledSpriteRenderer(tColour, 150, 30);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 495, rightFolderMinisterView, [
+                    tAmount
+                ]);
+                
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 560, rightFolderMinisterView, [
+                    new TextRenderer(boldFontSmallerCentered, black, "Loyalist:", 500)
+                ]);
+
+                var lAmount = new TiledSpriteRenderer(lColour, 150, 30);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 535, rightFolderMinisterView, [
+                    lAmount
+                ]);
+                
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 600, rightFolderMinisterView, [
+                    new TextRenderer(boldFontSmallerCentered, black, "Federalist:", 500)
+                ]);
+
+                var fAmount = new TiledSpriteRenderer(fColour, 150, 30);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 575, rightFolderMinisterView, [
+                    fAmount
+                ]);
+                
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 640, rightFolderMinisterView, [
+                    new TextRenderer(boldFontSmallerCentered, black, "Agrarian:", 500)
+                ]);
+
+                var aAmount = new TiledSpriteRenderer(aColour, 250, 30);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 615, rightFolderMinisterView, [
+                    aAmount
+                ]);
+                
                 var killCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 800, rightFolderMinisterView,
                     [killCost]);
@@ -253,7 +297,7 @@ public class Game1 : Core
 
         var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView,
             tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost,
-            feedBack, next, boldFontSmallerCentered, oldFontSmaller);
+            feedBack, next, boldFontSmallerCentered, oldFontSmaller, paperFlick, aAmount, tAmount, fAmount, lAmount);
         rightFolders.AddComponent(rightFolderManager);
         
         // logic

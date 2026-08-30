@@ -256,6 +256,9 @@ public class GameManager : Component
             _stickyNote.Add($"{faction.Name} policy was enacted. This was sponsored by you and implemented by our glorious leader.", false);
         else
             _stickyNote.Add($"{faction.Name} policy was enacted. This was sponsored by {_currentTurn.Name} and implemented by our glorious leader.", false);
+
+        _currentTurn.Implemented[faction.FactionType] += 1;
+        
         foreach (var minister in CurrentMinisters) minister.CalculateSuspicions();
         PreviouslyImplementedPolicy = (_currentTurn, faction);
         // _ = new GameObject(650 - 520, 190 - 10, GameObject, [new SpriteRenderer(faction.Texture), new CardToken()]);
