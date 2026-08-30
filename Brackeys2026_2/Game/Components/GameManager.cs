@@ -34,6 +34,8 @@ public class GameManager : Component
     private LastPlayed _lastPlayed;
 
     private NoteManager _stickyNote;
+    private readonly Audio _crowd;
+    private readonly Audio _next;
 
     // private News _news;
 
@@ -44,7 +46,7 @@ public class GameManager : Component
 
     public GameManager(Texture card, Texture cardOutline, Texture[] faces, Font nameFont, Font smallerFont,
         Button nextTurnButton, PlayerInteraction player, LastPlayed lastPlayed, NoteManager stickyNote,
-        MenuManager menuManager)
+        MenuManager menuManager, Audio crowd, Audio next)
     {
         _nameFont = nameFont;
         _card = card;
@@ -57,6 +59,8 @@ public class GameManager : Component
         _lastPlayed = lastPlayed;
         // _news = news;
         _stickyNote = stickyNote;
+        _crowd = crowd;
+        _next = next;
         MenuManager = menuManager;
     }
 
@@ -221,6 +225,7 @@ public class GameManager : Component
         }
         else
         {
+            _next.Play();
             if (_isInTurn) return;
             var positionInList = CurrentMinisters.FindIndex(a => a == _currentTurn);
             var nextMinisterTurn = positionInList + 1;
@@ -352,6 +357,7 @@ public class GameManager : Component
     {
         _stickyNote.Add(
             $"{ToRemove.Name} has mysteriously disappeared. In other news, we welcome {newMinister.Name} to take his place. {newMinister.Name} was chosen by our glorious leader.", true);
+        _crowd.Play();
         foreach (var ministerFaceCard in _cards)
         {
             if (ministerFaceCard.Minister == ToRemove)

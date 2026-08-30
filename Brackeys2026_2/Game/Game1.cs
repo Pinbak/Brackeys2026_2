@@ -15,7 +15,6 @@ public class Game1 : Core
     {
         Window.ChangeBackgroundColour(new Colour(242, 218, 175, 255));
         var folderTexture = new Texture("Game/Assets/folder.png");
-        var folderLighterTexture = new Texture("Game/Assets/folderLighter.png");
         var oldFont = new Font("Game/Assets/IBMPlexSerif-Light.ttf");
         var oldFontSmaller = new Font("Game/Assets/IBMPlexSerif-Light.ttf", 20);
         var boldFont = new Font("Game/Assets/Staatliches-Regular.ttf", 34);
@@ -48,15 +47,16 @@ public class Game1 : Core
         var agrarian = new Texture("Game/Assets/agrarianPolicy.png");
         var technocrat = new Texture("Game/Assets/technocratPolicy.png");
         var pc = new Texture("Game/Assets/pC.png");
-        var fist = new Texture("Game/Assets/fist.png");
         var policyOutline = new Texture("Game/Assets/policyOutline.png");
         var misc3 = new Texture("Game/Assets/sideThingDarker.png");
         var misc4 = new Texture("Game/Assets/pcBackground.png");
-        var news = new Texture("Game/Assets/news.png");
         var yellowNote = new Texture("Game/Assets/yellowNote.png");
         var mainMenuTexture = new Texture("Game/Assets/mainMenu.png");
         
         var soundTrack = new Audio("Game/Assets/VibingOverVenus.ogg");
+        var crowd = new Audio("Game/Assets/crowdReaction.ogg");
+        var next = new Audio("Game/Assets/nextTurn.ogg");
+        var paperFlick = new Audio("Game/Assets/paper.ogg");
         soundTrack.Play();
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -272,14 +272,14 @@ public class Game1 : Core
         bureaucracy.Transform.Angle = 5;
         
         var player = new PlayerInteraction(nextTurnButton, playerDescriptionText, jobDescriptionText,
-            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager, stickyNoteManager);
+            secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager, stickyNoteManager, next);
         var playerGameObject = new GameObject(0, 0, game, [
             player
         ]);
         
         var ministers = new GameObject(520, 10, leftFolder, [
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
-            , nextTurnButton, player, lastPlayed, stickyNoteManager, menuManager)
+            , nextTurnButton, player, lastPlayed, stickyNoteManager, menuManager, crowd, paperFlick)
         ]);
     }
 }

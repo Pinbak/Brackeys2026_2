@@ -32,12 +32,13 @@ public class PlayerInteraction : Component
     private readonly RightFolderManager _rightFolderManager;
     private MinisterFaceCard? _currentlySelected;
     private NoteManager _stickyNote;
-    
+    private readonly Audio _next;
+
     public PlayerInteraction(Button nextTurnButton, TextRenderer playerDescriptionText,
         TextRenderer jobDescriptionText, TextRenderer secretText, TextRenderer goalText, TextRenderer actionText,
         TextRenderer pcText,
         Texture loyalist, Texture agrarian, Texture technocrat, Texture federalist, Texture token,
-        RightFolderManager rightFolderManager, NoteManager stickyNote)
+        RightFolderManager rightFolderManager, NoteManager stickyNote, Audio next)
     {
         _nextTurnButton = nextTurnButton;
         _playerDescription = playerDescriptionText;
@@ -57,6 +58,7 @@ public class PlayerInteraction : Component
         rightFolderManager.BribeButton.HasPressed += BribeButtonHasPressed;
 
         _stickyNote = stickyNote;
+        _next = next;
         _rightFolderManager = rightFolderManager;
         
         foreach (var faction in Faction.All)
@@ -194,6 +196,7 @@ public class PlayerInteraction : Component
         if (!Player.IsTurn) return;
         if (_selected.Count == 2)
         {
+            _next.Play();
             ToggleNextTurnEnabled();
             EndTurn();
             RemoveCards();
@@ -248,8 +251,6 @@ public class PlayerInteraction : Component
         {
             _ = new GameObject(650, 190, GameObject, [new SpriteRenderer(_token), new PoliticalCapitalToken(i * .1f)]);    
         }
-        
-        
     }
     
     public void DecreasePoliticalCapital(int amount)
