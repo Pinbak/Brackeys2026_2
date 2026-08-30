@@ -6,6 +6,10 @@ namespace Brackeys2026_2.Engine.Components;
 
 public class Collider : Component
 {
+    public float Width => _width;
+
+    public float Height => _height;
+
     private Rectangle _collisionShape;
     private readonly Transform _transform;
     private float _width;

@@ -78,6 +78,11 @@ internal static unsafe class Renderer
     {
         SDL.RenderPresent(Handle);
     }
+
+    internal static void DrawRectangle(Rectangle rectangle)
+    {
+        SDL.RenderFillRect(Handle, rectangle);
+    }
     
     internal static void Draw(SDL.Texture* texture, Transform position, float width, float height, Rectangle? frame)
     {

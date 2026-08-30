@@ -49,6 +49,7 @@ public class Game1 : Core
         var pc = new Texture("Game/Assets/pC.png");
         var fist = new Texture("Game/Assets/fist.png");
         var policyOutline = new Texture("Game/Assets/policyOutline.png");
+        var misc3 = new Texture("Game/Assets/sideThingDarker.png");
 
         const int leftFolderHeight = 850;
         var black = Window.Black;
@@ -74,11 +75,11 @@ public class Game1 : Core
         // right folder
         const int rightFolderWidth = 600;
         const int rightFolderHeight = 1080;
-        var rightFolder = new GameObject(1400, 0, null, [
-            new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45),
-        ]);
-            _ = new GameObject(-10, 120, rightFolder, [
-                new SpriteRenderer(misc2),
+
+        var rightFolders = new GameObject(1400, 0, null);
+            var tab = new SpriteRenderer(misc2);
+            _ = new GameObject(-10, 120, rightFolders, [
+                tab,
                 new TextRenderer(oldFont, black, "You", 150),
             ])
             {
@@ -87,63 +88,91 @@ public class Game1 : Core
                     Angle = -90
                 }
             };
-            const int rightFolderOverlap = 20;
-            var playerDescriptionText = new TextRenderer(boldFont, black, "Insert name here", 500);
-            _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 40, rightFolder, [
-                playerDescriptionText
-            ]);
-            var jobDescriptionText = new TextRenderer(boldFontSmallerCentered, black, "Minister of finance", 500);
-            _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 85, rightFolder, [
-                jobDescriptionText
-            ]);
-            var secretText = new TextRenderer(boldFontSmallerCentered, black, "Secretly...", 500);
-            _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 130, rightFolder, [
-                secretText
-            ]);
+            var tab2 = new SpriteRenderer(misc3);
+            _ = new GameObject(-10, 120 + misc2.Width - 20, rightFolders, [
+                tab2,
+                new TextRenderer(oldFont, black, "Other", 150),
+            ])
+            {
+                Transform =
+                {
+                    Angle = -90
+                }
+            };
 
-            const float padding = 10;
-            var currentX = 120f;
-            const float gap = 50f;
-            _ = new GameObject(0, currentX += gap, rightFolder, [
-                new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
-            ]);
-            _ = new GameObject(padding, currentX += gap, rightFolder, [
-                new TextRenderer(boldFont, black, "Goal:", 200)
-            ]){ Transform = { Pivot = (0, 0) } };
-            var goalText = new TextRenderer(oldFont, black, "Have all the ministers support the cause for dots", 500);
-            _ = new GameObject(padding, currentX += gap, rightFolder, [
-                goalText
-            ]){ Transform = { Pivot = (0, 0) } };
+            var tabColliderGameObject = new GameObject(-10, 200, rightFolders);
+            var tabCollider = new Collider(tabColliderGameObject.Transform, misc2.Height - 10, misc2.Width * 2);
+            tabColliderGameObject.AddComponent(tabCollider);
+        
+            var rightFolderMinisterView = new GameObject(0, 0, rightFolders,
+                [new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45)]);
             
-            _ = new GameObject(0, currentX += gap * 2, rightFolder, [
-                new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
-            ]);
-            _ = new GameObject(padding, currentX += gap, rightFolder, [
-                new TextRenderer(boldFont, black, "Action:", 200)
-            ]){ Transform = { Pivot = (0, 0) } };
-            var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
-            _ = new GameObject(padding, currentX += gap, rightFolder, [
-                pcText,
-            ]) { Transform = { Pivot = (0, 0)} };
-            var actionText = new TextRenderer(oldFont, black, "Bribe the target, reducing their suspicion.", 500);
-            _ = new GameObject(padding, currentX += gap, rightFolder, [
-                actionText
-            ]) { Transform = { Pivot = (0, 0) } };
             
-            // var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
-            //     new SpriteRenderer(note),
-            // ]) { Transform = { Pivot = (0, 0) } };
+            var rightFolder = new GameObject(0, 0, rightFolders, [
+                new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45),
+            ]);
+                const int rightFolderOverlap = 20;
+                var playerDescriptionText = new TextRenderer(boldFont, black, "Insert name here", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 40, rightFolder, [
+                    playerDescriptionText
+                ]);
+                var jobDescriptionText = new TextRenderer(boldFontSmallerCentered, black, "Minister of finance", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 85, rightFolder, [
+                    jobDescriptionText
+                ]);
+                var secretText = new TextRenderer(boldFontSmallerCentered, black, "Secretly...", 500);
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 130, rightFolder, [
+                    secretText
+                ]);
 
-            var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
-            var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
-                confirmButton,
-            ]);
-            confirmButton.DisablePresses();
-            var nextTurnButton = new Button(button, buttonDown, buttonDisabled, new Text("Next turn", boldFontSmaller, 300));
-            var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
-                nextTurnButton,
-            ]);
-            
+                const float padding = 10;
+                var currentX = 120f;
+                const float gap = 50f;
+                _ = new GameObject(0, currentX += gap, rightFolder, [
+                    new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
+                ]);
+                _ = new GameObject(padding, currentX += gap, rightFolder, [
+                    new TextRenderer(boldFont, black, "Goal:", 200)
+                ]){ Transform = { Pivot = (0, 0) } };
+                var goalText = new TextRenderer(oldFont, black, "Have all the ministers support the cause for dots", 500);
+                _ = new GameObject(padding, currentX += gap, rightFolder, [
+                    goalText
+                ]){ Transform = { Pivot = (0, 0) } };
+                
+                _ = new GameObject(0, currentX += gap * 2, rightFolder, [
+                    new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
+                ]);
+                _ = new GameObject(padding, currentX += gap, rightFolder, [
+                    new TextRenderer(boldFont, black, "Action:", 200)
+                ]){ Transform = { Pivot = (0, 0) } };
+                var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
+                _ = new GameObject(padding, currentX += gap, rightFolder, [
+                    pcText,
+                ]) { Transform = { Pivot = (0, 0)} };
+                var actionText = new TextRenderer(oldFont, black, "Bribe the target, reducing their suspicion.", 500);
+                _ = new GameObject(padding, currentX += gap, rightFolder, [
+                    actionText
+                ]) { Transform = { Pivot = (0, 0) } };
+                
+                // var stickyNote = new GameObject(padding, currentX += gap, rightFolder, [
+                //     new SpriteRenderer(note),
+                // ]) { Transform = { Pivot = (0, 0) } };
+
+                var confirmButton = new Button(button, buttonDown, buttonDisabled, new Text("Confirm Action", boldFontSmaller, 300));
+                var confirmAction = new GameObject(padding + 50 + button.Width *.5f, currentX + 430, rightFolder, [
+                    confirmButton,
+                ]);
+                confirmButton.DisablePresses();
+                var nextTurnButton = new Button(button, buttonDown, buttonDisabled, new Text("Next turn", boldFontSmaller, 300));
+                var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
+                    nextTurnButton,
+                ]);
+
+        // rightFolder.IsEnabled = false;
+
+        var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView, tabCollider);
+        rightFolders.AddComponent(rightFolderManager);
+        
         // logic
         var lastPlayed = new LastPlayed(policyOutline, federalist, loyalist, agrarian, technocrat);
         _ = new GameObject(210, 250, leftFolder, [lastPlayed]);
