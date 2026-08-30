@@ -121,7 +121,7 @@ public class PlayerInteraction : Component
             }
             else
             {
-                _currentlySelected.Minister.RespondToConversion(Player);
+                Player.GameManager.ConvertIdeology(Player, _currentlySelected.Minister);
                 Player.PoliticalCapital -= CostToConvert;
                 _rightFolderManager.UpdateButtonEnables(Player.PoliticalCapital, CostToBribe, CostToConvert, CostToKill);
                 UpdatePoliticalCapitalUi();
@@ -153,8 +153,8 @@ public class PlayerInteraction : Component
                 {
                     Player.GameManager.KillMinister(_currentlySelected.Minister);
                     Player.PoliticalCapital -= CostToKill;
-                    UpdatePoliticalCapitalUi();
                     _rightFolderManager.UpdateButtonEnables(Player.PoliticalCapital, CostToBribe, CostToConvert, CostToKill);
+                    UpdatePoliticalCapitalUi();
                     _rightFolderManager.GiveFeedback($"You have 'disposed' of {_currentlySelected.Minister.Name}. His replacement will hopefully be more inline with your cause.");
                     Killed(_currentlySelected.Minister);
                 }

@@ -12,7 +12,7 @@ public class Player : Minister
         gameManager)
     {
         _player = player;
-        PoliticalCapital = 100;
+        PoliticalCapital = 1000;
     }
 
     public override void BeginTurn()

@@ -197,9 +197,22 @@ public class GameManager : Component
     {
         return _faces[Random.Next(0, _faces.Length)];
     }
+
+    private bool HasWon()
+    {
+        var firstFaction = CurrentMinisters[0].Faction;
+        foreach (var currentMinister in CurrentMinisters)
+        {
+            if (currentMinister.Faction != firstFaction) return false;
+        }
+
+        MenuManager.GameOver(true);
+        return true;
+    }
     
     private void NextTurn()
     {
+        if (HasWon()) return;
         _stickyNote.Clear();
         if (_player.IsTurn)
         {
@@ -378,7 +391,7 @@ public class GameManager : Component
 
     public void ConvertIdeology(Minister thisPlayer, Minister lowestTrust)
     {
-        Console.WriteLine($"{thisPlayer.Name} has converted {lowestTrust.Name} to {thisPlayer.Faction.Name}.");
+        // Console.WriteLine($"{thisPlayer.Name} has converted {lowestTrust.Name} to {thisPlayer.Faction.Name}.");
         lowestTrust.Faction = thisPlayer.Faction;
         lowestTrust.Suspicions[thisPlayer].SetTrust(10f);
         thisPlayer.Suspicions[lowestTrust].SetTrust(10f);

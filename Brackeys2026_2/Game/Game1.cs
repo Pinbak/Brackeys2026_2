@@ -64,7 +64,7 @@ public class Game1 : Core
             ]);
             var playText = new Text("Play", boldFont, 300);
             var playButton = new Button(button, buttonDown, buttonDisabled, playText);
-            _ = new GameObject(50, -80, menuFolder, [playButton]);
+            _ = new GameObject(50, -50, menuFolder, [playButton]);
             
         
         var gameOverScreen = new GameObject(0, 0, null);
