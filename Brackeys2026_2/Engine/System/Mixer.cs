@@ -28,7 +28,7 @@ internal static unsafe class Mixer
     {
         MIX.PlayTrack(track, 0);
     }
-
+    
     internal static void StopTrack(MIX.AudioTrack* track)
     {
         MIX.StopTrack(track, 10);
@@ -42,5 +42,10 @@ internal static unsafe class Mixer
     internal static void ResumeTrack(MIX.AudioTrack* track)
     {
         MIX.ResumeTrack(track);
-    } 
+    }
+
+    public static void SetLoop(MIX.AudioTrack* track, int loops)
+    {
+        MIX.SetTrackLoops(track, loops);
+    }
 }

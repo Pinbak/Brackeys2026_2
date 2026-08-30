@@ -12,6 +12,8 @@ public class NoteManager(TextRenderer stickyNoteText, SpriteRenderer stickyNote,
     {
         _totalContent = "";
         stickyNoteText.Set(_totalContent);
+        _isYellow = false;
+        stickyNote.ChangeTexture(normalNote);
     }
 
     public void Add(string content, bool isUrgent)

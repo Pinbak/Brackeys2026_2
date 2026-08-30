@@ -1,10 +1,8 @@
 ﻿using Brackeys2026_2.Engine;
 using Brackeys2026_2.Engine.Components;
-using Brackeys2026_2.Engine.Components.Experiments;
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
-using Brackeys2026_2.Game.Classes;
 using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game;
@@ -58,6 +56,7 @@ public class Game1 : Core
         var next = new Audio("Game/Assets/nextTurn.ogg");
         var paperFlick = new Audio("Game/Assets/paper.ogg");
         soundTrack.Play();
+        soundTrack.EnabledLooping();
         const int leftFolderHeight = 850;
         var black = Window.Black;
 
@@ -253,7 +252,7 @@ public class Game1 : Core
         // newsGameObject.AddComponent(newsComponent);
         
         var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView,
-            tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost, feedBack);
+            tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost, feedBack, next);
         rightFolders.AddComponent(rightFolderManager);
         
         // logic

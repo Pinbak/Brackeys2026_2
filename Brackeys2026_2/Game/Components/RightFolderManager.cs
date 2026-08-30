@@ -24,11 +24,12 @@ public class RightFolderManager : Component
     private TextRenderer _bribeCost;
     private TextRenderer _convertCost;
     private TextRenderer _feedBack;
+    private readonly Audio _buttonClick;
 
     public RightFolderManager(Texture misc2, Texture misc3, SpriteRenderer tab, SpriteRenderer tab2,
         GameObject rightFolder, GameObject rightFolderMinisterView, Collider tabCollider, TextRenderer ministerName,
         Button killButton, Button bribeButton, Button convertButton, TextRenderer killCost, TextRenderer bribeCost,
-        TextRenderer convertCost, TextRenderer feedBack)
+        TextRenderer convertCost, TextRenderer feedBack, Audio buttonClick)
     {
         _collider = tabCollider;
         _lighterTab = misc2;
@@ -41,6 +42,9 @@ public class RightFolderManager : Component
         BribeButton = bribeButton;
         ConvertButton = convertButton;
         _ministerName = ministerName;
+        KillButton.HasPressed += buttonClick.Play;
+        BribeButton.HasPressed += buttonClick.Play;
+        ConvertButton.HasPressed += buttonClick.Play;
         KillButton.DisablePresses();
         BribeButton.DisablePresses();
         ConvertButton.DisablePresses();
@@ -48,6 +52,7 @@ public class RightFolderManager : Component
         _bribeCost = bribeCost;
         _convertCost = convertCost;
         _feedBack = feedBack;
+        _buttonClick = buttonClick;
     }
 
     protected override void OnUpdate()
