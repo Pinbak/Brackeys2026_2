@@ -8,11 +8,13 @@ using Brackeys2026_2.Game.Classes.Ministers;
 
 namespace Brackeys2026_2.Game.Components;
 
-public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton, SpriteRenderer face, PlayerInteraction player) : Component
+public class MinisterFaceCard(Minister minister, Collider collider, GameObject cardOutline, Button nextTurnButton, SpriteRenderer face, PlayerInteraction player, Texture card) : Component
 {
     public Role Role => _minister.Role;
 
     public Minister Minister => _minister;
+
+    public Texture Card => card;
 
     public TextRenderer? RoleText { get; set; }
     public TextRenderer? NameText { get; set; }

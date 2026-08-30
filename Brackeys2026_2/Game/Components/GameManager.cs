@@ -154,7 +154,8 @@ public class GameManager : Component
                 face
             ]);
 
-            var cardComponent = new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton, face, _player);
+            var cardComponent =
+                new MinisterFaceCard(minister, collider, cardOutline, _nextTurnButton, face, _player, _card);
             ministerGameObject.AddComponent(collider);
             ministerGameObject.AddComponent(cardComponent);
 

@@ -19,17 +19,20 @@ public class RightFolderManager : Component
     private SpriteRenderer _tab2;
     private GameObject _playerInformation;
     private GameObject _aiInformation;
+    private GameObject? _selected;
     private TextRenderer _ministerName;
     private TextRenderer _killCost;
     private TextRenderer _bribeCost;
     private TextRenderer _convertCost;
     private TextRenderer _feedBack;
     private readonly Audio _buttonClick;
+    private readonly Font _bold;
+    private readonly Font _light;
 
     public RightFolderManager(Texture misc2, Texture misc3, SpriteRenderer tab, SpriteRenderer tab2,
         GameObject rightFolder, GameObject rightFolderMinisterView, Collider tabCollider, TextRenderer ministerName,
         Button killButton, Button bribeButton, Button convertButton, TextRenderer killCost, TextRenderer bribeCost,
-        TextRenderer convertCost, TextRenderer feedBack, Audio buttonClick)
+        TextRenderer convertCost, TextRenderer feedBack, Audio buttonClick, Font bold, Font light)
     {
         _collider = tabCollider;
         _lighterTab = misc2;
@@ -53,6 +56,8 @@ public class RightFolderManager : Component
         _convertCost = convertCost;
         _feedBack = feedBack;
         _buttonClick = buttonClick;
+        _bold = bold;
+        _light = light;
     }
 
     protected override void OnUpdate()
@@ -92,8 +97,35 @@ public class RightFolderManager : Component
     
     public void UpdateUi(MinisterFaceCard ministerFaceCard)
     {
+        // var minister = ministerFaceCard.Minister;
+        // _ministerName.Set("Minister Selected: " + minister.Name);
+        _selected = new GameObject(0, 0, GameObject);
+        GenerateFaceCard(ministerFaceCard);
+    }
+
+    private void GenerateFaceCard(MinisterFaceCard ministerFaceCard)
+    {
+        if (_selected is null) return;
+        _selected.Destroy();
         var minister = ministerFaceCard.Minister;
-        _ministerName.Set("Minister Selected: " + minister.Name);
+        _selected = new GameObject(280, 300, _aiInformation);
+        var cardGameObject = new GameObject(0, 0, _selected, [
+            new SpriteRenderer(ministerFaceCard.Card),
+        ]);
+
+        var face = new SpriteRenderer(minister.Face);
+        _ = new GameObject(-96, 0, cardGameObject, [
+            face
+        ]);
+        
+        var roleText = new TextRenderer(_bold, minister.Role.Name, 200);
+        _ = new GameObject(60, -10, cardGameObject, [
+            roleText 
+        ]);
+        var nameText = new TextRenderer(_light, minister.Name, 200);
+        _ = new GameObject(50, 40, cardGameObject, [
+            nameText
+        ]);
     }
 
     public void UpdateCosts(int toKill, int toConvert, int toBribe)
@@ -106,7 +138,8 @@ public class RightFolderManager : Component
     public void RemoveSelected()
     {
         DisablePresses();
-        _ministerName.Set("");
+        _selected?.Destroy();
+        _selected = null;
     }
     
     public void EnablePresses()

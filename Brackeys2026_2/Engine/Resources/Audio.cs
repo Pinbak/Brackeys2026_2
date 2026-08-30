@@ -62,7 +62,7 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
         _isDisposed = true;
     }
 
-    public void EnabledLooping()
+    public void Loop()
     {
         Mixer.SetLoop(_track, -1);
     }

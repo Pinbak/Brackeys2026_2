@@ -55,8 +55,8 @@ public class Game1 : Core
         var crowd = new Audio("Game/Assets/crowdReaction.ogg");
         var next = new Audio("Game/Assets/nextTurn.ogg");
         var paperFlick = new Audio("Game/Assets/paper.ogg");
+        soundTrack.Loop();
         soundTrack.Play();
-        soundTrack.EnabledLooping();
         const int leftFolderHeight = 850;
         var black = Window.Black;
 
@@ -146,29 +146,29 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 110, rightFolderMinisterView, [
                     new TextRenderer(oldFont, black, "Click on a minister to show actions. They cost political capital. Actions can be carried out at the start of your turn.", 500)
                 ]);
-                var ministerName = new TextRenderer(boldFontSmallerCentered, black, "", 500);
+                var ministerName = new TextRenderer(boldFontSmallerCentered, black, "Currently Selected:", 500);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 200, rightFolderMinisterView, [
                     ministerName
                 ]);
                 var killCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
-                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 300, rightFolderMinisterView,
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 800, rightFolderMinisterView,
                     [killCost]);
                 var killButton = new Button(button, buttonDown, buttonDisabled, new Text("'Dispose' of", boldFontSmaller, 300));
-                var killAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 300, rightFolderMinisterView, [
+                var killAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 800, rightFolderMinisterView, [
                     killButton,
                 ]);
                 var convertCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
-                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 360, rightFolderMinisterView,
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 860, rightFolderMinisterView,
                     [convertCost]);
                 var convertButton = new Button(button, buttonDown, buttonDisabled, new Text("Change Ideology", boldFontSmaller, 300));
-                var convertAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 360, rightFolderMinisterView, [
+                var convertAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 860, rightFolderMinisterView, [
                     convertButton,
                 ]);
                 var bribeCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
-                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 420, rightFolderMinisterView,
+                _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 920, rightFolderMinisterView,
                     [bribeCost]);
                 var bribeButton = new Button(button, buttonDown, buttonDisabled, new Text("Bribe", boldFontSmaller, 300));
-                var bribeAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 420, rightFolderMinisterView, [
+                var bribeAction = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 920, rightFolderMinisterView, [
                     bribeButton,
                 ]);
 
@@ -250,9 +250,10 @@ public class Game1 : Core
         // newsGameObject.AddComponent(new SpriteRenderer(news));
         // var newsComponent = new News();
         // newsGameObject.AddComponent(newsComponent);
-        
+
         var rightFolderManager = new RightFolderManager(misc2, misc3, tab, tab2, rightFolder, rightFolderMinisterView,
-            tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost, feedBack, next);
+            tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost,
+            feedBack, next, boldFontSmallerCentered, oldFontSmaller);
         rightFolders.AddComponent(rightFolderManager);
         
         // logic
