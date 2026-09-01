@@ -4,7 +4,7 @@ internal static unsafe class Window
 {
     public static Colour Black = new Colour(50, 50, 50, 255);
     
-    private const string Title = "Hello world";
+    private const string Title = "Totally Legitimate Republic";
     internal static SDL.Window* Handle { get; private set; }
 
     internal static void CreateWindow()

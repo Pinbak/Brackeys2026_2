@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PublishAot>true</PublishAot>
+        <ApplicationIcon>..\Brackeys2026_2\Game\Assets\tlr.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,6 +21,9 @@
       <None Update="lib\**\*">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
           <Link>%(Filename)%(Extension)</Link>
+      </None>
+      <None Include="..\Brackeys2026_2\Game\Assets\tlr.ico">
+        <Link>tlr.ico</Link>
       </None>
     </ItemGroup>
 
