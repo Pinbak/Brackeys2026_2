@@ -2,7 +2,8 @@
 
 First attempt at making a game from scratch. Tried to replicate Unity's game object/component system, but became quite
 complex and hard to manage later on. The game was a continuation in a way of a game I attempted to make years ago. I
-retained the art, but most of the gameplay elements have change since then.
+retained the art, but most of the gameplay elements have change since then. To motivate the project, the Brackeys game
+jam 2026.2 was used.
 
 ## Reasonining
 
@@ -29,7 +30,3 @@ retained the art, but most of the gameplay elements have change since then.
       one
       of the greatest challenges was the UI.
 - Find a way to have hot-reloading features and better crash handling. This is probably due to using SDLs callbacks.
-
-## What the Game Looks Like
-
-![img.png](img.png)
