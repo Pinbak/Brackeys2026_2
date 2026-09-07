@@ -17,6 +17,7 @@ public sealed unsafe class Font : Resource, IDisposable
             font = TTF.OpenFontIo(stream, true, size);
             if (font == null)
             {
+                SDL.CloseIo(stream);
                 throw new Exception($"Failed to load font '{fontPath}': {SDL.GetError()}");
             }
                 

@@ -23,6 +23,7 @@ public sealed unsafe class Texture : Resource, IDrawable, IDisposable
             var surface = IMG.LoadIo(stream, true);
             if (surface == null)
             {
+                SDL.CloseIo(stream);
                 throw new Exception($"Failed to load texture '{texturePath}': {SDL.GetError()}");
             }
 
