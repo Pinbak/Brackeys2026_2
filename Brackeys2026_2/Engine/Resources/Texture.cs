@@ -10,44 +10,29 @@ public sealed unsafe class Texture : Resource, IDrawable, IDisposable
     public float Height { get; private set; }
     private Rectangle Dimensions { get; set; }
     private SDL.Texture* Handle { get; set; }
+    internal SDL.IoStream* Stream { get; set; }
+    internal GCHandle GCHandle;
     private bool _isDisposed;
 
     public Texture(string texturePath)
     {
-        GCHandle gcHandle = default;
-        SDL.Texture* texture;
-        float width, height;
-        try
+        Stream = CreateStream(texturePath, out GCHandle);
+        var surface = IMG.LoadIo(Stream, false);
+        if (surface == null)
         {
-            var stream = CreateStream(texturePath, out gcHandle);
-            var surface = IMG.LoadIo(stream, true);
-            if (surface == null)
-            {
-                SDL.CloseIo(stream);
-                throw new Exception($"Failed to load texture '{texturePath}': {SDL.GetError()}");
-            }
-
-            texture = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
-            if (texture == null)
-            {
-                throw new Exception($"Failed to create texture '{texturePath}': {SDL.GetError()}");
-            }
-
-            width = surface->width;
-            height = surface->height;
-            SDL.DestroySurface(surface);
-
+            throw new Exception($"Failed to load texture '{texturePath}': {SDL.GetError()}");
         }
-        finally
+
+        Handle = SDL.CreateTextureFromSurface(Renderer.Handle, surface);
+        if (Handle == null)
         {
-            if (gcHandle.IsAllocated)
-                gcHandle.Free();
+            throw new Exception($"Failed to create texture '{texturePath}': {SDL.GetError()}");
         }
-        
-        Handle = texture;
-        Dimensions = new Rectangle(0, 0, width, height);
-        Width = width;
-        Height = height;
+
+        Width = surface->width;
+        Height = surface->height;
+        Dimensions = new Rectangle(0, 0, Width, Height);
+        SDL.DestroySurface(surface);
     }
 
     ~Texture()
@@ -67,6 +52,16 @@ public sealed unsafe class Texture : Resource, IDrawable, IDisposable
         if (Handle != null)
         {
             SDL.DestroyTexture(Handle);
+        }
+
+        if (GCHandle.IsAllocated)
+        {
+            GCHandle.Free();
+        }
+
+        if (Stream != null)
+        {
+            SDL.CloseIo(Stream);
         }
         Handle = null;
         _isDisposed = true;
