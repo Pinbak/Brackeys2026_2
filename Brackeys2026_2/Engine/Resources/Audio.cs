@@ -19,6 +19,7 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
             audio = MIX.LoadAudioIo(Mixer.Handle, stream, false, true);
             if (audio == null)
             {
+                SDL.CloseIo(stream);
                 throw new Exception($"Failed to load audio '{audioPath}': {SDL.GetError()}");
             }
 
