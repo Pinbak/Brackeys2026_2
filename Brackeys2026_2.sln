@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackeys2026_2.Windows", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackeys2026_2.Web", "Brackeys2026_2.Web\Brackeys2026_2.Web.csproj", "{9897B67E-0A5F-4018-8316-F8BBB299ED08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackeys2026_2.MacOS", "Brackeys2026_2.MacOS\Brackeys2026_2.MacOS.csproj", "{903D4C37-5179-409B-8788-5FDA1EA4A551}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +24,5 @@ Global
 		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9897B67E-0A5F-4018-8316-F8BBB299ED08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{903D4C37-5179-409B-8788-5FDA1EA4A551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{903D4C37-5179-409B-8788-5FDA1EA4A551}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{903D4C37-5179-409B-8788-5FDA1EA4A551}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{903D4C37-5179-409B-8788-5FDA1EA4A551}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -36,19 +36,6 @@ public static unsafe partial class TTF
 
     internal static Font* OpenFontIo(SDL.IoStream* stream, bool close, float size) =>
         TTF_OpenFontIO(stream, close, size);
-    
-    [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static partial bool TTF_SetFontScript(Font* font, uint script);
-
-    internal static bool SetFontScript(Font* font, uint script) => TTF_SetFontScript(font, script);
-    
-    [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
-    private static partial void TTF_SetFontKerning(Font* font, [MarshalAs(UnmanagedType.I1)] bool enabled);
-
-    internal static void SetFontKerning(Font* font, bool enabled) => TTF_SetFontKerning(font, enabled);
 
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
@@ -97,22 +84,6 @@ public static unsafe partial class TTF
     private static partial bool TTF_SetFontSDF(Font* font, [MarshalAs(UnmanagedType.I1)] bool enabled);
 
     internal static bool SetFontSdf(Font* font, bool enabled) => TTF_SetFontSDF(font, enabled);
-
-    internal enum Hinting
-    {
-        Normal = 0,
-        Light = 1,
-        Mono = 2,
-        None = 3,
-        LightSubpixel = 4
-    }
-
-    [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
-    private static partial void TTF_SetFontHinting(Font* font, Hinting hinting);
-
-    internal static void SetFontHinting(Font* font, Hinting hinting)
-        => TTF_SetFontHinting(font, hinting);
 
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]

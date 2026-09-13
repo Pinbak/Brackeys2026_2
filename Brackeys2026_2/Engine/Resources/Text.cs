@@ -35,7 +35,6 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
     
     public Text(string content, Font font, Colour colour, int wrapWidth)
     {
-        Content = content;
         _wrapWidth = wrapWidth;
         Font = font;
         Colour = colour;
@@ -70,8 +69,6 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
     
     public bool UpdateText(string content)
     {
-        if (Content == content) return true;
-        
         // Create the new resources first
         if (Font.Handle == null)
         {
@@ -90,17 +87,12 @@ public sealed unsafe class Text : Resource, IDrawable, IDisposable
         if (Handle != null)
             SDL.DestroyTexture(Handle);
         Handle = newTexture;
-        
-        // Update dimensions and content
-        var actualWidth = newSurface->width;
-        var actualHeight = newSurface->height;
+        SDL.DestroySurface(newSurface);
+        TTF.GetStringSizeWrapped(Font.Handle, content, _wrapWidth, out var actualWidth, out var actualHeight);
         Dimensions = new Rectangle(0, 0, actualWidth, actualHeight);
         Width = actualWidth;
         Height = actualHeight;
         Content = content;
-
-        // Clean up the temporary surface
-        SDL.DestroySurface(newSurface);
         return true;
     }
     

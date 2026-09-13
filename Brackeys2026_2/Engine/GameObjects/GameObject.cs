@@ -35,10 +35,6 @@ public sealed class GameObject : GameObjectBase
         if (_isDisposed) return;
         foreach (var component in Components) component.OnDestroy();
         Components.Clear();
-        for (var i = Children.Count - 1; i >= 0; i--)
-        {
-            Children[i].Destroy();
-        }
         Children.Clear();
         Parent.Children.Remove(this);
         _isDisposed = true;

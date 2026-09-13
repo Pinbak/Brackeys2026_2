@@ -89,8 +89,9 @@ public abstract unsafe class Resource
 
         // Load bytes from resource stream
         using Stream stream = resource.assembly.GetManifestResourceStream(resource.fullpath) ?? throw new Exception($"Failed to open '{resource.fullpath}' resource.");
-        var data = new byte[checked((int)stream.Length)];
-        stream.ReadExactly(data);
+        using MemoryStream ms = new MemoryStream();
+        stream.CopyTo(ms);
+        var data = ms.ToArray();
 
         // Create Stream
         handle = GCHandle.Alloc(data, GCHandleType.Pinned);

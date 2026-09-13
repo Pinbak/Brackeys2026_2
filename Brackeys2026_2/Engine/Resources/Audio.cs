@@ -7,21 +7,31 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
 {
     private MIX.Audio* Handle { get; set; }
     private MIX.AudioTrack* _track;
-    internal SDL.IoStream* Stream { get; set; }
-    internal GCHandle GCHandle;
     private bool _isDisposed;
     
     public Audio(string audioPath)
     {
-        Stream = CreateStream(audioPath, out GCHandle);
-        Handle = MIX.LoadAudioIo(Mixer.Handle, Stream, false, false);
-        if (Handle == null)
+        GCHandle gcHandle = default;
+        MIX.Audio* audio;
+        try
         {
-            throw new Exception($"Failed to load audio '{audioPath}': {SDL.GetError()}");
+            var stream = CreateStream(audioPath, out gcHandle);
+            audio = MIX.LoadAudioIo(Mixer.Handle, stream, false, true);
+            if (audio == null)
+            {
+                throw new Exception($"Failed to load audio '{audioPath}': {SDL.GetError()}");
+            }
+
+            _track = MIX.CreateTrack(Mixer.Handle);
+            MIX.SetTrackAudio(_track, audio);
+        }
+        finally
+        {
+            if (gcHandle.IsAllocated)
+                gcHandle.Free();
         }
 
-        _track = MIX.CreateTrack(Mixer.Handle);
-        MIX.SetTrackAudio(_track, Handle);
+        Handle = audio;
     }
 
     ~Audio()
@@ -48,16 +58,6 @@ public sealed unsafe class Audio : Resource, IPlayable, IDisposable
         {
             MIX.DestroyTrack(_track);
             _track = null;
-        }
-
-        if (GCHandle.IsAllocated)
-        {
-            GCHandle.Free();
-        }
-
-        if (Stream != null)
-        {
-            SDL.CloseIo(Stream);
         }
         _isDisposed = true;
     }

@@ -15,11 +15,12 @@ public static class Tweener
 
     internal static void Process()
     {
-        for (var i = ActiveTweens.Count - 1; i >= 0; i--)
+        for (var i = 0; i < ActiveTweens.Count;)
         {
             var active = ActiveTweens[i];
             if (!active.ReduceDelay())
             {
+                i++;
                 continue;
             }
             
@@ -31,6 +32,12 @@ public static class Tweener
                     active.Owner?.Destroy();
                 }
             }
+            else
+            {
+                i++;
+            }
+
+
         }
     }
 
