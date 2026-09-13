@@ -5,31 +5,21 @@ namespace Brackeys2026_2.Engine.Resources;
 public sealed unsafe class Font : Resource, IDisposable
 {
     internal TTF.Font* Handle { get; private set; }
+    internal SDL.IoStream* Stream { get; set; }
+    internal GCHandle GCHandle;
     private bool _isDisposed;
     
     public Font(string fontPath, float size = 24)
     {
-        GCHandle gcHandle = default;
-        TTF.Font* font;
-        try
+        Stream = CreateStream(fontPath, out GCHandle);
+        Handle = TTF.OpenFontIo(Stream, false, size);
+        if (Handle == null)
         {
-            var stream = CreateStream(fontPath, out gcHandle);
-            font = TTF.OpenFontIo(stream, true, size);
-            if (font == null)
-            {
-                throw new Exception($"Failed to load font '{fontPath}': {SDL.GetError()}");
-            }
+            throw new Exception($"Failed to load font '{fontPath}': {SDL.GetError()}");
+        }
                 
-            // Apply SDF for scaling
-            TTF.SetFontSdf(font, true);
-        }
-        finally
-        {
-            if (gcHandle.IsAllocated)
-                gcHandle.Free();
-        }
-
-        Handle = font;
+        // Apply SDF for scaling
+        TTF.SetFontSdf(Handle, true);
     }
 
     ~Font()
@@ -46,12 +36,29 @@ public sealed unsafe class Font : Resource, IDisposable
     private void Release()
     {
         if (_isDisposed) return;
-        if (Handle != null)
-            TTF.CloseFont(Handle);
-        Handle = null;
+        DestroyFont();
         _isDisposed = true;
     }
 
+    public void DestroyFont()
+    {
+        if (Handle != null)
+        {
+            TTF.CloseFont(Handle);
+            Handle = null;
+        }
+
+        if (GCHandle.IsAllocated)
+        {
+            GCHandle.Free();
+        }
+
+        if (Stream != null)
+        {
+            SDL.CloseIo(Stream);
+        }
+    }
+    
     public void SetAlignmentLeft()
     {
         TTF.SetFontWrapAlignment(Handle, TTF.HorizontalAlignment.Left);
