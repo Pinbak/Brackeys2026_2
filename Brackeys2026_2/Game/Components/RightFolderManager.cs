@@ -126,7 +126,6 @@ public class RightFolderManager : Component
         }
         // var minister = ministerFaceCard.Minister;
         // _ministerName.Set("Minister Selected: " + minister.Name);
-        _selected = new GameObject(0, 0, GameObject);
         _selectedMinister = ministerFaceCard.Minister;
         GenerateFaceCard(ministerFaceCard);
         UpdateHistoryUi(ministerFaceCard.Minister);
@@ -159,8 +158,7 @@ public class RightFolderManager : Component
 
     private void GenerateFaceCard(MinisterFaceCard ministerFaceCard)
     {
-        if (_selected is null) return;
-        _selected.Destroy();
+        _selected?.Destroy();
         var minister = ministerFaceCard.Minister;
         _selected = new GameObject(280, 300, _aiInformation);
         var cardGameObject = new GameObject(0, 0, _selected, [
