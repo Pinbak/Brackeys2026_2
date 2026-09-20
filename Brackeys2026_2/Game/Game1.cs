@@ -3,17 +3,44 @@ using Brackeys2026_2.Engine.Components;
 using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
+using Brackeys2026_2.Game.Classes;
 using Brackeys2026_2.Game.Components;
 
 namespace Brackeys2026_2.Game;
 
 public class Game1 : Core
 {
+    private Random _random = new Random();
+    private List<GameObject> _objects = [];
+    
     protected override void Layout()
     {
+        /**
+        var oldFont = new Font("Game/Assets/IBMPlexSerif-Light.ttf");
+        var face1 = new Texture("Game/Assets/p1.png");
+        var face2 = new Texture("Game/Assets/p2.png");
+        var face3 = new Texture("Game/Assets/p3.png");
+        for (var i = 0; i < 10000; i++)
+        {
+            var spriteRenderer1 = new SpriteRenderer(face1);
+            // var spriteRenderer2 = new SpriteRenderer(face2);
+            // var spriteRenderer3 = new SpriteRenderer(face3);
+            var obj = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer1, new Bullet()]);
+            // var obj2 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer2, new Bullet()]);
+            // var obj3 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer3, new Bullet()]);
+            _objects.Add(obj);
+            // _objects.Add(obj2);
+            // _objects.Add(obj3);
+        }
+        var fpsCounter = new FpsCounter(oldFont);
+        var fpsCounterObject = new GameObject(100, 25, null, [fpsCounter]);
+        **/
+
         Window.ChangeBackgroundColour(new Colour(242, 218, 175, 255));
         var folderTexture = new Texture("Game/Assets/folder.png");
         var oldFont = new Font("Game/Assets/IBMPlexSerif-Light.ttf");
+        var fpsCounter = new FpsCounter(oldFont);
+        var fpsCounterObject = new GameObject(100, 25, null, [fpsCounter]);
         var oldFontSmaller = new Font("Game/Assets/IBMPlexSerif-Light.ttf", 20);
         var boldFont = new Font("Game/Assets/Staatliches-Regular.ttf", 34);
         var boldFontSmaller = new Font("Game/Assets/Staatliches-Regular.ttf", 28);
@@ -54,7 +81,7 @@ public class Game1 : Core
         var aColour = new Texture("Game/Assets/agrarianColour.png");
         var lColour = new Texture("Game/Assets/loyalistColour.png");
         var tColour = new Texture("Game/Assets/technocratColour.png");
-        
+
         var soundTrack = new Audio("Game/Assets/VibingOverVenus.ogg");
         var crowd = new Audio("Game/Assets/crowdReaction.ogg");
         var next = new Audio("Game/Assets/nextTurn.ogg");
@@ -75,13 +102,13 @@ public class Game1 : Core
                 { Transform = { Pivot = (0, 0) } };
             _ = new GameObject(1750, 1020, mainMenu, [new TextRenderer(boldFontSmaller, "Version 0.1", 800)])
                 { Transform = { Pivot = (0, 0) } };
-        
+
         var gameOverScreen = new GameObject(0, 0, null);
         var gameOverText = new TextRenderer(boldFont, black, "", 500);
         _ = new GameObject(960, 540, gameOverScreen, [
             gameOverText
         ]);
-        
+
         var game = new GameObject(0, 0, null);
         var leftFolder = new GameObject(-20, 100, game, [
             new Tiled9SliceSpriteRenderer(folderTexture, 1300, leftFolderHeight, 45)
@@ -93,22 +120,22 @@ public class Game1 : Core
             new SpriteRenderer(misc1)
         ]);
         text.Transform.Angle = -5;
-        
+
         // dividers
         _ = new GameObject(400, 100, game, [
             new TiledSpriteRenderer(divider, 30, leftFolderHeight)
         ]);
         _ = new GameObject(450, 100, game, [
             new TiledSpriteRenderer(divider, 30, leftFolderHeight)
-        ]); 
-        
+        ]);
+
         // political capital
         _ = new GameObject(20, 1000, game, [new SpriteRenderer(misc4)]){ Transform = { Pivot = (0, 0)} };
         var pcText = new TextRenderer(boldFontSmaller, "Political Capital: 0", 300);
         _ = new GameObject(70, 1020, game, [
             pcText
         ]) { Transform = { Pivot = (0, 0)} };
-        
+
         // right folder
         const int rightFolderWidth = 600;
         const int rightFolderHeight = 1080;
@@ -140,7 +167,7 @@ public class Game1 : Core
             var tabColliderGameObject = new GameObject(-10, 200, rightFolders);
             var tabCollider = new Collider(tabColliderGameObject.Transform, misc2.Height - 10, misc2.Width * 2);
             tabColliderGameObject.AddComponent(tabCollider);
-        
+
             var rightFolderMinisterView = new GameObject(0, 0, rightFolders,
                 [new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45)]);
                 const int rightFolderOverlap = 20;
@@ -157,7 +184,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 450, rightFolderMinisterView, [
                     new TextRenderer(boldFontSmallerCentered, black, "Policy History:", 500)
                 ]);
-                
+
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 520, rightFolderMinisterView, [
                     new TextRenderer(boldFontSmallerCentered, black, "Technocratic:", 500)
                 ]);
@@ -166,7 +193,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 495, rightFolderMinisterView, [
                     tAmount
                 ]);
-                
+
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 560, rightFolderMinisterView, [
                     new TextRenderer(boldFontSmallerCentered, black, "Loyalist:", 500)
                 ]);
@@ -175,7 +202,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 535, rightFolderMinisterView, [
                     lAmount
                 ]);
-                
+
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 600, rightFolderMinisterView, [
                     new TextRenderer(boldFontSmallerCentered, black, "Federalist:", 500)
                 ]);
@@ -184,7 +211,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 575, rightFolderMinisterView, [
                     fAmount
                 ]);
-                
+
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 640, rightFolderMinisterView, [
                     new TextRenderer(boldFontSmallerCentered, black, "Agrarian:", 500)
                 ]);
@@ -193,7 +220,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 100, 615, rightFolderMinisterView, [
                     aAmount
                 ]);
-                
+
                 var killCost = new TextRenderer(boldFontSmaller, black, "150PC", 500);
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap - 200, 800, rightFolderMinisterView,
                     [killCost]);
@@ -220,7 +247,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 720, rightFolderMinisterView, [
                     feedBack
                 ]);
-                
+
             var rightFolder = new GameObject(0, 0, rightFolders, [
                 new Tiled9SliceSpriteRenderer(folderTexture, rightFolderWidth, rightFolderHeight, 45),
             ]);
@@ -236,7 +263,7 @@ public class Game1 : Core
                 _ = new GameObject(rightFolderWidth * .5f - rightFolderOverlap, 130, rightFolder, [
                     secretText
                 ]);
-                
+
                 var currentX = 120f;
                 const float gap = 50f;
                 _ = new GameObject(0, currentX += gap, rightFolder, [
@@ -249,15 +276,15 @@ public class Game1 : Core
                 _ = new GameObject(padding, currentX += gap, rightFolder, [
                     goalText
                 ]){ Transform = { Pivot = (0, 0) } };
-                
+
                 _ = new GameObject(0, currentX += gap * 2, rightFolder, [
                     new TiledSpriteRenderer(horizontalDivider, rightFolderWidth, 30),
                 ]);
-                
+
                 _ = new GameObject(padding, currentX += gap, rightFolder, [
                     new TextRenderer(boldFont, black, "Perk of the Role:", 350)
                 ]){ Transform = { Pivot = (0, 0) } };
-                
+
                 var actionText = new TextRenderer(oldFont, black, "", 500);
                 _ = new GameObject(padding, currentX += gap, rightFolder, [
                     actionText
@@ -281,10 +308,10 @@ public class Game1 : Core
                 var nextTurn = new GameObject(padding + 170 + button.Width *.5f, currentX + 430 + button.Height + 10, rightFolder, [
                     nextTurnButton,
                 ]);
-                
+
 
         // rightFolder.IsEnabled = false;
-        
+
         // var newsGameObject = new GameObject(500, 500, game);
         // var newsHeadline = new TextRenderer(boldFont, "", 300);
         // newsGameObject.AddComponent(newsHeadline);
@@ -296,11 +323,12 @@ public class Game1 : Core
             tabCollider, ministerName, killButton, bribeButton, convertButton, killCost, bribeCost, convertCost,
             feedBack, next, boldFontSmallerCentered, oldFontSmaller, paperFlick, aAmount, tAmount, fAmount, lAmount);
         rightFolders.AddComponent(rightFolderManager);
-        
+        rightFolders.Tag = "Right folder";
+
         // logic
         var menuManager = new MenuManager(mainMenu, game, gameOverScreen, gameOverText, playButton);
         var menu = new GameObject(0, 0, null, [menuManager]);
-        
+
         var lastPlayed = new LastPlayed(policyOutline, federalist, loyalist, agrarian, technocrat);
         _ = new GameObject(210, 250, leftFolder, [lastPlayed]);
         var bureaucracy = new GameObject(150, -50, leftFolder, [
@@ -311,13 +339,13 @@ public class Game1 : Core
             new SpriteRenderer(misc1)
         ]);
         bureaucracy.Transform.Angle = 5;
-        
+
         var player = new PlayerInteraction(nextTurnButton, playerDescriptionText, jobDescriptionText,
             secretText, goalText, actionText, pcText, loyalist, agrarian, technocrat, federalist, pc, rightFolderManager, stickyNoteManager, next);
         var playerGameObject = new GameObject(0, 0, game, [
             player
         ]);
-        
+
         var ministers = new GameObject(520, 10, leftFolder, [
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
             , nextTurnButton, player, lastPlayed, stickyNoteManager, menuManager, crowd, paperFlick)
