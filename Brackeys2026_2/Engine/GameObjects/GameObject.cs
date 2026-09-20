@@ -37,7 +37,7 @@ public sealed class GameObject : GameObjectBase
         Components.Clear();
         for (var i = Children.Count - 1; i >= 0; i--)
         {
-            Children[i].Destroy();
+            Children[i].Release();
         }
         Children.Clear();
         Parent.Children.Remove(this);

@@ -2,6 +2,7 @@
 
 public abstract class GameObjectBase
 {
+    public string Tag { get; set; } = string.Empty;
     public bool IsEnabled { get; set; } = true;
     internal static RootGameObject RootGameObject { get; set; } = null!;
     public List<GameObject> Children { get; private set; } = [];
@@ -37,5 +38,20 @@ public abstract class GameObjectBase
             if (!gameObjectBase.IsEnabled) continue;
             gameObjectBase.OnDraw();
         }
+    }
+
+    public int CountChildren(int current)
+    {
+        for (var i = Children.Count - 1; i >= 0; i--)
+        {
+            var gameObjectBase = Children[i];
+            current++;
+            current = gameObjectBase.CountChildren(current);
+            if (Tag == "Right folder")
+            {
+                
+            }
+        }
+        return current;
     }
 }
