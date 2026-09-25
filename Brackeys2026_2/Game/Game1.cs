@@ -20,6 +20,7 @@ public class Game1 : Core
         var face1 = new Texture("Game/Assets/p1.png");
         var face2 = new Texture("Game/Assets/p2.png");
         var face3 = new Texture("Game/Assets/p3.png");
+        var faces = new Texture("Game/Assets/p1p2.png");
         // for (var i = 0; i < 100000; i++)
         // {
         //     var spriteRenderer1 = new SpriteRenderer(face1, (byte)_random.Next(0, 255), (byte)_random.Next(0, 255), (byte)_random.Next(0, 255));
@@ -33,8 +34,8 @@ public class Game1 : Core
         //     // _objects.Add(obj3);
         // }
 
-        var tileMap = new Tilemap(face1);
-        var obj = new GameObject(0, 0, null, [tileMap]);
+        var tileMap = new Tilemap(faces);
+        var obj = new GameObject(100, 100, null, [tileMap]);
         
         var fpsCounter = new FpsCounter(oldFont);
         var fpsCounterObject = new GameObject(100, 25, null, [fpsCounter]);
