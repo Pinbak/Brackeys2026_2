@@ -67,9 +67,19 @@ public sealed unsafe class Texture : Resource, IDrawable, IDisposable
         _isDisposed = true;
     }
 
+    public void Draw(Vertex[] vertices, int[] indices)
+    {
+        Renderer.DrawGeometry(Handle, vertices, indices);
+    }
+
     public void Draw(Transform position, Rectangle? frame = null)
     {
         Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, frame);
+    }
+    
+    public void Draw(Transform position, byte red, byte green, byte blue, Rectangle? frame = null)
+    {
+        Renderer.Draw(Handle, position, Dimensions.Width, Dimensions.Height, red, green, blue, frame);
     }
     
     public void Draw(Transform position, Colour colourTint, Rectangle? frame = null)

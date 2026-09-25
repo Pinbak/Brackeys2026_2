@@ -15,26 +15,30 @@ public class Game1 : Core
     
     protected override void Layout()
     {
-        /**
+        
         var oldFont = new Font("Game/Assets/IBMPlexSerif-Light.ttf");
         var face1 = new Texture("Game/Assets/p1.png");
         var face2 = new Texture("Game/Assets/p2.png");
         var face3 = new Texture("Game/Assets/p3.png");
-        for (var i = 0; i < 10000; i++)
-        {
-            var spriteRenderer1 = new SpriteRenderer(face1);
-            // var spriteRenderer2 = new SpriteRenderer(face2);
-            // var spriteRenderer3 = new SpriteRenderer(face3);
-            var obj = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer1, new Bullet()]);
-            // var obj2 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer2, new Bullet()]);
-            // var obj3 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer3, new Bullet()]);
-            _objects.Add(obj);
-            // _objects.Add(obj2);
-            // _objects.Add(obj3);
-        }
+        // for (var i = 0; i < 100000; i++)
+        // {
+        //     var spriteRenderer1 = new SpriteRenderer(face1, (byte)_random.Next(0, 255), (byte)_random.Next(0, 255), (byte)_random.Next(0, 255));
+        //     // var spriteRenderer2 = new SpriteRenderer(face2);
+        //     // var spriteRenderer3 = new SpriteRenderer(face3);
+        //     var obj = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer1, new Bullet()]);
+        //     // var obj2 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer2, new Bullet()]);
+        //     // var obj3 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer3, new Bullet()]);
+        //     _objects.Add(obj);
+        //     // _objects.Add(obj2);
+        //     // _objects.Add(obj3);
+        // }
+
+        var tileMap = new Tilemap(face1);
+        var obj = new GameObject(0, 0, null, [tileMap]);
+        
         var fpsCounter = new FpsCounter(oldFont);
         var fpsCounterObject = new GameObject(100, 25, null, [fpsCounter]);
-        **/
+        /**
 
         Window.ChangeBackgroundColour(new Colour(242, 218, 175, 255));
         var folderTexture = new Texture("Game/Assets/folder.png");
@@ -350,5 +354,6 @@ public class Game1 : Core
             new GameManager(card, outline, [face1, face2, face3, face4, face5, face6, face7, face8, face9, face10, face11], boldFontSmallerCentered, oldFontSmaller
             , nextTurnButton, player, lastPlayed, stickyNoteManager, menuManager, crowd, paperFlick)
         ]);
-    }
+        **/
+}
 }

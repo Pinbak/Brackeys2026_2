@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Brackeys2026_2.Engine.System;
 
 public static unsafe partial class SDL
@@ -42,7 +43,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Texture* SDL_CreateTexture(Renderer* renderer, PixelFormat format, TextureAccess access,
         int w, int h);
 
@@ -51,21 +52,21 @@ public static unsafe partial class SDL
         SDL_CreateTexture(renderer, format, access, w, h);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Texture* SDL_CreateTextureFromSurface(Renderer* renderer, Surface* surface);
 
     internal static Texture* CreateTextureFromSurface(Renderer* renderer, Surface* surface) =>
         SDL_CreateTextureFromSurface(renderer, surface);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyTexture(Texture* texture);
 
     internal static void DestroyTexture(Texture* texture) => SDL_DestroyTexture(texture);
 
     // default is linear
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetDefaultTextureScaleMode(Renderer* renderer, ScaleMode mode);
 
@@ -74,7 +75,7 @@ public static unsafe partial class SDL
 
     // default is linear
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetTextureScaleMode(Texture* texture, ScaleMode mode);
 
@@ -82,7 +83,7 @@ public static unsafe partial class SDL
         SDL_SetTextureScaleMode(texture, mode);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetTextureColorMod(Texture* texture, byte r, byte g, byte b);
 
@@ -90,14 +91,14 @@ public static unsafe partial class SDL
         SDL_SetTextureColorMod(texture, r, g, b);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetTextureAlphaMod(Texture* texture, byte alpha);
 
     internal static bool SetTextureAlphaMod(Texture* texture, byte alpha) => SDL_SetTextureAlphaMod(texture, alpha);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetTextureBlendMode(Texture* texture, BlendMode mode);
 
@@ -105,7 +106,7 @@ public static unsafe partial class SDL
         SDL_SetTextureBlendMode(texture, mode);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderTexture(Renderer* renderer, Texture* texture, Rectangle* src, Rectangle* dst);
 
@@ -119,7 +120,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderTextureRotated(Renderer* renderer, Texture* texture, Rectangle* src,
         Rectangle* dst,
@@ -141,7 +142,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderTextureAffine(Renderer* renderer, Texture* texture, Rectangle* src,
         Point* origin,
@@ -162,7 +163,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderTextureTiled(Renderer* renderer, Texture* texture, Rectangle* src,
         float scale,
@@ -180,7 +181,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderTexture9Grid(Renderer* renderer, Texture* texture, Rectangle* src,
         float leftWidth,
@@ -199,7 +200,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderTexture9GridTiled(Renderer* renderer, Texture* texture, Rectangle* src,
         float leftWidth, float rightWidth, float topHeight, float bottomHeight, float scale, Rectangle* dst,
@@ -226,13 +227,13 @@ public static unsafe partial class SDL
     public struct Renderer;
 
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Renderer* SDL_CreateRenderer(Window* window, string? name);
 
     internal static Renderer* CreateRenderer(Window* window, string? name) => SDL_CreateRenderer(window, name);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetRenderDrawColor(Renderer* renderer, byte r, byte g, byte b, byte a);
 
@@ -240,14 +241,14 @@ public static unsafe partial class SDL
         SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderPresent(Renderer* renderer);
 
     internal static bool RenderPresent(Renderer* renderer) => SDL_RenderPresent(renderer);
 
     [LibraryImport(Library, StringMarshalling = StringMarshalling.Utf8)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderCoordinatesFromWindow(Renderer* renderer, float windowX, float windowY,
         out float x, out float y);
@@ -257,13 +258,13 @@ public static unsafe partial class SDL
         => SDL_RenderCoordinatesFromWindow(renderer, windowX, windowY, out x, out y);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial void SDL_DestroyRenderer(Renderer* renderer);
 
     internal static void DestroyRenderer(Renderer* renderer) => SDL_DestroyRenderer(renderer);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetRenderLogicalPresentation(Renderer* renderer, int w, int h,
         Presentation presentation);
@@ -272,21 +273,21 @@ public static unsafe partial class SDL
         SDL_SetRenderLogicalPresentation(renderer, w, h, presentation);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetRenderScale(Renderer* renderer, float x, float y);
 
     internal static bool SetRenderScale(Renderer* renderer, float x, float y) => SDL_SetRenderScale(renderer, x, y);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetRenderVSync(Renderer* renderer, int vsync);
 
     internal static bool SetRenderVSync(Renderer* renderer, int vsync) => SDL_SetRenderVSync(renderer, vsync);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_SetRenderDrawBlendMode(Renderer* renderer, BlendMode mode);
 
@@ -296,14 +297,14 @@ public static unsafe partial class SDL
     # region Drawing Methods
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderPoint(Renderer* renderer, float x, float y);
 
     internal static bool RenderPoint(Renderer* renderer, float x, float y) => SDL_RenderPoint(renderer, x, y);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderPoints(Renderer* renderer, Point[] points, int count);
 
@@ -311,7 +312,7 @@ public static unsafe partial class SDL
         SDL_RenderPoints(renderer, points, count);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderLine(Renderer* renderer, float x1, float y1, float x2, float y2);
 
@@ -319,7 +320,7 @@ public static unsafe partial class SDL
         SDL_RenderLine(renderer, x1, y1, x2, y2);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderLines(Renderer* renderer, Point[] points, int count);
 
@@ -327,7 +328,7 @@ public static unsafe partial class SDL
         SDL_RenderLines(renderer, points, count);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderRect(Renderer* renderer, Rectangle* rect);
 
@@ -338,7 +339,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderRects(Renderer* renderer, Rectangle[] rects, int count);
 
@@ -346,7 +347,7 @@ public static unsafe partial class SDL
         SDL_RenderRects(renderer, rects, count);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderFillRect(Renderer* renderer, Rectangle* rect);
 
@@ -357,7 +358,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderFillRects(Renderer* renderer, Rectangle[] rects, int count);
 
@@ -365,7 +366,37 @@ public static unsafe partial class SDL
         SDL_RenderFillRects(renderer, rects, count);
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static partial bool SDL_RenderGeometry(
+        Renderer* renderer,
+        Texture* texture,
+        Vertex* vertices,
+        int numVertices,
+        int* indices,
+        int numIndices);
+
+    internal static bool RenderGeometry(
+        Renderer* renderer,
+        Texture* texture,
+        ReadOnlySpan<Vertex> vertices,
+        ReadOnlySpan<int> indices)
+    {
+        fixed (Vertex* verticesPtr = vertices)
+        fixed (int* indicesPtr = indices)
+        {
+            return SDL_RenderGeometry(
+                renderer,
+                texture,
+                verticesPtr,
+                vertices.Length,
+                indicesPtr,
+                indices.Length);
+        }
+    }
+
+    [LibraryImport(Library)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial Surface* SDL_RenderReadPixels(Renderer* renderer, RectangleInt* rect);
 
     internal static Surface* RenderReadPixels(Renderer* renderer, RectangleInt? rectangle)
@@ -375,7 +406,7 @@ public static unsafe partial class SDL
     }
 
     [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     private static partial bool SDL_RenderClear(Renderer* renderer);
 

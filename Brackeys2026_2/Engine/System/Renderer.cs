@@ -32,10 +32,27 @@ public struct Colour(byte red, byte green, byte blue, byte alpha)
 }
 
 [StructLayout(LayoutKind.Sequential)]
+public struct FColour(float red, float green, float blue, float alpha)
+{
+    public float Red = red;
+    public float Green = green;
+    public float Blue = blue;
+    public float Alpha = alpha;
+}
+
+[StructLayout(LayoutKind.Sequential)]
 public struct Point(float x, float y)
 {
     public float X = x;
     public float Y = y;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct Vertex(Point position, FColour colour, Point texCoord)
+{
+    public Point Position = position;
+    public FColour Colour = colour;
+    public Point TexCoord = texCoord;
 }
 
 internal static unsafe class Renderer
@@ -83,13 +100,33 @@ internal static unsafe class Renderer
     {
         SDL.RenderFillRect(Handle, rectangle);
     }
+
+    internal static void DrawGeometry(SDL.Texture* tileset, Vertex[] vertices, int[] indices)
+    {
+        SDL.RenderGeometry(Handle, tileset, vertices, indices);
+    }
+    
+    internal static void Draw(SDL.Texture* texture, Transform position, float width, float height, byte red, byte green, byte blue, Rectangle? frame)
+    {
+        var pivotX = width * position.Pivot.x * position.ActualScale;
+        var pivotY = height * position.Pivot.y * position.ActualScale;
+        var destination = new Rectangle(position.ActualX - pivotX, position.ActualY - pivotY, width * position.ActualScale, height * position.ActualScale);
+
+        SDL.SetRenderDrawColor(Handle, 0, 0, 0, 255);
+        SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
+        // SDL.SetRenderDrawColor(Handle, 255, 255, 255, 255);
+        
+#if DEBUG
+        DrawBoundingBox(destination);
+#endif
+    }
     
     internal static void Draw(SDL.Texture* texture, Transform position, float width, float height, Rectangle? frame)
     {
         var pivotX = width * position.Pivot.x * position.ActualScale;
         var pivotY = height * position.Pivot.y * position.ActualScale;
         var destination = new Rectangle(position.ActualX - pivotX, position.ActualY - pivotY, width * position.ActualScale, height * position.ActualScale);
-
+        
         SDL.RenderTextureRotated(Handle, texture, frame, destination, position.ActualAngle, null, SDL.FlipMode.None);
 #if DEBUG
         DrawBoundingBox(destination);
