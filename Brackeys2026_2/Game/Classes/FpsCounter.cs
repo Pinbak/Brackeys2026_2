@@ -18,7 +18,7 @@ public class FpsCounter(Font font) : Component
     protected override void OnUpdate()
     {
         // var childrenCount = GameObjectBase.RootGameObject.CountChildren(0);
-        _text.UpdateText($"{Time.Fps}");
+        _text.UpdateText($"{(int)Time.Fps}");
     }
 
     protected override void OnDraw()

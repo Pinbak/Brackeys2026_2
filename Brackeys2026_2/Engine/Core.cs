@@ -1,4 +1,5 @@
-﻿using Brackeys2026_2.Engine.GameObjects;
+﻿using Brackeys2026_2.Engine.Components;
+using Brackeys2026_2.Engine.GameObjects;
 using Brackeys2026_2.Engine.Resources;
 using Brackeys2026_2.Engine.System;
 using Brackeys2026_2.Engine.System.Inputs;
@@ -55,6 +56,7 @@ public abstract class Core
         Tweener.Process();
         GameObjectBase.RootGameObject.OnUpdate(); // updates all game objects as is recursive
         GameObjectBase.RootGameObject.OnDraw(); // draw all game objects as is recursive
+        SpriteRenderer2.BatchDraw();
         Renderer.DrawEnd();
         Time.FrameEnd();
     }
@@ -64,7 +66,7 @@ public abstract class Core
         if (IsRunning)
         {
             IsRunning = false;
-            System.Window.CleanUpResources();
+            Window.CleanUpResources();
             Renderer.CleanUpResources();
             Mixer.CleanupResources();
             SDL.QuitSdl();
