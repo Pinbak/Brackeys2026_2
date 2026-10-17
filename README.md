@@ -5,7 +5,7 @@ complex and hard to manage later on. The game was a continuation in a way of a g
 retained the art, but most of the gameplay elements have change since then. To motivate the project, the Brackeys game
 jam 2026.2 was used.
 
-## Reasonining
+## Reasoning
 
 - Wanting to create an engine to see how it works.
 - A desire for a 2D engine that has a comprehensive game object system with inheritance and retained mode UIs -
