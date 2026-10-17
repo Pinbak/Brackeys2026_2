@@ -8,8 +8,8 @@ public class Tilemap : Component
     private Texture _tileset;
     private int _tileWidth = 100;
     private int _tileHeight = 100;
-    private int _mapWidth = 3;
-    private int _mapHeight = 4;
+    private int _mapWidth = 1;
+    private int _mapHeight = 1;
     private Vertex[] _vertices;
     private int[] _indices;
     
@@ -24,6 +24,14 @@ public class Tilemap : Component
     {
         GenerateVertices();
     }
+
+    // protected override void OnUpdate()
+    // {
+    //     _vertices[0].Position.X += 1;
+    //     _vertices[1].Position.X += 1;
+    //     _vertices[2].Position.X += 1;
+    //     _vertices[3].Position.X += 1;
+    // }
 
     protected override void OnDraw()
     {

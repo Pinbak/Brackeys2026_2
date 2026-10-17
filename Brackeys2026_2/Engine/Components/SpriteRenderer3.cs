@@ -28,11 +28,6 @@ public class SpriteRenderer3 : Component
         GenerateVertices();
     }
 
-    protected override void OnUpdate()
-    {
-        
-    }
-
     protected override void OnDraw()
     {
         UpdateVertices();

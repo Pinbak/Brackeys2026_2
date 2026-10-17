@@ -22,17 +22,25 @@ public class Game1 : Core
         var tileset = new Texture("Game/Assets/tile.png");
         for (var i = 0; i < 50000; i++)
         {
-            var spriteRenderer1 = new SpriteRenderer2(face1);
-            // var spriteRenderer2 = new SpriteRenderer(face2);
-            // var spriteRenderer3 = new SpriteRenderer(face3);
-            var obj = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer1, new Bullet()]);
-            // var obj2 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer2, new Bullet()]);
-            // var obj3 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer3, new Bullet()]);
+            var spriteRenderer1 = new SpriteRenderer4(face2);
+            var obj = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer1]);
             _objects.Add(obj);
-            // _objects.Add(obj2);
+            var spriteRenderer2 = new SpriteRenderer4(face3);
+            var obj2 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer2]);
+            _objects.Add(obj2);
+            // var spriteRenderer3 = new SpriteRenderer4(face3);
+            // var obj3 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer3, new Bullet()]);
             // _objects.Add(obj3);
         }
+        
+        // for (var i = 0; i < 50000; i++)
+        // {
+        //     var spriteRenderer3 = new SpriteRenderer(face3);
+        //     var obj3 = new GameObject(_random.Next(100, 1920), _random.Next(100, 1080), null, [spriteRenderer3, new Bullet()]);
+        //     _objects.Add(obj3);
+        // }
         SpriteRenderer2.GenerateVertices();
+        SpriteRenderer4.GenerateVertices();
         
         // var tileMap = new Tilemap(face1);
         // var obj = new GameObject(100, 100, null, [tileMap]);

@@ -57,6 +57,7 @@ public abstract class Core
         GameObjectBase.RootGameObject.OnUpdate(); // updates all game objects as is recursive
         GameObjectBase.RootGameObject.OnDraw(); // draw all game objects as is recursive
         SpriteRenderer2.BatchDraw();
+        SpriteRenderer4.DrawBatches();
         Renderer.DrawEnd();
         Time.FrameEnd();
     }
