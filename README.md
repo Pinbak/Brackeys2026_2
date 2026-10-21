@@ -21,7 +21,7 @@ jam 2026.2 was used.
 - The scope was too ambitious for a week long project.
 - Needs a UI system as all the values were hard-coded.
 
-## What Next
+## What's Next
 
 - Create an improved engine that fixes the above points. For example, having a resource manager object which can store
   global references to objects which can be referenced in any class. This would be equivilant to Unity's GetComponent,
